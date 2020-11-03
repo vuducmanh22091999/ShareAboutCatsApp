@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "320608703188",
+    "firebase_url": "https://shareaboutcatapp.firebaseio.com",
+    "project_id": "shareaboutcatapp",
+    "storage_bucket": "shareaboutcatapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320608703188:android:b2cc1463dc84714ad72141",
+        "android_client_info": {
+          "package_name": "com.example.shareaboutcatsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "320608703188-d0v83cklsrnpoeosuerqc7gq8buu56pn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shareaboutcatsapp",
+            "certificate_hash": "89f504313605045a1186adb7cbe1f6a8d02969b1"
+          }
+        },
+        {
+          "client_id": "320608703188-ojfk3ld3nu9gogm2nqlunu2or46a1bpv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0ryFuSvUU7sXanXTgAnNYn3penO7uHCU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "320608703188-ojfk3ld3nu9gogm2nqlunu2or46a1bpv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
