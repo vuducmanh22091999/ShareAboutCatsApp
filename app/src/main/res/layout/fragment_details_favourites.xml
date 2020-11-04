@@ -6,7 +6,7 @@
     android:background="@android:color/white">
 
     <ImageView
-        android:id="@+id/imgBackVotes"
+        android:id="@+id/imgBackMyFavourites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -23,7 +23,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgBackVotes" />
+        app:layout_constraintTop_toBottomOf="@id/imgBackMyFavourites" />
 
     <LinearLayout
         android:id="@+id/linearIDFavourites"

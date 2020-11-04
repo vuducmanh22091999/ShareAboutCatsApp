@@ -1,13 +1,13 @@
-package com.example.shareaboutcatsapp.ui.main.breeds
+package com.example.shareaboutcatsapp.ui.main.chat
 
 import android.view.View
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_details_breeds.*
+import kotlinx.android.synthetic.main.fragment_list_chat.*
 
-class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
+class ListChatFragment : BaseFragment(), View.OnClickListener {
     override fun getLayoutID(): Int {
-        return R.layout.fragment_details_breeds
+        return R.layout.fragment_list_chat
     }
 
     override fun doViewCreated() {
@@ -15,7 +15,7 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initListener() {
-        imgBackHome.setOnClickListener(this)
+        imgBack.setOnClickListener(this)
     }
 
     private fun backToHome() {
@@ -24,7 +24,7 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when(v.id) {
-            R.id.imgBackHome -> backToHome()
+            R.id.imgBack -> backToHome()
         }
     }
 }

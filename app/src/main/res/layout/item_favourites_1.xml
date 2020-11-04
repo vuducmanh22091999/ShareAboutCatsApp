@@ -24,8 +24,8 @@
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/itemImageFavourites"
-        app:layout_constraintEnd_toEndOf="itemImageFavourites"
-        app:layout_constraintStart_toStartOf="itemImageFavourites" />
+        app:layout_constraintEnd_toEndOf="@id/itemImageFavourites"
+        app:layout_constraintStart_toStartOf="@id/itemImageFavourites" />
 
     <ImageView
         android:id="@+id/itemImageDeleteMyFavourites"
