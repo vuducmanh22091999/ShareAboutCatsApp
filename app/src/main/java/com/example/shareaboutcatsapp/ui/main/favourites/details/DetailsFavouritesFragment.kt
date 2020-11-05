@@ -3,6 +3,7 @@ package com.example.shareaboutcatsapp.ui.main.favourites.details
 import android.view.View
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
+import com.example.shareaboutcatsapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_details_favourites.*
 
 class DetailsFavouritesFragment : BaseFragment(), View.OnClickListener {
@@ -11,6 +12,7 @@ class DetailsFavouritesFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun doViewCreated() {
+        hideBottomNavigation()
         initListener()
     }
 
@@ -20,6 +22,19 @@ class DetailsFavouritesFragment : BaseFragment(), View.OnClickListener {
 
     private fun backToMyFavourites() {
         activity?.onBackPressed()
+        showBottomNavigation()
+    }
+
+    private fun hideBottomNavigation() {
+        if (activity is MainActivity) {
+            (activity as MainActivity).hideBottomNavigation()
+        }
+    }
+
+    private fun showBottomNavigation() {
+        if (activity is MainActivity) {
+            (activity as MainActivity).showBottomNavigation()
+        }
     }
 
     override fun onClick(v: View) {

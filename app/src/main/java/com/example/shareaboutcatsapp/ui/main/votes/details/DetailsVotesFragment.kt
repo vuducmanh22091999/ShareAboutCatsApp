@@ -3,6 +3,7 @@ package com.example.shareaboutcatsapp.ui.main.votes.details
 import android.view.View
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
+import com.example.shareaboutcatsapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_details_votes.*
 
 class DetailsVotesFragment: BaseFragment(), View.OnClickListener {
@@ -11,6 +12,7 @@ class DetailsVotesFragment: BaseFragment(), View.OnClickListener {
     }
 
     override fun doViewCreated() {
+        hideBottomNavigation()
         initListener()
     }
 
@@ -20,6 +22,12 @@ class DetailsVotesFragment: BaseFragment(), View.OnClickListener {
 
     private fun backToVotes() {
         activity?.onBackPressed()
+    }
+
+    private fun hideBottomNavigation() {
+        if (activity is MainActivity) {
+            (activity as MainActivity).hideBottomNavigation()
+        }
     }
 
     override fun onClick(v: View) {

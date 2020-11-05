@@ -5,6 +5,7 @@ import android.view.View
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.login.LoginActivity
+import com.example.shareaboutcatsapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_account.*
 
 class AccountFragment : BaseFragment(), View.OnClickListener {
@@ -13,6 +14,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun doViewCreated() {
+        showBottomNavigation()
         initListener()
     }
 
@@ -23,6 +25,12 @@ class AccountFragment : BaseFragment(), View.OnClickListener {
     private fun backLoginScreen() {
         val intent = Intent(activity, LoginActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun showBottomNavigation() {
+        if (activity is MainActivity) {
+            (activity as MainActivity).showBottomNavigation()
+        }
     }
 
     override fun onClick(v: View) {

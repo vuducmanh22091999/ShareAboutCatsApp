@@ -1,5 +1,6 @@
 package com.example.shareaboutcatsapp.ui.main
 
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.ui.base.BaseActivity
@@ -18,6 +19,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun doViewCreated() {
+        showBottomNavigation()
         addFragment(HomeFragment(), R.id.flContentScreens)
         handleNavigationBottom()
     }
@@ -36,7 +38,12 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        finish()
+    fun hideBottomNavigation() {
+        bottomNavigation.visibility = View.GONE
     }
+
+    fun showBottomNavigation() {
+        bottomNavigation.visibility = View.VISIBLE
+    }
+
 }

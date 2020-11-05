@@ -28,4 +28,10 @@ abstract class BaseFragment : Fragment() {
             (activity as BaseActivity).addFragment(fragment, id)
         }
     }
+
+    fun replaceFragment(fragment: Fragment, id: Int) {
+        if (activity is BaseActivity) {
+            (activity as BaseActivity).replaceFragment(fragment, id)
+        }
+    }
 }

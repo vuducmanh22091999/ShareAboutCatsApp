@@ -3,6 +3,7 @@ package com.example.shareaboutcatsapp.ui.main.chat
 import android.view.View
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
+import com.example.shareaboutcatsapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_list_chat.*
 
 class ListChatFragment : BaseFragment(), View.OnClickListener {
@@ -11,6 +12,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun doViewCreated() {
+        hideBottomNavigation()
         initListener()
     }
 
@@ -20,7 +22,17 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
 
     private fun backToHome() {
         activity?.onBackPressed()
+        if (activity is MainActivity) {
+            (activity as MainActivity).showBottomNavigation()
+        }
     }
+
+    private fun hideBottomNavigation() {
+        if (activity is MainActivity) {
+            (activity as MainActivity).hideBottomNavigation()
+        }
+    }
+
 
     override fun onClick(v: View) {
         when(v.id) {
