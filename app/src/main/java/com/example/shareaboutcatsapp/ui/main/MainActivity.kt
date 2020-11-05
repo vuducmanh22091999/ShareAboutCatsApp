@@ -25,8 +25,7 @@ class MainActivity : BaseActivity() {
     private fun handleNavigationBottom() {
         bottomNavigation.setOnNavigationItemSelectedListener {
             fragmentSelected = when (it.itemId) {
-//                R.id.navigation_home -> HomeFragment()
-                R.id.navigation_home -> DetailsBreedsFragment()
+                R.id.navigation_home -> HomeFragment()
                 R.id.navigation_votes -> VotesFragment()
                 R.id.navigation_favourites -> FavouritesFragment()
                 R.id.navigation_account -> AccountFragment()
@@ -35,5 +34,9 @@ class MainActivity : BaseActivity() {
             addFragment(fragmentSelected, R.id.flContentScreens)
             true
         }
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

@@ -8,11 +8,12 @@
     <color name="background_login_facebook">#3B599B</color>
     <color name="background_login_google">#F44336</color>
     <color name="colorMain">#47ABF0</color>
-    <color name="colorMainDark">#0071b4</color>
+    <color name="colorMainDark">#033F63</color>
     <color name="colorAccent">#94CDF5</color>
     <color name="colorYourMessage">#3E4042</color>
     <color name="colorSubID">#80000000</color>
+    <color name="colorSearch">#ECECEC</color>
 
 
-    <color name="test">#F3C5F3</color>
+    <color name="test">#ECECEC</color>
 </resources>

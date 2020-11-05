@@ -4,6 +4,8 @@ import android.view.View
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.votes.create_votes.CreateVotesFragment
+import com.example.shareaboutcatsapp.ui.main.votes.details.DetailsVotesFragment
+import kotlinx.android.synthetic.main.fragment_favourites.*
 import kotlinx.android.synthetic.main.fragment_votes.*
 
 class VotesFragment : BaseFragment(), View.OnClickListener {
@@ -17,15 +19,21 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
 
     private fun initListener() {
         linearCreateMyVotes.setOnClickListener(this)
+        tvTestA.setOnClickListener(this)
     }
 
     private fun openCreateVotesScreen() {
         addFragment(CreateVotesFragment(), R.id.flContentScreens)
     }
 
+    private fun openDetailsVotes() {
+        addFragment(DetailsVotesFragment(), R.id.flContentScreens)
+    }
+
     override fun onClick(v: View) {
         when(v.id) {
             R.id.linearCreateMyVotes -> openCreateVotesScreen()
+            R.id.tvTestA -> openDetailsVotes()
         }
     }
 }

@@ -27,7 +27,7 @@
     <string name="image_id_show">Image ID:</string>
     <string name="sub_id_show">Sub ID:</string>
     <string name="user_id_show">User ID:</string>
-    <string name="create_my_votes">Create my votes</string>
+    <string name="create_my_votes">CREATE MY VOTES</string>
     <string name="image_id">image_id:</string>
     <string name="sub_id">sub_id:</string>
     <string name="value">value:</string>
@@ -47,4 +47,5 @@
     <string name="log_out">LOG OUT</string>
     <string name="months_show">months</string>
     <string name="time_message">19:00 PM</string>
+    <string name="let_get_started">Let\'s get started!</string>
 </resources>

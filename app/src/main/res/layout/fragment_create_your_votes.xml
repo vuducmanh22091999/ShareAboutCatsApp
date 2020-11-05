@@ -20,13 +20,27 @@
         android:id="@+id/tvCreateYourVotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/create_my_votes"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorMainDark"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/imgBackMyVotes" />
+
+    <TextView
+        android:id="@+id/tvLetGetStarted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/let_get_started"
+        android:textColor="@android:color/black"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCreateYourVotes" />
 
     <LinearLayout
         android:id="@+id/linearCreateImageID"
@@ -39,7 +53,7 @@
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCreateYourVotes">
+        app:layout_constraintTop_toBottomOf="@id/tvLetGetStarted">
 
         <TextView
             android:layout_width="wrap_content"
@@ -51,7 +65,10 @@
         <EditText
             android:id="@+id/etImageID"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_et_create_votes"
+            android:padding="8dp" />
 
     </LinearLayout>
 
@@ -78,7 +95,10 @@
         <EditText
             android:id="@+id/etSubID"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_et_create_votes"
+            android:padding="8dp" />
 
     </LinearLayout>
 
@@ -105,7 +125,10 @@
         <EditText
             android:id="@+id/etValue"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_et_create_votes"
+            android:padding="8dp" />
 
     </LinearLayout>
 

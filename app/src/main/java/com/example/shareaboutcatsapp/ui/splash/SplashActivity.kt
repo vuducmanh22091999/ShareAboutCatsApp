@@ -22,6 +22,11 @@ class SplashActivity : BaseActivity() {
         Handler().postDelayed({
             val intentNewScreen = Intent(this@SplashActivity, LoginActivity::class.java)
             startActivity(intentNewScreen)
+            finish()
         }, SPLASH_DISPLAY_LENGTH)
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

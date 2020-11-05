@@ -42,7 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/id_show"
-            android:textColor="@android:color/black"
             android:textSize="20sp"/>
 
         <TextView
@@ -72,7 +71,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/image_id_show"
-            android:textColor="@android:color/black"
             android:textSize="20sp"/>
 
         <TextView
@@ -102,7 +100,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sub_id_show"
-            android:textColor="@android:color/black"
             android:textSize="20sp"/>
 
         <TextView
@@ -132,7 +129,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_id_show"
-            android:textColor="@android:color/black"
             android:textSize="20sp"/>
 
         <TextView

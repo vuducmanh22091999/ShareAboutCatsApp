@@ -24,6 +24,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private fun loginWithFacebook() {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun loginWithGoogle() {
@@ -35,5 +36,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             R.id.linearLoginWithFacebook -> loginWithFacebook()
             R.id.linearLoginWithGoogle -> loginWithGoogle()
         }
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }
