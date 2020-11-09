@@ -2,6 +2,7 @@ package com.example.shareaboutcatsapp.ui.main.home
 
 import android.view.View
 import com.example.shareaboutcatsapp.R
+import com.example.shareaboutcatsapp.data.local.AppPreferences
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.breeds.DetailsBreedsFragment
@@ -9,18 +10,27 @@ import com.example.shareaboutcatsapp.ui.main.chat.ListChatFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment(), View.OnClickListener {
+    private lateinit var appPreferences : AppPreferences
+
     override fun getLayoutID(): Int {
         return R.layout.fragment_home
     }
 
     override fun doViewCreated() {
+        appPreferences = context?.let { AppPreferences(it) }!!
+
         showBottomNavigation()
         initListener()
+        setName()
     }
 
     private fun initListener() {
         imgChat.setOnClickListener(this)
         tvListCategories.setOnClickListener(this)
+    }
+
+    private fun setName() {
+        tvUserName.text = appPreferences.getLoginUserName()
     }
 
     private fun openListChat() {

@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.ui.base.BaseActivity
 import com.example.shareaboutcatsapp.ui.main.account.AccountFragment
-import com.example.shareaboutcatsapp.ui.main.breeds.DetailsBreedsFragment
 import com.example.shareaboutcatsapp.ui.main.favourites.FavouritesFragment
 import com.example.shareaboutcatsapp.ui.main.home.HomeFragment
 import com.example.shareaboutcatsapp.ui.main.votes.VotesFragment
@@ -44,6 +43,10 @@ class MainActivity : BaseActivity() {
 
     fun showBottomNavigation() {
         bottomNavigation.visibility = View.VISIBLE
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 
 }

@@ -5,7 +5,6 @@ import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.favourites.details.DetailsFavouritesFragment
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_favourites.*
 
 class FavouritesFragment : BaseFragment(), View.OnClickListener {

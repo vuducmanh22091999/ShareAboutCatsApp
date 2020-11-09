@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.shareaboutcatsapp.ui.base.BaseActivity
 
 abstract class BaseFragment : Fragment() {
     abstract fun getLayoutID() : Int

@@ -6,7 +6,7 @@ import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_create_your_votes.*
 
-class CreateVotesFragment :BaseFragment(), View.OnClickListener {
+class CreateVotesFragment : BaseFragment(), View.OnClickListener {
     override fun getLayoutID(): Int {
         return R.layout.fragment_create_your_votes
     }

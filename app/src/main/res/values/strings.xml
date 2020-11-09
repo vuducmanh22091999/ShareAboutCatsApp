@@ -48,4 +48,10 @@
     <string name="months_show">months</string>
     <string name="time_message">19:00 PM</string>
     <string name="let_get_started">Let\'s get started!</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="error_google">Google sign in failed</string>
+    <string name="facebook_app_id">1007574479709466</string>
+    <string name="fb_login_protocol_scheme">fb1007574479709466</string>
+
 </resources>

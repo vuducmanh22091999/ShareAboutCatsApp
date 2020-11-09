@@ -6,7 +6,6 @@ import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.votes.create_votes.CreateVotesFragment
 import com.example.shareaboutcatsapp.ui.main.votes.details.DetailsVotesFragment
-import kotlinx.android.synthetic.main.fragment_favourites.*
 import kotlinx.android.synthetic.main.fragment_votes.*
 
 class VotesFragment : BaseFragment(), View.OnClickListener {
