@@ -49,4 +49,12 @@ class MainActivity : BaseActivity() {
         finish()
     }
 
+    fun showLoading() {
+        progressBarLoading.visibility = View.VISIBLE
+    }
+
+    fun hideLoading() {
+        progressBarLoading.visibility = View.INVISIBLE
+    }
+
 }

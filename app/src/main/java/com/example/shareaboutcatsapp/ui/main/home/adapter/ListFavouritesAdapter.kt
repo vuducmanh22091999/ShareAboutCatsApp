@@ -10,11 +10,19 @@ import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
 import kotlinx.android.synthetic.main.item_favourites.view.*
 
-class ListFavouritesAdapter(private val listFavourites: List<FavouritesModelItem>) : RecyclerView.Adapter<ListFavouritesAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ListFavouritesAdapter(
+    private val listFavourites: List<FavouritesModelItem>,
+    val onClick: (Int) -> Unit
+) : RecyclerView.Adapter<ListFavouritesAdapter.ViewHolder>() {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindDataViewHolder(favouritesModelItem: FavouritesModelItem) {
-            Glide.with(itemView.context).load(favouritesModelItem.image.url).into(itemView.itemImageFavourites)
+            Glide.with(itemView.context).load(favouritesModelItem.image.url)
+                .into(itemView.itemImageFavourites)
             itemView.itemSubIDFavourites.text = favouritesModelItem.sub_id
+
+            itemView.setOnClickListener{
+                onClick(adapterPosition)
+            }
         }
     }
 

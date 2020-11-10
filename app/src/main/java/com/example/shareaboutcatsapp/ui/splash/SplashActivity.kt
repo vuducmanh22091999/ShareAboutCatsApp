@@ -28,9 +28,11 @@ class SplashActivity : AppCompatActivity() {
     private fun openNewScreens() {
         val user = auth.currentUser
         if (user != null) {
-            val intentMainScreen = Intent(this@SplashActivity, MainActivity::class.java)
-            startActivity(intentMainScreen)
-            finish()
+            Handler().postDelayed({
+                val intentMainScreen = Intent(this@SplashActivity, MainActivity::class.java)
+                startActivity(intentMainScreen)
+                finish()
+            }, SPLASH_DISPLAY_LENGTH)
         }
         else {
             Handler().postDelayed({

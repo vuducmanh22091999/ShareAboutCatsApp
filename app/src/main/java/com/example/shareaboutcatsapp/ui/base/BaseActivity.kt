@@ -1,8 +1,10 @@
 package com.example.shareaboutcatsapp.ui.base
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class BaseActivity: AppCompatActivity() {
     abstract fun getLayoutID(): Int
@@ -27,4 +29,12 @@ abstract class BaseActivity: AppCompatActivity() {
             .addToBackStack(null)
             .commit()
     }
+
+//    fun showLoading() {
+//        progressBarLoading.visibility = View.VISIBLE
+//    }
+//
+//    fun hideLoading() {
+//        progressBarLoading.visibility = View.INVISIBLE
+//    }
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.shareaboutcatsapp.ui.base.BaseActivity
+import com.example.shareaboutcatsapp.ui.main.MainActivity
 
 abstract class BaseFragment : Fragment() {
     abstract fun getLayoutID() : Int
@@ -33,6 +34,18 @@ abstract class BaseFragment : Fragment() {
     fun replaceFragment(fragment: Fragment, id: Int) {
         if (activity is BaseActivity) {
             (activity as BaseActivity).replaceFragment(fragment, id)
+        }
+    }
+
+    fun showLoading() {
+        if (activity is MainActivity) {
+            (activity as MainActivity).showLoading()
+        }
+    }
+
+    fun hideLoading() {
+        if (activity is MainActivity) {
+            (activity as MainActivity).hideLoading()
         }
     }
 }

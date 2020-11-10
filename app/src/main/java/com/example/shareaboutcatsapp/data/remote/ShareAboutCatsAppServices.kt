@@ -3,6 +3,7 @@ package com.example.shareaboutcatsapp.data.remote
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModel
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
+import com.example.shareaboutcatsapp.data.model.votes.VotesModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -16,4 +17,7 @@ interface ShareAboutCatsAppServices {
 
     @GET("breeds")
     suspend fun getBreeds(@Header("x-api-key") xApiKey: String): Response<BreedsModel>
+
+    @GET("votes")
+    suspend fun getVotes(@Header("x-api-key") xApiKey: String): Response<VotesModel>
 }

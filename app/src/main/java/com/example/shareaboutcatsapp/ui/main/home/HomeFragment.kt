@@ -1,7 +1,9 @@
 package com.example.shareaboutcatsapp.ui.main.home
 
 import android.view.View
+import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.local.AppPreferences
@@ -30,6 +32,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     override fun doViewCreated() {
         appPreferences = context?.let { AppPreferences(it) }!!
 
+//        showLoading()
         showBottomNavigation()
         initListener()
         setName()
@@ -38,7 +41,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 
     private fun initListener() {
         imgChat.setOnClickListener(this)
-        tvListCategories.setOnClickListener(this)
+        imgSearchBreeds.setOnClickListener(this)
     }
 
     private fun setUpViewModel() {
@@ -50,7 +53,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         homeViewModel.getFavourites(getString(R.string.x_api_key))
         homeViewModel.favourites.observe(this, {
             setUpRecyclerViewListFavourites(it)
+//            hideLoading()
         })
+
 
         homeViewModel.getBreeds(getString(R.string.x_api_key))
         homeViewModel.breeds.observe(this, {
@@ -67,21 +72,31 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         })
     }
 
+    private fun getData() {
+        Toast.makeText(context, autoSearchBreeds.text, Toast.LENGTH_SHORT).show()
+    }
+
     private fun setUpRecyclerViewListCategories(categoriesModel: CategoriesModel) {
-        listCategoriesAdapter = ListCategoriesAdapter(categoriesModel)
+        listCategoriesAdapter = ListCategoriesAdapter(categoriesModel) {
+            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+        }
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rcvListCategories.setHasFixedSize(true)
         rcvListCategories.layoutManager = linearLayoutManager
         rcvListCategories.adapter = listCategoriesAdapter
+        rcvListCategories.postDelayed({rcvListCategories.hideShimmerAdapter()}, 30000)
     }
 
     private fun setUpRecyclerViewListFavourites(favouritesModel: FavouritesModel) {
-        listFavouritesAdapter = ListFavouritesAdapter(favouritesModel)
+        listFavouritesAdapter = ListFavouritesAdapter(favouritesModel) {
+            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+        }
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rcvListFavourites.setHasFixedSize(true)
         rcvListFavourites.layoutManager = linearLayoutManager
         rcvListFavourites.adapter = listFavouritesAdapter
+        rcvListFavourites.postDelayed({rcvListCategories.hideShimmerAdapter()}, 50000)
     }
 
     private fun setName() {
@@ -93,7 +108,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun openDetailsBreeds() {
-        replaceFragment(DetailsBreedsFragment(), R.id.flContentScreens)
+        getData()
+//        replaceFragment(DetailsBreedsFragment(), R.id.flContentScreens)
     }
 
     private fun showBottomNavigation() {
@@ -105,7 +121,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.imgChat -> openListChat()
-            R.id.tvListCategories -> openDetailsBreeds()
+            R.id.imgSearchBreeds -> openDetailsBreeds()
         }
     }
 }

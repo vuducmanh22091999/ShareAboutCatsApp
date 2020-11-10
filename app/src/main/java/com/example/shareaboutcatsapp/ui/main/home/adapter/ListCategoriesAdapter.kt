@@ -8,11 +8,18 @@ import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModelItem
 import kotlinx.android.synthetic.main.item_categories.view.*
 
-class ListCategoriesAdapter(private val listCategoriesModelItem: List<CategoriesModelItem>) :
+class ListCategoriesAdapter(
+    private val listCategoriesModelItem: List<CategoriesModelItem>,
+    val onClick: (Int) -> Unit
+) :
     RecyclerView.Adapter<ListCategoriesAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindDataViewHolder(categoriesModelItem: CategoriesModelItem) {
             itemView.itemCategories.text = categoriesModelItem.name
+
+            itemView.setOnClickListener {
+                onClick(adapterPosition)
+            }
         }
     }
 
