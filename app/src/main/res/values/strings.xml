@@ -18,7 +18,7 @@
     <string name="list_favourites">List Favourites</string>
     <string name="search_your_votes">Search your votes…</string>
     <string name="search_your_favourites">Search your favourites…</string>
-    <string name="user_name">User Name:</string>
+    <string name="user_name">User name:</string>
     <string name="email">Email:</string>
     <string name="phone">Phone number:</string>
     <string name="chat">Chat</string>
@@ -53,5 +53,6 @@
     <string name="error_google">Google sign in failed</string>
     <string name="facebook_app_id">1007574479709466</string>
     <string name="fb_login_protocol_scheme">fb1007574479709466</string>
+    <string name="x_api_key">DEMO-API-KEY</string>
 
 </resources>
