@@ -9,12 +9,25 @@ import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
 import kotlinx.android.synthetic.main.item_favourites_1.view.*
 
-class ListFavouritesAdapter(private val listFavouritesModelItem: List<FavouritesModelItem>) : RecyclerView.Adapter<ListFavouritesAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ListFavouritesAdapter(
+    private val listFavouritesModelItem: List<FavouritesModelItem>,
+    val onClick: (Int) -> Unit,
+    val onClickDelete: (Int) -> Unit
+) : RecyclerView.Adapter<ListFavouritesAdapter.ViewHolder>() {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindDataViewHolder(favouritesModelItem: FavouritesModelItem) {
-            Glide.with(itemView.context).load(favouritesModelItem.image.url).into(itemView.itemImageFavourites)
+            Glide.with(itemView.context).load(favouritesModelItem.image.url)
+                .into(itemView.itemImageFavourites)
             itemView.itemSubIDFavourites.text = favouritesModelItem.sub_id
             itemView.itemImageDeleteMyFavourites.setImageResource(R.drawable.ic_delete)
+
+            itemView.setOnClickListener {
+                onClick(adapterPosition)
+            }
+
+            itemView.itemImageDeleteMyFavourites.setOnClickListener {
+                onClickDelete(adapterPosition)
+            }
         }
     }
 

@@ -29,12 +29,4 @@ abstract class BaseActivity: AppCompatActivity() {
             .addToBackStack(null)
             .commit()
     }
-
-//    fun showLoading() {
-//        progressBarLoading.visibility = View.VISIBLE
-//    }
-//
-//    fun hideLoading() {
-//        progressBarLoading.visibility = View.INVISIBLE
-//    }
 }

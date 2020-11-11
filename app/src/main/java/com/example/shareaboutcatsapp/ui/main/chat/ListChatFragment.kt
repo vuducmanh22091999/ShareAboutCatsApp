@@ -21,7 +21,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun backToHome() {
-        activity?.onBackPressed()
+        parentFragmentManager.popBackStack()
         if (activity is MainActivity) {
             (activity as MainActivity).showBottomNavigation()
         }

@@ -68,6 +68,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener {
         Firebase.auth.signOut()
         val intent = Intent(activity, LoginActivity::class.java)
         startActivity(intent)
+        activity?.finish()
     }
 
     private fun showBottomNavigation() {

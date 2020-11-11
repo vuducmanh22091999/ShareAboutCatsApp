@@ -8,11 +8,23 @@ import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.votes.VotesModelItem
 import kotlinx.android.synthetic.main.item_votes.view.*
 
-class ListVotesAdapter(private val listVotesModelItem: List<VotesModelItem>) :RecyclerView.Adapter<ListVotesAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ListVotesAdapter(
+    private val listVotesModelItem: List<VotesModelItem>,
+    val onClick: (Int) -> Unit,
+    val onClickDelete: (Int) -> Unit
+) : RecyclerView.Adapter<ListVotesAdapter.ViewHolder>() {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindDataViewHolder(votesModelItem: VotesModelItem) {
             itemView.itemMyVotes.text = votesModelItem.created_at
             itemView.itemImageDeleteMyVotes.setImageResource(R.drawable.ic_delete)
+
+            itemView.setOnClickListener {
+                onClick(adapterPosition)
+            }
+
+            itemView.itemImageDeleteMyVotes.setOnClickListener {
+                onClickDelete(adapterPosition)
+            }
         }
     }
 

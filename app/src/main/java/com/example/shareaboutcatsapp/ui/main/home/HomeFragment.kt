@@ -1,20 +1,25 @@
 package com.example.shareaboutcatsapp.ui.main.home
 
+import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.local.AppPreferences
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
+import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.breeds.DetailsBreedsFragment
 import com.example.shareaboutcatsapp.ui.main.chat.ListChatFragment
+import com.example.shareaboutcatsapp.ui.main.favourites.FavouritesViewModel
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListCategoriesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListFavouritesAdapter
+import com.example.shareaboutcatsapp.ui.main.home.full_image.FullImageFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -85,18 +90,30 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         rcvListCategories.setHasFixedSize(true)
         rcvListCategories.layoutManager = linearLayoutManager
         rcvListCategories.adapter = listCategoriesAdapter
-        rcvListCategories.postDelayed({rcvListCategories.hideShimmerAdapter()}, 30000)
     }
 
     private fun setUpRecyclerViewListFavourites(favouritesModel: FavouritesModel) {
         listFavouritesAdapter = ListFavouritesAdapter(favouritesModel) {
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            image(it)
         }
-        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        rcvListFavourites.setHasFixedSize(true)
+//        rcvListFavourites.layoutManager = linearLayoutManager
+//        rcvListFavourites.adapter = listFavouritesAdapter
+
+        val gridLayoutManager = GridLayoutManager(context, 2)
         rcvListFavourites.setHasFixedSize(true)
-        rcvListFavourites.layoutManager = linearLayoutManager
+        rcvListFavourites.layoutManager = gridLayoutManager
         rcvListFavourites.adapter = listFavouritesAdapter
-        rcvListFavourites.postDelayed({rcvListCategories.hideShimmerAdapter()}, 50000)
+    }
+
+    private fun image(index : Int) {
+        val fullImageFragment = FullImageFragment()
+        val bundle = Bundle()
+        val favouritesModelItem = homeViewModel.favourites.value?.get(index)
+        bundle.putSerializable("image", favouritesModelItem)
+        fullImageFragment.arguments = bundle
+        replaceFragment(fullImageFragment, R.id.flContentScreens)
     }
 
     private fun setName() {

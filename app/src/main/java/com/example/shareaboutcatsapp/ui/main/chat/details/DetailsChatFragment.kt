@@ -21,7 +21,7 @@ class DetailsChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun backToListChat() {
-        activity?.onBackPressed()
+        parentFragmentManager.popBackStack()
     }
 
     private fun hideBottomNavigation() {

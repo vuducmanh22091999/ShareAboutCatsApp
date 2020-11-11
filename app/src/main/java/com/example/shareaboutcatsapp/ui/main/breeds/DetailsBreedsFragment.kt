@@ -21,7 +21,7 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun backToHome() {
-        activity?.onBackPressed()
+        parentFragmentManager.popBackStack()
     }
 
     private fun hideBottomNavigation() {

@@ -1,7 +1,9 @@
 package com.example.shareaboutcatsapp.ui.main.favourites
 
+import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
@@ -36,7 +38,7 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
         favouritesViewModel.favourites.observe(this, {
             dataListFavourites.clear()
             it.forEach { favouritesModelItem ->
-                dataListFavourites.add(favouritesModelItem.created_at)
+                dataListFavourites.add(favouritesModelItem.sub_id)
             }
             val arrayAdapter = ArrayAdapter<String>(
                 context!!,
@@ -48,19 +50,25 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setUpRecyclerView(favouritesModel: FavouritesModel) {
-        listFavouritesAdapter = ListFavouritesAdapter(favouritesModel)
+        listFavouritesAdapter = ListFavouritesAdapter(favouritesModel, {
+            detailsFavourites(it)
+        }, { Toast.makeText(context, "Clicked!!!", Toast.LENGTH_SHORT).show() })
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rcvListMyFavourites.setHasFixedSize(true)
         rcvListMyFavourites.layoutManager = linearLayoutManager
         rcvListMyFavourites.adapter = listFavouritesAdapter
-        rcvListMyFavourites.postDelayed({ rcvListMyFavourites.showShimmerAdapter() }, 30000)
+    }
+
+    private fun detailsFavourites(index : Int) {
+        val detailsFavouritesFragment = DetailsFavouritesFragment()
+        val bundle = Bundle()
+        val favouritesModelItem = favouritesViewModel.favourites.value?.get(index)
+        bundle.putSerializable("detailsFavourites", favouritesModelItem)
+        detailsFavouritesFragment.arguments = bundle
+        replaceFragment(detailsFavouritesFragment, R.id.flContentScreens)
     }
 
     private fun initListener() {
-    }
-
-    private fun detailsFavourites() {
-        replaceFragment(DetailsFavouritesFragment(), R.id.flContentScreens)
     }
 
     private fun showBottomNavigation() {

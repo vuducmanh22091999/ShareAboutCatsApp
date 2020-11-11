@@ -33,7 +33,7 @@
     <string name="value">value:</string>
     <string name="country_code">Country code:</string>
     <string name="value_show">Value:</string>
-    <string name="create_at_show">Create at:</string>
+    <string name="create_at_show">Created at:</string>
     <string name="name_show">Name:</string>
     <string name="origin_show">Origin:</string>
     <string name="description_show">Description:</string>

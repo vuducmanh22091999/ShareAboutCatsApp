@@ -34,8 +34,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun doViewCreated() {
         auth = Firebase.auth
-//        FacebookSdk.sdkInitialize(this@LoginActivity)
-//        AppEventsLogger.activateApp(this@LoginActivity)
         callBackManager = CallbackManager.Factory.create()
         appPreferences = AppPreferences(this@LoginActivity)
 
