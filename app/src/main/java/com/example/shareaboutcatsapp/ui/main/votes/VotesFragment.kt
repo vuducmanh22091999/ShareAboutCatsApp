@@ -1,5 +1,6 @@
 package com.example.shareaboutcatsapp.ui.main.votes
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -14,6 +15,7 @@ import com.example.shareaboutcatsapp.ui.main.votes.adapter.ListVotesAdapter
 import com.example.shareaboutcatsapp.ui.main.votes.create_votes.CreateVotesFragment
 import com.example.shareaboutcatsapp.ui.main.votes.details.DetailsVotesFragment
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.dialog_delete.*
 import kotlinx.android.synthetic.main.fragment_votes.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,6 +24,7 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
     private lateinit var listVotesAdapter: ListVotesAdapter
     private val dataList = ArrayList<VotesModelItem>()
     private var dataListVotes: ArrayList<String> = ArrayList()
+    lateinit var dialog: Dialog
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_votes
@@ -63,17 +66,34 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
         val votesModelItem = votesViewModel.votes.value?.get(index)
         bundle.putSerializable("detailsVotes", votesModelItem)
         detailsVotesFragment.arguments = bundle
-        replaceFragment(detailsVotesFragment, R.id.flContentScreens)
+//        replaceFragment(detailsVotesFragment, R.id.flContentScreens)
+        addFragment(detailsVotesFragment, R.id.flContentScreens)
     }
 
     private fun setUpRecyclerViewListVotes(votesModel: VotesModel) {
         listVotesAdapter = ListVotesAdapter(votesModel, {
             detailsVotes(it)
-        }, { Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show() })
+        }, { openDialogDelete() })
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rcvListMyVotes.setHasFixedSize(true)
         rcvListMyVotes.layoutManager = linearLayoutManager
         rcvListMyVotes.adapter = listVotesAdapter
+    }
+
+    private fun openDialogDelete() {
+        dialog = Dialog(context!!)
+        dialog.setContentView(R.layout.dialog_delete)
+
+        dialog.linearYes.setOnClickListener {
+            Toast.makeText(context, "Yes", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+
+        dialog.linearNo.setOnClickListener {
+            Toast.makeText(context, "No", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     private fun openCreateVotesScreen() {

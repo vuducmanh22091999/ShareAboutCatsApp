@@ -38,7 +38,12 @@ class FullImageFragment: BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
        when(v.id) {
-           R.id.imgBackHomeFromFullImage -> parentFragmentManager.popBackStack()
+           R.id.imgBackHomeFromFullImage -> {
+               parentFragmentManager.popBackStack()
+               if (activity is MainActivity) {
+                   (activity as MainActivity).showBottomNavigation()
+               }
+           }
 
        }
     }

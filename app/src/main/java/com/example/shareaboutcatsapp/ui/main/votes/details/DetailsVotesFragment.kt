@@ -43,6 +43,9 @@ class DetailsVotesFragment: BaseFragment(), View.OnClickListener {
 
     private fun backToVotes() {
         parentFragmentManager.popBackStack()
+        if (activity is MainActivity) {
+            (activity as MainActivity).showBottomNavigation()
+        }
     }
 
     private fun hideBottomNavigation() {

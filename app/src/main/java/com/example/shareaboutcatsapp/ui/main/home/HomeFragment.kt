@@ -114,17 +114,22 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         val detailsBreedsFragment = DetailsBreedsFragment()
         val bundle = Bundle()
         val name = autoSearchBreeds.text.toString()
-        var breedsModelItem : BreedsModelItem? = null
-        homeViewModel.breeds.value?.let {
-            it.forEach {item ->
-                if(item.name == name) {
-                    breedsModelItem = item
+        if (name.isNotEmpty()) {
+            var breedsModelItem : BreedsModelItem? = null
+            homeViewModel.breeds.value?.let {
+                it.forEach {item ->
+                    if(item.name == name) {
+                        breedsModelItem = item
+                    }
                 }
             }
+            bundle.putSerializable("detailsBreeds", breedsModelItem)
+            detailsBreedsFragment.arguments = bundle
+            replaceFragment(detailsBreedsFragment, R.id.flContentScreens)
+        } else {
+            replaceFragment(detailsBreedsFragment, R.id.flContentScreens)
         }
-        bundle.putSerializable("detailsBreeds", breedsModelItem)
-        detailsBreedsFragment.arguments = bundle
-        replaceFragment(detailsBreedsFragment, R.id.flContentScreens)
+
     }
 
     private fun setUpRecyclerViewListCategories(categoriesModel: CategoriesModel) {
@@ -154,7 +159,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         val favouritesModelItem = homeViewModel.favourites.value?.get(index)
         bundle.putSerializable("fullSizeImage", favouritesModelItem)
         fullImageFragment.arguments = bundle
-        replaceFragment(fullImageFragment, R.id.flContentScreens)
+        addFragment(fullImageFragment, R.id.flContentScreens)
     }
 
     private fun setName() {

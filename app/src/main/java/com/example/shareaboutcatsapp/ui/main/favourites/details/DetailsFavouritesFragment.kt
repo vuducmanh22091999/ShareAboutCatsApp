@@ -42,6 +42,9 @@ class DetailsFavouritesFragment : BaseFragment(), View.OnClickListener {
 
     private fun backToMyFavourites() {
         parentFragmentManager.popBackStack()
+        if (activity is MainActivity) {
+            (activity as MainActivity).showBottomNavigation()
+        }
     }
 
     private fun hideBottomNavigation() {

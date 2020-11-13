@@ -1,6 +1,7 @@
 package com.example.shareaboutcatsapp.ui.main.breeds
 
 import android.annotation.SuppressLint
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.Toast
 import com.example.shareaboutcatsapp.R
@@ -23,18 +24,24 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     @SuppressLint("SetTextI18n")
     private fun getData() {
         val bundle = arguments
-        val breedsModelItem = bundle?.getSerializable("detailsBreeds") as BreedsModelItem
-        tvIDBreeds.text = breedsModelItem.id
-        tvNameBreeds.text = breedsModelItem.name + ","
-        tvOriginBreeds.text = breedsModelItem.origin
-        tvDescriptionBreeds.text = breedsModelItem.description
-        tvLifeSpanBreeds.text = breedsModelItem.life_span
-        tvAdaptabilityBreeds.text = breedsModelItem.adaptability.toString()
-        tvAffectionLevelBreeds.text = breedsModelItem.affection_level.toString()
-        tvTemperamentBreeds.text = breedsModelItem.temperament
-        tvChildFriendlyBreeds.text = breedsModelItem.child_friendly.toString()
-        tvIntelligenceBreeds.text = breedsModelItem.intelligence.toString()
-        tvWikipediaLinkBreeds.text = breedsModelItem.wikipedia_url
+        if (bundle != null) {
+            val breedsModelItem = bundle.getSerializable("detailsBreeds") as BreedsModelItem
+            breedsModelItem.let {
+                tvIDBreeds.text = breedsModelItem.id
+                tvNameBreeds.text = breedsModelItem.name + ","
+                tvOriginBreeds.text = breedsModelItem.origin
+                tvDescriptionBreeds.text = breedsModelItem.description
+                tvLifeSpanBreeds.text = breedsModelItem.life_span
+                tvAdaptabilityBreeds.text = breedsModelItem.adaptability.toString()
+                tvAffectionLevelBreeds.text = breedsModelItem.affection_level.toString()
+                tvTemperamentBreeds.text = breedsModelItem.temperament
+                tvChildFriendlyBreeds.text = breedsModelItem.child_friendly.toString()
+                tvIntelligenceBreeds.text = breedsModelItem.intelligence.toString()
+                tvWikipediaLinkBreeds.text = breedsModelItem.wikipedia_url
+            }
+        } else {
+            Toast.makeText(context, "Null", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun initListener() {

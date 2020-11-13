@@ -70,7 +70,8 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
         val favouritesModelItem = favouritesViewModel.favourites.value?.get(index)
         bundle.putSerializable("detailsFavourites", favouritesModelItem)
         detailsFavouritesFragment.arguments = bundle
-        replaceFragment(detailsFavouritesFragment, R.id.flContentScreens)
+//        replaceFragment(detailsFavouritesFragment, R.id.flContentScreens)
+        addFragment(detailsFavouritesFragment, R.id.flContentScreens)
     }
 
 //    private fun searchFavourites() {
