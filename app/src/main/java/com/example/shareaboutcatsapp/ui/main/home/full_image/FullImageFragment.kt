@@ -25,7 +25,7 @@ class FullImageFragment: BaseFragment(), View.OnClickListener {
 
     private fun showImage() {
         val bundle = arguments
-        val favouritesModelItem = bundle?.getSerializable("image") as FavouritesModelItem
+        val favouritesModelItem = bundle?.getSerializable("fullSizeImage") as FavouritesModelItem
         val imageFavourites = favouritesModelItem.image.url
         Glide.with(context!!).load(imageFavourites).into(imgFullSize)
     }

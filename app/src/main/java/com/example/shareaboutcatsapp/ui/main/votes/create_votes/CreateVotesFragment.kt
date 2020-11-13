@@ -21,7 +21,7 @@ class CreateVotesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun backToMyVotes() {
-        activity?.onBackPressed()
+        parentFragmentManager.popBackStack()
     }
 
     private fun hideBottomNavigation() {

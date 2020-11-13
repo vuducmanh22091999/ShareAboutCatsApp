@@ -5,11 +5,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.shareaboutcatsapp.R
-import com.example.shareaboutcatsapp.data.local.AppPreferences
+import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
 import com.example.shareaboutcatsapp.ui.base.BaseActivity
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.facebook.*
-import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn

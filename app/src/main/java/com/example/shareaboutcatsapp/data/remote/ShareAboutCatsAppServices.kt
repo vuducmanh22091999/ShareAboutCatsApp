@@ -7,6 +7,8 @@ import com.example.shareaboutcatsapp.data.model.votes.VotesModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ShareAboutCatsAppServices {
     @GET("categories")
@@ -20,4 +22,10 @@ interface ShareAboutCatsAppServices {
 
     @GET("votes")
     suspend fun getVotes(@Header("x-api-key") xApiKey: String): Response<VotesModel>
+
+    @GET("search")
+    suspend fun getBreedsByName(
+        @Header("x-api-key") xApiKey: String,
+        @Query("q") q: String
+    ): Response<BreedsModel>
 }

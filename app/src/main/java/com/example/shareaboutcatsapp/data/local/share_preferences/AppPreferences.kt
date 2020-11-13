@@ -1,4 +1,4 @@
-package com.example.shareaboutcatsapp.data.local
+package com.example.shareaboutcatsapp.data.local.share_preferences
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE

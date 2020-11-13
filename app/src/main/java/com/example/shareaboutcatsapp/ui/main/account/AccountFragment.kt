@@ -4,7 +4,7 @@ import android.content.Intent
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.shareaboutcatsapp.R
-import com.example.shareaboutcatsapp.data.local.AppPreferences
+import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.login.LoginActivity
 import com.example.shareaboutcatsapp.ui.main.MainActivity

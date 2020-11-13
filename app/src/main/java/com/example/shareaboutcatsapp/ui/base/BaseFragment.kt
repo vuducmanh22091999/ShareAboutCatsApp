@@ -48,4 +48,10 @@ abstract class BaseFragment : Fragment() {
             (activity as MainActivity).hideLoading()
         }
     }
+
+    fun initMyRoomDB() {
+        if (activity is BaseActivity) {
+            (activity as BaseActivity).initMyRoomDB()
+        }
+    }
 }

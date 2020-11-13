@@ -1,6 +1,7 @@
 package com.example.shareaboutcatsapp.data.model.breeds
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class BreedsModelItem(
     @SerializedName("adaptability") val adaptability: Int,
@@ -41,4 +42,4 @@ data class BreedsModelItem(
     @SerializedName("vocalisation") val vocalisation: Int,
     @SerializedName("weight") val weight: Weight,
     @SerializedName("wikipedia_url") val wikipedia_url: String
-)
+) : Serializable

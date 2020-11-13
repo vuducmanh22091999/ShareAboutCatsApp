@@ -80,10 +80,6 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
         replaceFragment(CreateVotesFragment(), R.id.flContentScreens)
     }
 
-    private fun openDetailsVotes() {
-        replaceFragment(DetailsVotesFragment(), R.id.flContentScreens)
-    }
-
     private fun showBottomNavigation() {
         if (activity is MainActivity) {
             (activity as MainActivity).showBottomNavigation()

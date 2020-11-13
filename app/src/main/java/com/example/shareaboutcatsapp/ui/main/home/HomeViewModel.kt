@@ -46,4 +46,13 @@ class HomeViewModel(
             }
         }
     }
+
+    fun getBreedsByName(xApiKey: String, q: String) {
+        viewModelScope.launch {
+            val response = breedsRepo.getBreedsByName(xApiKey, q)
+            if (response.isSuccessful && response.body() != null) {
+                breeds.value = response.body()
+            }
+        }
+    }
 }
