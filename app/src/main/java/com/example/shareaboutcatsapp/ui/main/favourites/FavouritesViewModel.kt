@@ -7,14 +7,24 @@ import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.repository.FavouritesRepo
 import kotlinx.coroutines.launch
 
-class FavouritesViewModel(private val favouritesRepo: FavouritesRepo) : ViewModel(){
+class FavouritesViewModel(private val favouritesRepo: FavouritesRepo) : ViewModel() {
     var favourites: MutableLiveData<FavouritesModel> = MutableLiveData()
+    var notification: String = ""
 
     fun getFavourites(xApiKey: String) {
         viewModelScope.launch {
             val response = favouritesRepo.getAllFavourites(xApiKey)
             if (response.isSuccessful && response.body() != null) {
                 favourites.value = response.body()
+            }
+        }
+    }
+
+    fun deleteFavourites(xApiKey: String, favouritesID: Int) {
+        viewModelScope.launch {
+            val response = favouritesRepo.deleteFavourites(xApiKey, favouritesID)
+            if (response.isSuccessful) {
+                notification = response.message()
             }
         }
     }

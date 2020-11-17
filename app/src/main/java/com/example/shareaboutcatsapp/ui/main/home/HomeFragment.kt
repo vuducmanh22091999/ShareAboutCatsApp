@@ -18,6 +18,7 @@ import com.example.shareaboutcatsapp.ui.main.chat.ListChatFragment
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListCategoriesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListFavouritesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.full_image.FullImageFragment
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
@@ -116,7 +117,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         val bundle = Bundle()
         val name = autoSearchBreeds.text.toString()
         if (name == "" || name.trim().isEmpty()) {
-            Toast.makeText(context, "Don't leave blank!!!", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "Don't leave blank!!!", Toast.LENGTH_SHORT).show()
+            context?.let { Toasty.error(it, "Don't leave blank!!!", Toast.LENGTH_SHORT).show() }
         } else if (name.isNotEmpty()) {
             var breedsModelItem : BreedsModelItem? = null
             homeViewModel.breeds.value?.let {
@@ -128,8 +130,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             }
             bundle.putSerializable("detailsBreeds", breedsModelItem)
             detailsBreedsFragment.arguments = bundle
-            replaceFragment(detailsBreedsFragment, R.id.flContentScreens)
-        } else {
             replaceFragment(detailsBreedsFragment, R.id.flContentScreens)
         }
     }

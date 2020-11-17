@@ -46,6 +46,6 @@ data class RoomBreeds(
     val vcahospitals_url: String,
     val vetstreet_url: String,
     val vocalisation: Int,
-    @Embedded val roomWeight: RoomWeight,
+    @Embedded val roomWeight: RoomWeight? = null,
     val wikipedia_url: String
 )

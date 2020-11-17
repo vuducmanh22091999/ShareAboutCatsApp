@@ -3,12 +3,11 @@ package com.example.shareaboutcatsapp.data.remote
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModel
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
+import com.example.shareaboutcatsapp.data.model.favourites.NotificationDeleteFavourites
+import com.example.shareaboutcatsapp.data.model.votes.NotificationDelete
 import com.example.shareaboutcatsapp.data.model.votes.VotesModel
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ShareAboutCatsAppServices {
     @GET("categories")
@@ -28,4 +27,19 @@ interface ShareAboutCatsAppServices {
         @Header("x-api-key") xApiKey: String,
         @Query("q") q: String
     ): Response<BreedsModel>
+
+    @DELETE("votes/{vote_id}")
+    suspend fun deleteVotes(
+        @Header("x-api-key") xApiKey: String,
+        @Path("vote_id") voteID: Int
+    ): Response<NotificationDelete>
+
+    @POST("votes")
+    suspend fun createVotes(@Header("x-api-key") xApiKey: String): Response<VotesModel>
+
+    @DELETE("favourites/{favourite_id}")
+    suspend fun deleteFavourites(
+        @Header("x-api-key") xApiKey: String,
+        @Path("favourite_id") favouritesID: Int
+    ): Response<NotificationDelete>
 }

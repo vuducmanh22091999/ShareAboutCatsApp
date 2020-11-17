@@ -12,13 +12,13 @@ import kotlinx.android.synthetic.main.item_votes.view.*
 class ListVotesAdapter(
     private val listVotesModelItem: List<VotesModelItem>,
     val onClick: (Int) -> Unit,
-    val onClickDelete: (Int) -> Unit
+    val onClickDelete: (Int, ID: Int) -> Unit
 ) : RecyclerView.Adapter<ListVotesAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
         fun bindDataViewHolder(votesModelItem: VotesModelItem) {
             itemView.itemMyVotesID.text = votesModelItem.id.toString()
-            itemView.itemMyVotesCreatedAt.text =votesModelItem.created_at
+            itemView.itemMyVotesCreatedAt.text = votesModelItem.created_at
             itemView.itemImageDeleteMyVotes.setImageResource(R.drawable.ic_delete)
 
             itemView.setOnClickListener {
@@ -26,7 +26,7 @@ class ListVotesAdapter(
             }
 
             itemView.itemImageDeleteMyVotes.setOnClickListener {
-                onClickDelete(adapterPosition)
+                onClickDelete(adapterPosition, votesModelItem.id)
             }
         }
     }

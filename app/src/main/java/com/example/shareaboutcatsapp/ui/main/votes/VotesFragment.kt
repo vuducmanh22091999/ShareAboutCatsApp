@@ -68,27 +68,29 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
         val votesModelItem = votesViewModel.votes.value?.get(index)
         bundle.putSerializable("detailsVotes", votesModelItem)
         detailsVotesFragment.arguments = bundle
-//        replaceFragment(detailsVotesFragment, R.id.flContentScreens)
         addFragment(detailsVotesFragment, R.id.flContentScreens)
     }
 
     private fun setUpRecyclerViewListVotes(votesModel: VotesModel) {
         listVotesAdapter = ListVotesAdapter(votesModel, {
             detailsVotes(it)
-        }, { openDialogDelete() })
+        },
+            { i: Int, s: Int -> openDialogDelete(s) })
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rcvListMyVotes.setHasFixedSize(true)
         rcvListMyVotes.layoutManager = linearLayoutManager
+        listVotesAdapter.notifyDataSetChanged()
         rcvListMyVotes.adapter = listVotesAdapter
     }
 
-    private fun openDialogDelete() {
+    private fun openDialogDelete(voteID: Int) {
         dialog = Dialog(context!!)
         dialog.setContentView(R.layout.dialog_delete)
 
         dialog.linearYes.setOnClickListener {
-            Toast.makeText(context, "Yes", Toast.LENGTH_SHORT).show()
+            deleteVotes(voteID)
             dialog.dismiss()
+            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
         }
 
         dialog.linearNo.setOnClickListener {
@@ -96,6 +98,13 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private fun deleteVotes(votesID: Int) {
+        votesViewModel.deleteVotes(getString(R.string.x_api_key), votesID)
+        votesViewModel.votes.observe(this, {
+            setUpRecyclerViewListVotes(it)
+        })
     }
 
     private fun openCreateVotesScreen() {
