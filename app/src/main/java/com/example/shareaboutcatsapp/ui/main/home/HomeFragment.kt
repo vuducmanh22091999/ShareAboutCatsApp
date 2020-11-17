@@ -37,7 +37,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     override fun doViewCreated() {
         appPreferences = context?.let { AppPreferences(it) }!!
 
-//        showLoading()
+        showLoading()
         showBottomNavigation()
         initListener()
         setName()
@@ -58,7 +58,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         homeViewModel.getFavourites(getString(R.string.x_api_key))
         homeViewModel.favourites.observe(this, {
             setUpRecyclerViewListFavourites(it)
-//            hideLoading()
+            hideLoading()
         })
 
         homeViewModel.getBreeds(getString(R.string.x_api_key))
@@ -73,6 +73,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 dataListBreeds
             )
             autoSearchBreeds.setAdapter(arrayAdapter)
+
         })
     }
 
@@ -114,7 +115,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         val detailsBreedsFragment = DetailsBreedsFragment()
         val bundle = Bundle()
         val name = autoSearchBreeds.text.toString()
-        if (name.isNotEmpty()) {
+        if (name == "" || name.trim().isEmpty()) {
+            Toast.makeText(context, "Don't leave blank!!!", Toast.LENGTH_SHORT).show()
+        } else if (name.isNotEmpty()) {
             var breedsModelItem : BreedsModelItem? = null
             homeViewModel.breeds.value?.let {
                 it.forEach {item ->
@@ -129,7 +132,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         } else {
             replaceFragment(detailsBreedsFragment, R.id.flContentScreens)
         }
-
     }
 
     private fun setUpRecyclerViewListCategories(categoriesModel: CategoriesModel) {

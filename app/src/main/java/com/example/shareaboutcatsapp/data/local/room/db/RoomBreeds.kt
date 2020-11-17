@@ -1,5 +1,6 @@
 package com.example.shareaboutcatsapp.data.local.room.db
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.shareaboutcatsapp.data.model.breeds.Weight
@@ -45,6 +46,6 @@ data class RoomBreeds(
     val vcahospitals_url: String,
     val vetstreet_url: String,
     val vocalisation: Int,
-    val weight: Weight,
+    @Embedded val roomWeight: RoomWeight,
     val wikipedia_url: String
 )

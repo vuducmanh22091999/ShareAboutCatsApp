@@ -16,14 +16,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <com.zolad.zoominimageview.ZoomInImageView
         android:id="@+id/imgFavourites"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgBackMyFavourites" />
+        app:layout_constraintTop_toBottomOf="@id/imgBackMyFavourites"/>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imgFavourites"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="250dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/imgBackMyFavourites" />-->
 
     <LinearLayout
         android:id="@+id/linearIDFavourites"

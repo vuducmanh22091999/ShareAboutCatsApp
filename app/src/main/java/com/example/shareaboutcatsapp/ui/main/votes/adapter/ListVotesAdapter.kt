@@ -1,5 +1,6 @@
 package com.example.shareaboutcatsapp.ui.main.votes.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,10 @@ class ListVotesAdapter(
     val onClickDelete: (Int) -> Unit
 ) : RecyclerView.Adapter<ListVotesAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        @SuppressLint("SetTextI18n")
         fun bindDataViewHolder(votesModelItem: VotesModelItem) {
-            itemView.itemMyVotes.text = votesModelItem.created_at
+            itemView.itemMyVotesID.text = votesModelItem.id.toString()
+            itemView.itemMyVotesCreatedAt.text =votesModelItem.created_at
             itemView.itemImageDeleteMyVotes.setImageResource(R.drawable.ic_delete)
 
             itemView.setOnClickListener {

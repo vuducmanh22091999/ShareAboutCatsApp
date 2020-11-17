@@ -31,6 +31,7 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun doViewCreated() {
+        showLoading()
         showBottomNavigation()
         initListener()
         setUpViewModel()
@@ -44,6 +45,7 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
         votesViewModel.getVotes(getString(R.string.x_api_key))
         votesViewModel.votes.observe(this, {
             setUpRecyclerViewListVotes(it)
+            hideLoading()
         })
 
         votesViewModel.votes.observe(this, {

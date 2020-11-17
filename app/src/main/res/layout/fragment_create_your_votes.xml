@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/metal_mania"
+        android:fontFamily="@font/playball"
         android:text="@string/create_my_votes"
         android:textColor="@android:color/holo_red_light"
         android:textSize="30sp"
@@ -109,6 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:enabled="false"
             android:background="@drawable/background_et_create_votes"
             android:padding="8dp" />
 

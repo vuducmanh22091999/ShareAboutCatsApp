@@ -1,9 +1,7 @@
 package com.example.shareaboutcatsapp.ui.main.breeds
 
 import android.annotation.SuppressLint
-import android.text.method.LinkMovementMethod
 import android.view.View
-import android.widget.Toast
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModelItem
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
@@ -25,22 +23,26 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     private fun getData() {
         val bundle = arguments
         if (bundle != null) {
-            val breedsModelItem = bundle.getSerializable("detailsBreeds") as BreedsModelItem
-            breedsModelItem.let {
-                tvIDBreeds.text = breedsModelItem.id
-                tvNameBreeds.text = breedsModelItem.name + ","
-                tvOriginBreeds.text = breedsModelItem.origin
-                tvDescriptionBreeds.text = breedsModelItem.description
-                tvLifeSpanBreeds.text = breedsModelItem.life_span
-                tvAdaptabilityBreeds.text = breedsModelItem.adaptability.toString()
-                tvAffectionLevelBreeds.text = breedsModelItem.affection_level.toString()
-                tvTemperamentBreeds.text = breedsModelItem.temperament
-                tvChildFriendlyBreeds.text = breedsModelItem.child_friendly.toString()
-                tvIntelligenceBreeds.text = breedsModelItem.intelligence.toString()
-                tvWikipediaLinkBreeds.text = breedsModelItem.wikipedia_url
+            if (bundle.getSerializable("detailsBreeds") != null) {
+                val breedsModelItem: BreedsModelItem? =
+                    bundle.getSerializable("detailsBreeds") as BreedsModelItem
+                breedsModelItem?.let {
+                    tvIDBreeds.text = breedsModelItem.id
+                    tvNameBreeds.text = breedsModelItem.name + ","
+                    tvOriginBreeds.text = breedsModelItem.origin
+                    tvDescriptionBreeds.text = breedsModelItem.description
+                    tvLifeSpanBreeds.text = breedsModelItem.life_span
+                    tvAdaptabilityBreeds.text = breedsModelItem.adaptability.toString()
+                    tvAffectionLevelBreeds.text = breedsModelItem.affection_level.toString()
+                    tvTemperamentBreeds.text = breedsModelItem.temperament
+                    tvChildFriendlyBreeds.text = breedsModelItem.child_friendly.toString()
+                    tvIntelligenceBreeds.text = breedsModelItem.intelligence.toString()
+                    tvWikipediaLinkBreeds.text = breedsModelItem.wikipedia_url
+                }
+            } else {
+                nestedScrollView.visibility = View.INVISIBLE
+                tvError.visibility = View.VISIBLE
             }
-        } else {
-            Toast.makeText(context, "Null", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -59,7 +61,7 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        when(v.id) {
+        when (v.id) {
             R.id.imgBackHome -> backToHome()
         }
     }
