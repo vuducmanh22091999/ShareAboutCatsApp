@@ -1,9 +1,8 @@
-package com.example.shareaboutcatsapp.data.local.room.db
+package com.example.shareaboutcatsapp.data.local.room.db.breeds
 
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.shareaboutcatsapp.data.model.breeds.Weight
 
 @Entity(tableName = "breeds")
 data class RoomBreeds(

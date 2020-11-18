@@ -99,10 +99,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         val detailsBreedsFragment = DetailsBreedsFragment()
         val bundle = Bundle()
         val name = autoSearchBreeds.text.toString()
-        var breedsModelItem : BreedsModelItem? = null
+        var breedsModelItem: BreedsModelItem? = null
         homeViewModel.breeds.value?.let {
-            it.forEach {item ->
-                if(item.name == name) {
+            it.forEach { item ->
+                if (item.name == name) {
                     breedsModelItem = item
                 }
             }
@@ -120,10 +120,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 //            Toast.makeText(context, "Don't leave blank!!!", Toast.LENGTH_SHORT).show()
             context?.let { Toasty.error(it, "Don't leave blank!!!", Toast.LENGTH_SHORT).show() }
         } else if (name.isNotEmpty()) {
-            var breedsModelItem : BreedsModelItem? = null
+            var breedsModelItem: BreedsModelItem? = null
             homeViewModel.breeds.value?.let {
-                it.forEach {item ->
-                    if(item.name == name) {
+                it.forEach { item ->
+                    if (item.name == name) {
                         breedsModelItem = item
                     }
                 }
@@ -135,8 +135,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setUpRecyclerViewListCategories(categoriesModel: CategoriesModel) {
-        listCategoriesAdapter = ListCategoriesAdapter(categoriesModel) {
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+        listCategoriesAdapter = ListCategoriesAdapter(categoriesModel) { indexInfo ->
+            context?.let {
+                Toasty.info(it, categoriesModel[indexInfo].name, Toast.LENGTH_SHORT).show()
+            }
         }
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

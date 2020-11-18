@@ -15,6 +15,7 @@ import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.favourites.adapter.ListFavouritesAdapter
 import com.example.shareaboutcatsapp.ui.main.favourites.details.DetailsFavouritesFragment
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_delete.*
 import kotlinx.android.synthetic.main.fragment_favourites.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,6 +27,8 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
     private lateinit var listFavouritesAdapter: ListFavouritesAdapter
     private var dataListFavourites: ArrayList<String> = ArrayList()
     lateinit var dialog: Dialog
+    var favouritesModel = FavouritesModel()
+    var indexDel = 0
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_favourites
@@ -60,11 +63,14 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setUpRecyclerView(favouritesModel: FavouritesModel) {
-
-        listFavouritesAdapter = ListFavouritesAdapter(favouritesModel, {
+        this.favouritesModel = favouritesModel
+        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, {
             detailsFavourites(it)
         },
-            { index: Int, favouritesID: Int -> openDialogDelete(favouritesID) })
+            { index, favouritesID ->
+                indexDel = index
+                openDialogDelete(favouritesID)
+            })
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rcvListMyFavourites.setHasFixedSize(true)
         rcvListMyFavourites.layoutManager = linearLayoutManager
@@ -83,6 +89,8 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
 
     private fun deleteFavourites(favouritesID: Int) {
         favouritesViewModel.deleteFavourites(getString(R.string.x_api_key), favouritesID)
+        this.favouritesModel.removeAt(indexDel)
+        listFavouritesAdapter.notifyItemRemoved(indexDel)
         favouritesViewModel.favourites.observe(this, {
             setUpRecyclerView(it)
         })
@@ -92,17 +100,16 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
         dialog = Dialog(context!!)
         dialog.setContentView(R.layout.dialog_delete)
 
-        val favouritesModel = FavouritesModel()
+
         dialog.linearYes.setOnClickListener {
             deleteFavourites(favouritesID)
             dialog.dismiss()
-//            favouritesModel.clear()
-            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+            context?.let { Toasty.success(it, "Success", Toast.LENGTH_SHORT).show() }
         }
 
         dialog.linearNo.setOnClickListener {
-            Toast.makeText(context, "No", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
+            Toast.makeText(context, "No", Toast.LENGTH_SHORT).show()
         }
         dialog.show()
     }

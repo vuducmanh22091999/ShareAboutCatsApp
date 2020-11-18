@@ -42,6 +42,7 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
             } else {
                 nestedScrollView.visibility = View.INVISIBLE
                 tvError.visibility = View.VISIBLE
+                imgNotFound.visibility = View.VISIBLE
             }
         }
     }

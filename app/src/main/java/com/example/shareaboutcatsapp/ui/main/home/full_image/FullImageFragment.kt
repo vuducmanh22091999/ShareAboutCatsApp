@@ -8,7 +8,7 @@ import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_full_image.*
 
-class FullImageFragment: BaseFragment(), View.OnClickListener {
+class FullImageFragment : BaseFragment(), View.OnClickListener {
     override fun getLayoutID(): Int {
         return R.layout.fragment_full_image
     }
@@ -37,15 +37,15 @@ class FullImageFragment: BaseFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-       when(v.id) {
-           R.id.imgBackHomeFromFullImage -> {
-               parentFragmentManager.popBackStack()
-               if (activity is MainActivity) {
-                   (activity as MainActivity).showBottomNavigation()
-               }
-           }
+        when (v.id) {
+            R.id.imgBackHomeFromFullImage -> {
+                parentFragmentManager.popBackStack()
+                if (activity is MainActivity) {
+                    (activity as MainActivity).showBottomNavigation()
+                }
+            }
 
-       }
+        }
     }
 
 }

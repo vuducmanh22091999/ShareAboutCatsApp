@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_favourites_1.view.*
 class ListFavouritesAdapter(
     private val listFavouritesModelItem: List<FavouritesModelItem>,
     val onClick: (Int) -> Unit,
-    val onClickDelete: (Int, favouritesID: Int) -> Unit
+    val onClickDelete: (Int, Int) -> Unit
 ) : RecyclerView.Adapter<ListFavouritesAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindDataViewHolder(favouritesModelItem: FavouritesModelItem) {

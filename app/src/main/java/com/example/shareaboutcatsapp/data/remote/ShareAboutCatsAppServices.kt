@@ -4,6 +4,7 @@ import com.example.shareaboutcatsapp.data.model.breeds.BreedsModel
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.model.favourites.NotificationDeleteFavourites
+import com.example.shareaboutcatsapp.data.model.votes.CreateVotes
 import com.example.shareaboutcatsapp.data.model.votes.NotificationDelete
 import com.example.shareaboutcatsapp.data.model.votes.VotesModel
 import retrofit2.Response
@@ -35,7 +36,12 @@ interface ShareAboutCatsAppServices {
     ): Response<NotificationDelete>
 
     @POST("votes")
-    suspend fun createVotes(@Header("x-api-key") xApiKey: String): Response<VotesModel>
+    suspend fun createVotes(
+        @Header("x-api-key") xApiKey: String,
+        @Body image_id: String,
+        @Body sub_id: String,
+        @Body value: String
+    ): Response<CreateVotes>
 
     @DELETE("favourites/{favourite_id}")
     suspend fun deleteFavourites(
