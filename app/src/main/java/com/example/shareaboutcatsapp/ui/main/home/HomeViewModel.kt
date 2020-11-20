@@ -3,18 +3,20 @@ package com.example.shareaboutcatsapp.ui.main.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shareaboutcatsapp.data.local.room.db.categories.RoomCategories
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModel
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.repository.BreedsRepo
 import com.example.shareaboutcatsapp.data.repository.CategoriesRepo
 import com.example.shareaboutcatsapp.data.repository.FavouritesRepo
+import com.example.shareaboutcatsapp.data.repository.RoomRepo
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val categoriesRepo: CategoriesRepo,
     private val favouritesRepo: FavouritesRepo,
-    private val breedsRepo: BreedsRepo
+    private val breedsRepo: BreedsRepo,
 ) : ViewModel() {
     var categories: MutableLiveData<CategoriesModel> = MutableLiveData()
     var favourites: MutableLiveData<FavouritesModel> = MutableLiveData()

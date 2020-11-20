@@ -1,9 +1,13 @@
 package com.example.shareaboutcatsapp.ui.splash
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.PersistableBundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.ui.base.BaseActivity
@@ -23,6 +27,7 @@ class SplashActivity : AppCompatActivity() {
 
         auth = Firebase.auth
         openNewScreens()
+        checkWifi()
     }
 
     private fun openNewScreens() {
@@ -40,6 +45,19 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(intentNewScreen)
                 finish()
             }, SPLASH_DISPLAY_LENGTH)
+        }
+    }
+
+    private fun checkWifi() {
+        val connectivityManager: ConnectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo: NetworkInfo? = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+
+        if (networkInfo != null) {
+            if (networkInfo.isConnected) {
+                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

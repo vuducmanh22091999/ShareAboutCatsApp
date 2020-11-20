@@ -3,7 +3,6 @@ package com.example.shareaboutcatsapp.data.remote
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModel
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
-import com.example.shareaboutcatsapp.data.model.favourites.NotificationDeleteFavourites
 import com.example.shareaboutcatsapp.data.model.votes.CreateVotes
 import com.example.shareaboutcatsapp.data.model.votes.NotificationDelete
 import com.example.shareaboutcatsapp.data.model.votes.VotesModel

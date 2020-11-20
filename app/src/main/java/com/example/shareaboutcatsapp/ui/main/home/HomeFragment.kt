@@ -7,9 +7,12 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shareaboutcatsapp.R
+import com.example.shareaboutcatsapp.data.local.room.db.breeds.RoomBreeds
+import com.example.shareaboutcatsapp.data.local.room.db.categories.RoomCategories
 import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModelItem
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
+import com.example.shareaboutcatsapp.data.model.categories.CategoriesModelItem
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
@@ -20,11 +23,12 @@ import com.example.shareaboutcatsapp.ui.main.home.adapter.ListFavouritesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.full_image.FullImageFragment
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.Serializable
 
 class HomeFragment : BaseFragment(), View.OnClickListener {
-    private var index: Int? = null
     private lateinit var appPreferences: AppPreferences
     private val homeViewModel: HomeViewModel by viewModel()
     private lateinit var listCategoriesAdapter: ListCategoriesAdapter
@@ -43,6 +47,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         initListener()
         setName()
         setUpViewModel()
+//        saveData()
+        readData()
     }
 
     private fun initListener() {
@@ -76,6 +82,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             autoSearchBreeds.setAdapter(arrayAdapter)
 
         })
+    }
+
+    private fun check() {
+        
     }
 
     private fun detailsBreedsIndex(index: Int) {
@@ -186,6 +196,27 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         if (activity is MainActivity) {
             (activity as MainActivity).showBottomNavigation()
         }
+    }
+
+    private fun saveData() {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            if (categoriesModelItem != null) {
+//                (activity as MainActivity).initMyRoomDB().getDAOBreeds.insertCategories(
+//                    RoomCategories(0, "abc")
+//                )
+//            }
+//        }
+        (activity as MainActivity).initMyRoomDB().getDAOBreeds.insertCategories(
+            RoomCategories(0, "abc")
+        )
+    }
+
+    private fun readData() {
+        Toast.makeText(
+            context,
+            (activity as MainActivity).initMyRoomDB().getDAOBreeds.getCategories().toString(),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun onClick(v: View) {

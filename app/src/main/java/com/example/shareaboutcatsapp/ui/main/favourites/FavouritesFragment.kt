@@ -35,7 +35,7 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun doViewCreated() {
-        showLoading()
+//        showLoading()
         showBottomNavigation()
         initListener()
         setUpViewModel()
@@ -45,7 +45,7 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
         favouritesViewModel.getFavourites(getString(R.string.x_api_key))
         favouritesViewModel.favourites.observe(this, {
             setUpRecyclerView(it)
-            hideLoading()
+//            hideLoading()
         })
 
         favouritesViewModel.favourites.observe(this, {

@@ -65,79 +65,59 @@
         app:layout_constraintEnd_toEndOf="@id/autoSearchBreeds"
         app:layout_constraintTop_toTopOf="@id/autoSearchBreeds" />
 
-    <TextView
-        android:id="@+id/tvListCategories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/playball"
-        android:text="@string/list_categories"
-        android:textColor="@android:color/black"
-        android:textSize="26sp"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/autoSearchBreeds" />
+        app:layout_constraintTop_toBottomOf="@id/autoSearchBreeds">
 
-<!--    <com.cooltechworks.views.shimmer.ShimmerRecyclerView-->
-<!--        android:id="@+id/rcvListCategories"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:padding="8dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tvListCategories" />-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvListCategories"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvListCategories" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvListFavourites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/playball"
-        android:text="@string/list_favourites"
-        android:textColor="@android:color/black"
-        android:textSize="26sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rcvListCategories" />
+            <TextView
+                android:id="@+id/tvListCategories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/playball"
+                android:text="@string/list_categories"
+                android:textColor="@android:color/black"
+                android:textSize="26sp" />
 
-<!--    <com.cooltechworks.views.shimmer.ShimmerRecyclerView-->
-<!--        android:id="@+id/rcvListFavourites"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:padding="8dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tvListFavourites" />-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvListCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:id="@+id/tvListFavourites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/playball"
+                android:text="@string/list_favourites"
+                android:textColor="@android:color/black"
+                android:textSize="26sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvListFavourites"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvListFavourites" />
+                android:layout_margin="8dp" />
 
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

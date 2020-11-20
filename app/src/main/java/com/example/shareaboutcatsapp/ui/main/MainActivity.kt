@@ -4,7 +4,10 @@ import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.room.Room
 import com.example.shareaboutcatsapp.R
+import com.example.shareaboutcatsapp.data.local.room.db.MyRoomDB
 import com.example.shareaboutcatsapp.ui.base.BaseActivity
 import com.example.shareaboutcatsapp.ui.main.account.AccountFragment
 import com.example.shareaboutcatsapp.ui.main.favourites.FavouritesFragment
@@ -15,6 +18,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity() {
     var fragmentSelected: Fragment = Fragment()
     lateinit var dialog: AlertDialog
+    private val homeFragment = HomeFragment()
+    private val votesFragment = VotesFragment()
+    private val favouritesFragment = FavouritesFragment()
+    private val accountFragment = AccountFragment()
+    lateinit var fragmentManager: FragmentManager
+    lateinit var currentFragment: Fragment
+    private lateinit var myRoomDB: MyRoomDB
 
     override fun getLayoutID(): Int {
         return R.layout.activity_main
@@ -22,22 +32,52 @@ class MainActivity : BaseActivity() {
 
     override fun doViewCreated() {
         showBottomNavigation()
-        addFragment(HomeFragment(), R.id.flContentScreens)
+        setUpFragment()
         handleNavigationBottom()
+        initMyRoomDB()
     }
 
     private fun handleNavigationBottom() {
         bottomNavigation.setOnNavigationItemSelectedListener {
-            fragmentSelected = when (it.itemId) {
-                R.id.navigation_home -> HomeFragment()
-                R.id.navigation_votes -> VotesFragment()
-                R.id.navigation_favourites -> FavouritesFragment()
-                R.id.navigation_account -> AccountFragment()
-                else -> fragmentSelected
+            when (it.itemId) {
+                R.id.navigation_home -> {
+                    fragmentManager.beginTransaction().show(homeFragment).hide(currentFragment)
+                        .commit()
+                    currentFragment = homeFragment
+                }
+                R.id.navigation_votes -> {
+                    fragmentManager.beginTransaction().show(votesFragment).hide(currentFragment)
+                        .commit()
+                    currentFragment = votesFragment
+                }
+                R.id.navigation_favourites -> {
+                    fragmentManager.beginTransaction().show(favouritesFragment)
+                        .hide(currentFragment).commit()
+                    currentFragment = favouritesFragment
+                }
+                R.id.navigation_account -> {
+                    fragmentManager.beginTransaction().show(accountFragment).hide(currentFragment)
+                        .commit()
+                    currentFragment = accountFragment
+                }
             }
-            addFragment(fragmentSelected, R.id.flContentScreens)
             true
         }
+    }
+
+    private fun setUpFragment() {
+        fragmentManager = supportFragmentManager
+        currentFragment = homeFragment
+
+
+        fragmentManager.beginTransaction().add(R.id.flContentScreens, homeFragment).commit()
+        fragmentManager.beginTransaction().show(homeFragment).commit()
+        fragmentManager.beginTransaction().add(R.id.flContentScreens, votesFragment).commit()
+        fragmentManager.beginTransaction().hide(votesFragment).commit()
+        fragmentManager.beginTransaction().add(R.id.flContentScreens, favouritesFragment).commit()
+        fragmentManager.beginTransaction().hide(favouritesFragment).commit()
+        fragmentManager.beginTransaction().add(R.id.flContentScreens, accountFragment).commit()
+        fragmentManager.beginTransaction().hide(accountFragment).commit()
     }
 
     fun hideBottomNavigation() {
@@ -47,18 +87,6 @@ class MainActivity : BaseActivity() {
     fun showBottomNavigation() {
         bottomNavigation.visibility = View.VISIBLE
     }
-
-    override fun onBackPressed() {
-        finish()
-    }
-
-//    fun showLoading() {
-//        progressBarLoading.visibility = View.VISIBLE
-//    }
-//
-//    fun hideLoading() {
-//        progressBarLoading.visibility = View.INVISIBLE
-//    }
 
     fun showLoading() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -72,6 +100,10 @@ class MainActivity : BaseActivity() {
 
     fun hideLoading() {
         dialog.dismiss()
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 
 }
