@@ -1,5 +1,6 @@
 package com.example.shareaboutcatsapp.ui.login
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -94,6 +95,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun switchMainScreen() {
+        showLoading()
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
@@ -140,8 +142,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.linearLoginWithFacebook -> loginWithFacebook()
-            R.id.linearLoginWithGoogle -> loginWithGoogle()
+            R.id.linearLoginWithFacebook -> {
+                loginWithFacebook()
+                hideLoading()
+            }
+            R.id.linearLoginWithGoogle -> {
+                loginWithGoogle()
+                hideLoading()
+            }
         }
     }
 

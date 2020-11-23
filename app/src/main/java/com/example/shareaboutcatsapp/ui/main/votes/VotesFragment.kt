@@ -32,6 +32,7 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
 
     override fun doViewCreated() {
 //        showLoading()
+        checkWifi()
         showBottomNavigation()
         initListener()
         setUpViewModel()
@@ -40,9 +41,21 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
         linearCreateMyVotes.setOnClickListener(this)
     }
 
-    private fun setUpViewModel() {
+    private fun checkWifi() {
+        if ((activity as MainActivity).checkWifi() == true) {
+            callApi()
+        } else {
+            votesViewModel.getDataVotes()
+        }
+    }
+
+    private fun callApi() {
         votesViewModel.getVotes(getString(R.string.x_api_key))
+    }
+
+    private fun setUpViewModel() {
         votesViewModel.votes.observe(this, {
+            votesViewModel.saveDataVotes(it)
             setUpRecyclerViewListVotes(it)
 //            hideLoading()
         })
@@ -51,6 +64,7 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
             dataListVotes.clear()
             it.forEach { votesModelItem ->
                 dataListVotes.add((votesModelItem.id.toString()))
+                votesViewModel.saveDataVotes(it)
             }
             val arrayAdapter = ArrayAdapter<String>(
                 context!!,

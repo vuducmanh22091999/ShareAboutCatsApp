@@ -6,7 +6,7 @@ import com.example.shareaboutcatsapp.ui.main.votes.VotesViewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    single { HomeViewModel(get(), get(), get()) }
-    single { VotesViewModel(get()) }
-    single { FavouritesViewModel(get()) }
+    single { HomeViewModel(get(), get(), get(), get()) }
+    single { VotesViewModel(get(), get()) }
+    single { FavouritesViewModel(get(), get()) }
 }

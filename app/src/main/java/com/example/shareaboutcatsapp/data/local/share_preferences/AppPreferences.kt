@@ -9,6 +9,7 @@ class AppPreferences(context: Context) {
         const val LOGIN_SAVE_USER_NAME = "login_save_user_name"
         const val LOGIN_SAVE_PHOTO_URL = "login_save_photo_url"
         const val LOGIN_SAVE_PHONE_NUMBER = "login_save_phone_number"
+        const val CONNECT_WIFI = "connect_wifi"
     }
 
     private val sharedPreferences =
@@ -44,6 +45,14 @@ class AppPreferences(context: Context) {
 
     fun getLoginPhoneNumber(): String? {
         return sharedPreferences.getString(LOGIN_SAVE_PHONE_NUMBER, null)
+    }
+
+    fun setConnect(isCheck: Boolean) {
+        sharedPreferences.edit().putBoolean(CONNECT_WIFI, isCheck).apply()
+    }
+
+    fun getConnect(): Boolean? {
+        return sharedPreferences.getBoolean(CONNECT_WIFI, false)
     }
 
 }

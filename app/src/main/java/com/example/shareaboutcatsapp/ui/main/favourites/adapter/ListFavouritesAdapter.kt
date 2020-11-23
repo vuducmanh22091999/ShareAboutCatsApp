@@ -10,7 +10,7 @@ import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
 import kotlinx.android.synthetic.main.item_favourites_1.view.*
 
 class ListFavouritesAdapter(
-    private val listFavouritesModelItem: List<FavouritesModelItem>,
+    private var listFavouritesModelItem: List<FavouritesModelItem>,
     val onClick: (Int) -> Unit,
     val onClickDelete: (Int, Int) -> Unit
 ) : RecyclerView.Adapter<ListFavouritesAdapter.ViewHolder>() {
@@ -42,4 +42,9 @@ class ListFavouritesAdapter(
     }
 
     override fun getItemCount(): Int = listFavouritesModelItem.size
+
+    fun filterFavourites(filteredFavourites: List<FavouritesModelItem>) {
+        listFavouritesModelItem = filteredFavourites
+        notifyDataSetChanged()
+    }
 }

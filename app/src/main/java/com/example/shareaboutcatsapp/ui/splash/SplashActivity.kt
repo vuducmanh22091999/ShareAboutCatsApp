@@ -10,6 +10,7 @@ import android.os.PersistableBundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.shareaboutcatsapp.R
+import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
 import com.example.shareaboutcatsapp.ui.base.BaseActivity
 import com.example.shareaboutcatsapp.ui.login.LoginActivity
 import com.example.shareaboutcatsapp.ui.main.MainActivity
@@ -20,12 +21,14 @@ import com.google.firebase.ktx.Firebase
 class SplashActivity : AppCompatActivity() {
     private val SPLASH_DISPLAY_LENGTH: Long = 4800
     private lateinit var auth: FirebaseAuth
+    private lateinit var appPreferences: AppPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
         auth = Firebase.auth
+        appPreferences = AppPreferences(this)
         openNewScreens()
         checkWifi()
     }
@@ -53,11 +56,12 @@ class SplashActivity : AppCompatActivity() {
         val networkInfo: NetworkInfo? = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
 
         if (networkInfo != null) {
-            if (networkInfo.isConnected) {
-                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
-            }
+            appPreferences.setConnect(networkInfo.isConnected)
+//            if (networkInfo.isConnected) {
+//                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+//            } else {
+//                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 

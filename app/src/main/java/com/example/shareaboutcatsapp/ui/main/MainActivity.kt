@@ -1,6 +1,7 @@
 package com.example.shareaboutcatsapp.ui.main
 
 import android.app.AlertDialog
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.room.Room
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.local.room.db.MyRoomDB
+import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
 import com.example.shareaboutcatsapp.ui.base.BaseActivity
 import com.example.shareaboutcatsapp.ui.main.account.AccountFragment
 import com.example.shareaboutcatsapp.ui.main.favourites.FavouritesFragment
@@ -16,25 +18,28 @@ import com.example.shareaboutcatsapp.ui.main.votes.VotesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
-    var fragmentSelected: Fragment = Fragment()
-    lateinit var dialog: AlertDialog
     private val homeFragment = HomeFragment()
     private val votesFragment = VotesFragment()
     private val favouritesFragment = FavouritesFragment()
     private val accountFragment = AccountFragment()
     lateinit var fragmentManager: FragmentManager
     lateinit var currentFragment: Fragment
-    private lateinit var myRoomDB: MyRoomDB
+    private lateinit var appPreferences: AppPreferences
 
     override fun getLayoutID(): Int {
         return R.layout.activity_main
     }
 
     override fun doViewCreated() {
+        appPreferences = AppPreferences(this)
         showBottomNavigation()
         setUpFragment()
         handleNavigationBottom()
         initMyRoomDB()
+    }
+
+    fun checkWifi(): Boolean? {
+        return appPreferences.getConnect()
     }
 
     private fun handleNavigationBottom() {
@@ -86,20 +91,6 @@ class MainActivity : BaseActivity() {
 
     fun showBottomNavigation() {
         bottomNavigation.visibility = View.VISIBLE
-    }
-
-    fun showLoading() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        val layoutInflater: LayoutInflater = this.layoutInflater
-        builder.setView(layoutInflater.inflate(R.layout.dialog_loading, null))
-        builder.setCancelable(true)
-
-        dialog = builder.create()
-        dialog.show()
-    }
-
-    fun hideLoading() {
-        dialog.dismiss()
     }
 
     override fun onBackPressed() {

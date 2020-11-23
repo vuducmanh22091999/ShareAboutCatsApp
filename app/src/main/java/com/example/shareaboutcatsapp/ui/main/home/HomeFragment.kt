@@ -7,12 +7,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shareaboutcatsapp.R
-import com.example.shareaboutcatsapp.data.local.room.db.breeds.RoomBreeds
 import com.example.shareaboutcatsapp.data.local.room.db.categories.RoomCategories
 import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModelItem
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
-import com.example.shareaboutcatsapp.data.model.categories.CategoriesModelItem
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
@@ -23,9 +21,6 @@ import com.example.shareaboutcatsapp.ui.main.home.adapter.ListFavouritesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.full_image.FullImageFragment
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment(), View.OnClickListener {
@@ -42,13 +37,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     override fun doViewCreated() {
         appPreferences = context?.let { AppPreferences(it) }!!
 
+        checkWifi()
         showLoading()
         showBottomNavigation()
         initListener()
         setName()
         setUpViewModel()
-//        saveData()
-        readData()
     }
 
     private fun initListener() {
@@ -56,23 +50,40 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         imgSearchBreeds.setOnClickListener(this)
     }
 
-    private fun setUpViewModel() {
+    private fun checkWifi() {
+        if ((activity as MainActivity).checkWifi() == true) {
+            callApi()
+        } else {
+            homeViewModel.getDataCategories()
+            homeViewModel.getDataFavourites()
+            homeViewModel.getDataBreeds()
+        }
+    }
+
+    private fun callApi() {
         homeViewModel.getCategories(getString(R.string.x_api_key))
+        homeViewModel.getFavourites(getString(R.string.x_api_key))
+        homeViewModel.getBreeds(getString(R.string.x_api_key))
+    }
+
+
+    private fun setUpViewModel() {
         homeViewModel.categories.observe(this, {
+            homeViewModel.saveDataCategories(it)
             setUpRecyclerViewListCategories(it)
         })
 
-        homeViewModel.getFavourites(getString(R.string.x_api_key))
         homeViewModel.favourites.observe(this, {
+            homeViewModel.saveDataFavourites(it)
             setUpRecyclerViewListFavourites(it)
             hideLoading()
         })
 
-        homeViewModel.getBreeds(getString(R.string.x_api_key))
         homeViewModel.breeds.observe(this, {
             dataListBreeds.clear()
             it.forEach { breedsModelItem ->
                 dataListBreeds.add(breedsModelItem.name)
+                homeViewModel.saveDataBreeds(it)
             }
             val arrayAdapter = ArrayAdapter<String>(
                 context!!,
@@ -82,10 +93,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             autoSearchBreeds.setAdapter(arrayAdapter)
 
         })
-    }
-
-    private fun check() {
-        
     }
 
     private fun detailsBreedsIndex(index: Int) {
@@ -127,7 +134,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         val bundle = Bundle()
         val name = autoSearchBreeds.text.toString()
         if (name == "" || name.trim().isEmpty()) {
-//            Toast.makeText(context, "Don't leave blank!!!", Toast.LENGTH_SHORT).show()
             context?.let { Toasty.error(it, "Don't leave blank!!!", Toast.LENGTH_SHORT).show() }
         } else if (name.isNotEmpty()) {
             var breedsModelItem: BreedsModelItem? = null
@@ -196,27 +202,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         if (activity is MainActivity) {
             (activity as MainActivity).showBottomNavigation()
         }
-    }
-
-    private fun saveData() {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            if (categoriesModelItem != null) {
-//                (activity as MainActivity).initMyRoomDB().getDAOBreeds.insertCategories(
-//                    RoomCategories(0, "abc")
-//                )
-//            }
-//        }
-        (activity as MainActivity).initMyRoomDB().getDAOBreeds.insertCategories(
-            RoomCategories(0, "abc")
-        )
-    }
-
-    private fun readData() {
-        Toast.makeText(
-            context,
-            (activity as MainActivity).initMyRoomDB().getDAOBreeds.getCategories().toString(),
-            Toast.LENGTH_SHORT
-        ).show()
     }
 
     override fun onClick(v: View) {
