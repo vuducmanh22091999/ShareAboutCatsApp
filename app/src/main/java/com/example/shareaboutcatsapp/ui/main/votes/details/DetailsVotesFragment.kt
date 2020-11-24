@@ -8,7 +8,7 @@ import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_details_votes.*
 
-class DetailsVotesFragment: BaseFragment(), View.OnClickListener {
+class DetailsVotesFragment : BaseFragment(), View.OnClickListener {
     override fun getLayoutID(): Int {
         return R.layout.fragment_details_votes
     }
@@ -55,7 +55,7 @@ class DetailsVotesFragment: BaseFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        when(v.id) {
+        when (v.id) {
             R.id.imgBackVotes -> backToVotes()
         }
     }

@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
@@ -28,9 +29,7 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
     private var dataListFavourites: ArrayList<String> = ArrayList()
     lateinit var dialog: Dialog
     var favouritesModel = FavouritesModel()
-    lateinit var favouritesModelItem: FavouritesModelItem
     var indexDel = 0
-    private var listFavourites: ArrayList<FavouritesModelItem> = ArrayList()
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_favourites
@@ -41,33 +40,7 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
         showBottomNavigation()
         initListener()
         setUpViewModel()
-//        search()
-    }
-
-    private fun search() {
-        autoSearchFavourites.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                if (s.toString().isNotEmpty()) {
-//                    for (item in dataListFavourites) {
-//                        if (autoSearchFavourites.text.toString().toLowerCase(Locale.ROOT)
-//                                .contains(s.toString().toLowerCase(Locale.ROOT))) {
-//                            dataListFavourites.add(item)
-//                        }
-//                    }
-//                    listFavouritesAdapter.notifyDataSetChanged()
-//                    rcvListMyFavourites.adapter = listFavouritesAdapter
-//                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                searchFavourites(autoSearchFavourites.text.toString())
-            }
-
-        })
+        searchFavourites()
     }
 
     private fun checkWifi() {
@@ -88,41 +61,42 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
             setUpRecyclerView(it)
         })
 
-        favouritesViewModel.favourites.observe(this, {
-            dataListFavourites.clear()
-            it.forEach { favouritesModelItem ->
-                dataListFavourites.add(favouritesModelItem.sub_id)
-                favouritesViewModel.saveDataFavourites(it)
-            }
-            val arrayAdapter = ArrayAdapter<String>(
-                context!!,
-                android.R.layout.simple_spinner_dropdown_item,
-                dataListFavourites
-            )
-            autoSearchFavourites.setAdapter(arrayAdapter)
-        })
+//        favouritesViewModel.favourites.observe(this, {
+//            dataListFavourites.clear()
+//            it.forEach { favouritesModelItem ->
+//                dataListFavourites.add(favouritesModelItem.sub_id)
+//                favouritesViewModel.saveDataFavourites(it)
+//            }
+//            val arrayAdapter = ArrayAdapter<String>(
+//                context!!,
+//                android.R.layout.simple_spinner_dropdown_item,
+//                dataListFavourites
+//            )
+//            autoSearchFavourites.setAdapter(arrayAdapter)
+//        })
     }
 
     private fun setUpRecyclerView(favouritesModel: FavouritesModel) {
         this.favouritesModel = favouritesModel
-        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, {
-            detailsFavourites(it)
+        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, { index, favouritesID ->
+            detailsFavourites(favouritesID)
+            hideKeyboard()
         },
             { index, favouritesID ->
                 indexDel = index
                 openDialogDelete(favouritesID)
             })
-        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val gridLayoutManager = GridLayoutManager(context, 2)
         rcvListMyFavourites.setHasFixedSize(true)
-        rcvListMyFavourites.layoutManager = linearLayoutManager
+        rcvListMyFavourites.layoutManager = gridLayoutManager
         listFavouritesAdapter.notifyDataSetChanged()
         rcvListMyFavourites.adapter = listFavouritesAdapter
     }
 
-    private fun detailsFavourites(index: Int) {
+    private fun detailsFavourites(id: Int) {
         val detailsFavouritesFragment = DetailsFavouritesFragment()
         val bundle = Bundle()
-        val favouritesModelItem = favouritesViewModel.favourites.value?.get(index)
+        val favouritesModelItem = favouritesViewModel.favourites.value?.find { it.id == id }
         bundle.putSerializable("detailsFavourites", favouritesModelItem)
         detailsFavouritesFragment.arguments = bundle
         addFragment(detailsFavouritesFragment, R.id.flContentScreens)
@@ -150,13 +124,12 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
 
         dialog.linearNo.setOnClickListener {
             dialog.dismiss()
-            Toast.makeText(context, "No", Toast.LENGTH_SHORT).show()
         }
         dialog.show()
     }
 
     private fun initListener() {
-        imgSearchFavourites.setOnClickListener(this)
+//        imgSearchFavourites.setOnClickListener(this)
     }
 
     private fun showBottomNavigation() {
@@ -165,9 +138,29 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    private fun searchFavourites(keyWord: String) {
+    private fun searchFavourites() {
+        autoSearchFavourites.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString().isNotEmpty()) {
+                    filterFavourites(s.toString())
+                    clearText()
+                }
+            }
+
+        })
+    }
+
+    private fun filterFavourites(keyWord: String) {
         val searchFavourites: ArrayList<FavouritesModelItem> = ArrayList()
-        for (favouritesModelItem in listFavourites ) {
+        for (favouritesModelItem in favouritesModel) {
             if (favouritesModelItem.sub_id.toLowerCase().contains(keyWord.toLowerCase())) {
                 searchFavourites.add(favouritesModelItem)
             }
@@ -175,12 +168,22 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
         listFavouritesAdapter.filterFavourites(searchFavourites)
     }
 
+    private fun clearText() {
+        if (autoSearchFavourites.text.toString().isNotEmpty()) {
+            imgClearTextSearchFavourites.visibility = View.VISIBLE
+            imgClearTextSearchFavourites.setOnClickListener {
+                autoSearchFavourites.setText("")
+                setUpViewModel()
+                imgClearTextSearchFavourites.visibility = View.INVISIBLE
+            }
+        } else {
+            imgClearTextSearchFavourites.visibility = View.INVISIBLE
+        }
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.imgSearchFavourites -> {
-//                favouritesModel.clear()
-                searchFavourites(autoSearchFavourites.text.toString())
-            }
+//            R.id.imgSearchFavourites -> searchFavourites(autoSearchFavourites.text.toString())
         }
     }
 }

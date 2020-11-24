@@ -16,6 +16,7 @@ import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.breeds.DetailsBreedsFragment
 import com.example.shareaboutcatsapp.ui.main.chat.ListChatFragment
+import com.example.shareaboutcatsapp.ui.main.details_categories.DetailsCategoriesFragment
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListCategoriesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListFavouritesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.full_image.FullImageFragment
@@ -68,6 +69,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 
 
     private fun setUpViewModel() {
+//        homeViewModel.image.observe(this, {
+//            homeViewModel.saveDetailsCategories(it)
+//        })
+
         homeViewModel.categories.observe(this, {
             homeViewModel.saveDataCategories(it)
             setUpRecyclerViewListCategories(it)
@@ -91,7 +96,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 dataListBreeds
             )
             autoSearchBreeds.setAdapter(arrayAdapter)
-
         })
     }
 
@@ -153,7 +157,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     private fun setUpRecyclerViewListCategories(categoriesModel: CategoriesModel) {
         listCategoriesAdapter = ListCategoriesAdapter(categoriesModel) { indexInfo ->
             context?.let {
-                Toasty.info(it, categoriesModel[indexInfo].name, Toast.LENGTH_SHORT).show()
+                val bundle = Bundle()
+                val detailCategoriesFragment = DetailsCategoriesFragment()
+                bundle.putInt("categoryID", categoriesModel[indexInfo].id)
+                bundle.putString("categoryName", categoriesModel[indexInfo].name)
+                detailCategoriesFragment.arguments = bundle
+                addFragment(detailCategoriesFragment, R.id.flContentScreens)
             }
         }
         val linearLayoutManager =

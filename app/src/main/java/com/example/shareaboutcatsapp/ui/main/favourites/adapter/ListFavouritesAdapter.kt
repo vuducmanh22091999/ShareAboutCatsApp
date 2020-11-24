@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_favourites_1.view.*
 
 class ListFavouritesAdapter(
     private var listFavouritesModelItem: List<FavouritesModelItem>,
-    val onClick: (Int) -> Unit,
+    val onClick: (Int, Int) -> Unit,
     val onClickDelete: (Int, Int) -> Unit
 ) : RecyclerView.Adapter<ListFavouritesAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -22,7 +22,7 @@ class ListFavouritesAdapter(
             itemView.itemImageDeleteMyFavourites.setImageResource(R.drawable.ic_delete)
 
             itemView.setOnClickListener {
-                onClick(adapterPosition)
+                onClick(adapterPosition, favouritesModelItem.id)
             }
 
             itemView.itemImageDeleteMyFavourites.setOnClickListener {

@@ -2,9 +2,12 @@ package com.example.shareaboutcatsapp.ui.main.votes
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.votes.VotesModel
@@ -22,21 +25,22 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class VotesFragment : BaseFragment(), View.OnClickListener {
     private val votesViewModel: VotesViewModel by viewModel()
     private lateinit var listVotesAdapter: ListVotesAdapter
-    private val dataList = ArrayList<VotesModelItem>()
     private var dataListVotes: ArrayList<String> = ArrayList()
     lateinit var dialog: Dialog
+    var votesModel = VotesModel()
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_votes
     }
 
     override fun doViewCreated() {
-//        showLoading()
         checkWifi()
         showBottomNavigation()
         initListener()
         setUpViewModel()
+        searchVotes()
     }
+
     private fun initListener() {
         linearCreateMyVotes.setOnClickListener(this)
     }
@@ -57,38 +61,39 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
         votesViewModel.votes.observe(this, {
             votesViewModel.saveDataVotes(it)
             setUpRecyclerViewListVotes(it)
-//            hideLoading()
         })
 
-        votesViewModel.votes.observe(this, {
-            dataListVotes.clear()
-            it.forEach { votesModelItem ->
-                dataListVotes.add((votesModelItem.id.toString()))
-                votesViewModel.saveDataVotes(it)
-            }
-            val arrayAdapter = ArrayAdapter<String>(
-                context!!,
-                android.R.layout.simple_spinner_dropdown_item,
-                dataListVotes
-            )
-            autoSearchVotes.setAdapter(arrayAdapter)
-        })
+//        votesViewModel.votes.observe(this, {
+//            dataListVotes.clear()
+//            it.forEach { votesModelItem ->
+//                dataListVotes.add((votesModelItem.id.toString()))
+//                votesViewModel.saveDataVotes(it)
+//            }
+//            val arrayAdapter = ArrayAdapter<String>(
+//                context!!,
+//                android.R.layout.simple_spinner_dropdown_item,
+//                dataListVotes
+//            )
+//            autoSearchVotes.setAdapter(arrayAdapter)
+//        })
     }
 
-    private fun detailsVotes(index: Int) {
+    private fun detailsVotes(id: Int) {
         val detailsVotesFragment = DetailsVotesFragment()
         val bundle = Bundle()
-        val votesModelItem = votesViewModel.votes.value?.get(index)
+        val votesModelItem = votesViewModel.votes.value?.find { it.id == id }
         bundle.putSerializable("detailsVotes", votesModelItem)
         detailsVotesFragment.arguments = bundle
         addFragment(detailsVotesFragment, R.id.flContentScreens)
     }
 
     private fun setUpRecyclerViewListVotes(votesModel: VotesModel) {
-        listVotesAdapter = ListVotesAdapter(votesModel, {
-            detailsVotes(it)
+        this.votesModel = votesModel
+        listVotesAdapter = ListVotesAdapter(this.votesModel, { index, idVotes ->
+            detailsVotes(idVotes)
+            hideKeyboard()
         },
-            { i: Int, s: Int -> openDialogDelete(s) })
+            { index: Int, s: Int -> openDialogDelete(s) })
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rcvListMyVotes.setHasFixedSize(true)
         rcvListMyVotes.layoutManager = linearLayoutManager
@@ -107,7 +112,6 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
         }
 
         dialog.linearNo.setOnClickListener {
-            Toast.makeText(context, "No", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
         dialog.show()
@@ -130,9 +134,53 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    private fun searchVotes() {
+        autoSearchVotes.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString().isNotEmpty()) {
+                    filterVotes(s.toString().toInt())
+                    clearText()
+                }
+            }
+
+        })
+    }
+
+    private fun filterVotes(keyWord: Int) {
+        val searchVotes: ArrayList<VotesModelItem> = ArrayList()
+        for (votesModelItem in votesModel) {
+            if (votesModelItem.id.toString().contains(keyWord.toString())) {
+                searchVotes.add(votesModelItem)
+            }
+        }
+        listVotesAdapter.filterVotes(searchVotes)
+    }
+
+    private fun clearText() {
+        if (autoSearchVotes.text.toString().isNotEmpty()) {
+            imgClearText.visibility = View.VISIBLE
+            imgClearText.setOnClickListener {
+                autoSearchVotes.setText("")
+                setUpViewModel()
+                imgClearText.visibility = View.INVISIBLE
+            }
+        } else {
+            imgClearText.visibility = View.INVISIBLE
+        }
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.linearCreateMyVotes -> openCreateVotesScreen()
+//            R.id.imgSearchVotes -> searchVotes(autoSearchVotes.text.toString().toInt())
         }
     }
 }

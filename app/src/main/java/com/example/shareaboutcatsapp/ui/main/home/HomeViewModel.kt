@@ -7,6 +7,7 @@ import com.example.shareaboutcatsapp.data.local.room.db.MyRoomDB
 import com.example.shareaboutcatsapp.data.local.room.db.breeds.RoomBreeds
 import com.example.shareaboutcatsapp.data.local.room.db.categories.RoomCategories
 import com.example.shareaboutcatsapp.data.local.room.db.favourites.RoomFavourites
+import com.example.shareaboutcatsapp.data.local.room.db.image.RoomImage
 import com.example.shareaboutcatsapp.data.local.room.db.votes.RoomVotes
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModel
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModelItem
@@ -14,6 +15,8 @@ import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModelItem
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
+import com.example.shareaboutcatsapp.data.model.image.ImageModel
+import com.example.shareaboutcatsapp.data.model.image.ImageModelItem
 import com.example.shareaboutcatsapp.data.model.votes.VotesModel
 import com.example.shareaboutcatsapp.data.model.votes.VotesModelItem
 import com.example.shareaboutcatsapp.data.repository.BreedsRepo
@@ -30,6 +33,7 @@ class HomeViewModel(
     var categories: MutableLiveData<CategoriesModel> = MutableLiveData()
     var favourites: MutableLiveData<FavouritesModel> = MutableLiveData()
     var breeds: MutableLiveData<BreedsModel> = MutableLiveData()
+    var image: MutableLiveData<ImageModel> = MutableLiveData()
 
     fun getCategories(xApiKey: String) {
         viewModelScope.launch {
@@ -54,6 +58,15 @@ class HomeViewModel(
             val response = breedsRepo.getAllBreeds(xApiKey)
             if (response.isSuccessful && response.body() != null) {
                 breeds.value = response.body()
+            }
+        }
+    }
+
+    fun getImage(xApiKey: String, categoryID: Int, limit: Int, page: Int) {
+        viewModelScope.launch {
+            val response = categoriesRepo.getAllImage(xApiKey, categoryID, limit, page)
+            if (response.isSuccessful && response.body() != null) {
+                image.value = response.body()
             }
         }
     }
@@ -124,6 +137,37 @@ class HomeViewModel(
                 )
             }
             favourites.value = favouritesModel
+        }
+    }
+
+    fun saveDetailsCategories(listImage: ImageModel) {
+        viewModelScope.launch {
+            val listImageAdd: ArrayList<RoomImage> = ArrayList()
+            listImage.forEach {
+                listImageAdd.add(
+                    RoomImage(
+                        it.categoriesModelItem,
+                        it.url
+                    )
+                )
+            }
+            myRoomDB.getDAOBreeds.insertListImage(listImageAdd)
+        }
+    }
+
+    fun getDataDetailsCategories() {
+        viewModelScope.launch {
+            val listImageLocal = myRoomDB.getDAOBreeds.getImageCategories()
+            val imageModel = ImageModel()
+            listImageLocal.forEach {
+                imageModel.add(
+                    ImageModelItem(
+                        (it.categoriesModelItem ?: "") as ArrayList<CategoriesModelItem>,
+                        it.urlImage ?: ""
+                    )
+                )
+            }
+            image.value = imageModel
         }
     }
 

@@ -116,4 +116,9 @@ dependencies {
 
     //toast
     implementation 'com.github.GrenderG:Toasty:1.5.0'
+
+    //paging
+    implementation "androidx.paging:paging-runtime-ktx:2.1.2"
+
+    testImplementation "androidx.paging:paging-common-ktx:2.1.2"
 }
