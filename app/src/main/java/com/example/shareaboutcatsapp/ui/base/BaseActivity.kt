@@ -4,12 +4,15 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.local.room.db.MyRoomDB
+import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
+import kotlinx.android.synthetic.main.fragment_home.*
 
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var myRoomDB: MyRoomDB
@@ -59,6 +62,14 @@ abstract class BaseActivity : AppCompatActivity() {
             this.currentFocus!!.windowToken,
             InputMethodManager.HIDE_NOT_ALWAYS
         )
+    }
+
+    fun showProgressBar() {
+        progress_bar.visibility = View.VISIBLE
+    }
+
+    fun hideProgressBar() {
+        progress_bar.visibility = View.INVISIBLE
     }
 
     fun initMyRoomDB(): MyRoomDB {

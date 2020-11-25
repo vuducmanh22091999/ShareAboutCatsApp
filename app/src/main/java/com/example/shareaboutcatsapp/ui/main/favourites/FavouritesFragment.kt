@@ -30,6 +30,8 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
     lateinit var dialog: Dialog
     var favouritesModel = FavouritesModel()
     var indexDel = 0
+    var limit = 10
+    var page = 1
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_favourites
@@ -52,7 +54,7 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun callApi() {
-        favouritesViewModel.getFavourites(getString(R.string.x_api_key))
+        favouritesViewModel.getFavourites(getString(R.string.x_api_key), limit, page)
     }
 
     private fun setUpViewModel() {
@@ -79,8 +81,12 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
     private fun setUpRecyclerView(favouritesModel: FavouritesModel) {
         this.favouritesModel = favouritesModel
         listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, { index, favouritesID ->
-            detailsFavourites(favouritesID)
-            hideKeyboard()
+            if (autoSearchFavourites.text.toString().isNotEmpty()) {
+                hideKeyboard()
+                detailsFavourites(favouritesID)
+            } else {
+                detailsFavourites(favouritesID)
+            }
         },
             { index, favouritesID ->
                 indexDel = index

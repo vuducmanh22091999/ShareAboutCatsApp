@@ -23,6 +23,7 @@ import com.example.shareaboutcatsapp.data.repository.BreedsRepo
 import com.example.shareaboutcatsapp.data.repository.CategoriesRepo
 import com.example.shareaboutcatsapp.data.repository.FavouritesRepo
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 class HomeViewModel(
     private val categoriesRepo: CategoriesRepo,
@@ -44,9 +45,9 @@ class HomeViewModel(
         }
     }
 
-    fun getFavourites(xApiKey: String) {
+    fun getFavourites(xApiKey: String, limit: Int, page: Int) {
         viewModelScope.launch {
-            val response = favouritesRepo.getAllFavourites(xApiKey)
+            val response = favouritesRepo.getAllFavourites(xApiKey, limit, page)
             if (response.isSuccessful && response.body() != null) {
                 favourites.value = response.body()
             }
@@ -66,7 +67,7 @@ class HomeViewModel(
         viewModelScope.launch {
             val response = categoriesRepo.getAllImage(xApiKey, categoryID, limit, page)
             if (response.isSuccessful && response.body() != null) {
-                image.value = response.body()
+                image.value?.addAll(response.body()!!)
             }
         }
     }
@@ -160,12 +161,16 @@ class HomeViewModel(
             val listImageLocal = myRoomDB.getDAOBreeds.getImageCategories()
             val imageModel = ImageModel()
             listImageLocal.forEach {
-                imageModel.add(
+                it.categoriesModelItem?.let { it1 ->
                     ImageModelItem(
-                        (it.categoriesModelItem ?: "") as ArrayList<CategoriesModelItem>,
+                        it1,
                         it.urlImage ?: ""
                     )
-                )
+                }?.let { it2 ->
+                    imageModel.add(
+                        it2
+                    )
+                }
             }
             image.value = imageModel
         }

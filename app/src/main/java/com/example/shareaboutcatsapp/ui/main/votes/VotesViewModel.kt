@@ -17,9 +17,9 @@ class VotesViewModel(private val votesRepo: VotesRepo, private val myRoomDB: MyR
     var notification: String = ""
     var createVotes: MutableLiveData<CreateVotes> = MutableLiveData()
 
-    fun getVotes(xApiKey: String) {
+    fun getVotes(xApiKey: String, limit: Int, page: Int) {
         viewModelScope.launch {
-            val response = votesRepo.getYourVotes(xApiKey)
+            val response = votesRepo.getYourVotes(xApiKey,limit, page)
             if (response.isSuccessful && response.body() != null) {
                 votes.value = response.body()
             }

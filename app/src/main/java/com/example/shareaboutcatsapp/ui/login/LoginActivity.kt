@@ -1,6 +1,5 @@
 package com.example.shareaboutcatsapp.ui.login
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -21,6 +20,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.fragment_details_categories.*
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
     private val RC_SIGN_IN = 1
@@ -56,11 +56,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 override fun onCancel() {
-                    TODO("Not yet implemented")
                 }
 
                 override fun onError(error: FacebookException?) {
-                    TODO("Not yet implemented")
                 }
 
             })

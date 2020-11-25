@@ -18,9 +18,9 @@ class FavouritesViewModel(
     var favourites: MutableLiveData<FavouritesModel> = MutableLiveData()
     var notification: String = ""
 
-    fun getFavourites(xApiKey: String) {
+    fun getFavourites(xApiKey: String, limit: Int, page: Int) {
         viewModelScope.launch {
-            val response = favouritesRepo.getAllFavourites(xApiKey)
+            val response = favouritesRepo.getAllFavourites(xApiKey, limit, page)
             if (response.isSuccessful && response.body() != null) {
                 favourites.value = response.body()
             }

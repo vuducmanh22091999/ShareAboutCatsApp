@@ -15,13 +15,21 @@ interface ShareAboutCatsAppServices {
     suspend fun getCategories(@Header("x-api-key") xApiKey: String): Response<CategoriesModel>
 
     @GET("favourites")
-    suspend fun getFavourites(@Header("x-api-key") xApiKey: String): Response<FavouritesModel>
+    suspend fun getFavourites(
+        @Header("x-api-key") xApiKey: String,
+        @Query("limit") limit: Int,
+        @Query("page") page: Int
+    ): Response<FavouritesModel>
 
     @GET("breeds")
     suspend fun getBreeds(@Header("x-api-key") xApiKey: String): Response<BreedsModel>
 
     @GET("votes")
-    suspend fun getVotes(@Header("x-api-key") xApiKey: String): Response<VotesModel>
+    suspend fun getVotes(
+        @Header("x-api-key") xApiKey: String,
+        @Query("limit") limit: Int,
+        @Query("page") page: Int
+    ): Response<VotesModel>
 
     @GET("search")
     suspend fun getBreedsByName(

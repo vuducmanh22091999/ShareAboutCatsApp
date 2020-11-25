@@ -4,6 +4,7 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
+import com.example.shareaboutcatsapp.data.model.image.ImageModelItem
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_full_image.*
@@ -16,7 +17,8 @@ class FullImageFragment : BaseFragment(), View.OnClickListener {
     override fun doViewCreated() {
         initListener()
         hideBottomNavigation()
-        showImage()
+//        showImage()
+        showFullImage()
     }
 
     private fun initListener() {
@@ -27,7 +29,14 @@ class FullImageFragment : BaseFragment(), View.OnClickListener {
         val bundle = arguments
         val favouritesModelItem = bundle?.getSerializable("fullSizeImage") as FavouritesModelItem
         val imageFavourites = favouritesModelItem.image.url
-        Glide.with(context!!).load(imageFavourites).into(imgFullSize)
+        context?.let { Glide.with(it).load(imageFavourites).into(imgFullSize) }
+    }
+
+    private fun showFullImage() {
+        val bundle = arguments
+        val imageModelItem = bundle?.getSerializable("fullImage") as ImageModelItem
+        val imageCategories = imageModelItem.url
+        context?.let { Glide.with(it).load(imageCategories).into(imgFullSize) }
     }
 
     private fun hideBottomNavigation() {

@@ -28,6 +28,8 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
     private var dataListVotes: ArrayList<String> = ArrayList()
     lateinit var dialog: Dialog
     var votesModel = VotesModel()
+    var limit = 10
+    var page = 1
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_votes
@@ -54,7 +56,7 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun callApi() {
-        votesViewModel.getVotes(getString(R.string.x_api_key))
+        votesViewModel.getVotes(getString(R.string.x_api_key), limit, page)
     }
 
     private fun setUpViewModel() {
@@ -90,8 +92,13 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
     private fun setUpRecyclerViewListVotes(votesModel: VotesModel) {
         this.votesModel = votesModel
         listVotesAdapter = ListVotesAdapter(this.votesModel, { index, idVotes ->
-            detailsVotes(idVotes)
-            hideKeyboard()
+            if (autoSearchVotes.text.toString().isNotEmpty()) {
+                hideKeyboard()
+                detailsVotes(idVotes)
+            } else {
+                detailsVotes(idVotes)
+            }
+
         },
             { index: Int, s: Int -> openDialogDelete(s) })
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -171,6 +178,7 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
                 autoSearchVotes.setText("")
                 setUpViewModel()
                 imgClearText.visibility = View.INVISIBLE
+                hideKeyboard()
             }
         } else {
             imgClearText.visibility = View.INVISIBLE

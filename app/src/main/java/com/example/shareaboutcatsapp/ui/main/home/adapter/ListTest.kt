@@ -4,20 +4,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModelItem
 import com.example.shareaboutcatsapp.data.model.image.ImageModelItem
 import kotlinx.android.synthetic.main.item_categories.view.*
+import kotlinx.android.synthetic.main.item_favourites.view.*
 
-class ListCategoriesAdapter(
-    private val listCategoriesModelItem: List<CategoriesModelItem>,
+class ListTest(
+    private val listImageModelItem: List<ImageModelItem>,
     val onClick: (Int) -> Unit
-) :
-    RecyclerView.Adapter<ListCategoriesAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ListTest.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindDataViewHolder(categoriesModelItem: CategoriesModelItem) {
-            itemView.itemCategories.text = categoriesModelItem.name
+        fun bindDataViewHolder(imageModelItem: ImageModelItem) {
+            itemView.itemSubIDFavourites.text = imageModelItem.categoriesModelItem.forEach {
+                it.name
+            }.toString()
 
+            Glide.with(itemView.context).load(imageModelItem.url).into(itemView.itemImageFavourites)
             itemView.setOnClickListener {
                 onClick(adapterPosition)
             }
@@ -26,13 +30,14 @@ class ListCategoriesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.item_categories, parent, false)
+        val view = layoutInflater.inflate(R.layout.item_favourites, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindDataViewHolder(listCategoriesModelItem[position])
+        holder.bindDataViewHolder(listImageModelItem[position])
     }
 
-    override fun getItemCount(): Int = listCategoriesModelItem.size
+    override fun getItemCount(): Int = listImageModelItem.size
+
 }

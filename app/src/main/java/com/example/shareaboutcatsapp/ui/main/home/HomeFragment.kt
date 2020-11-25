@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.local.room.db.categories.RoomCategories
 import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
@@ -19,9 +20,15 @@ import com.example.shareaboutcatsapp.ui.main.chat.ListChatFragment
 import com.example.shareaboutcatsapp.ui.main.details_categories.DetailsCategoriesFragment
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListCategoriesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListFavouritesAdapter
+import com.example.shareaboutcatsapp.ui.main.home.adapter.ListTest
 import com.example.shareaboutcatsapp.ui.main.home.full_image.FullImageFragment
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import es.dmoral.toasty.Toasty
+import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.tvUserName
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment(), View.OnClickListener {
@@ -29,7 +36,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     private val homeViewModel: HomeViewModel by viewModel()
     private lateinit var listCategoriesAdapter: ListCategoriesAdapter
     private lateinit var listFavouritesAdapter: ListFavouritesAdapter
+    private lateinit var listTest: ListTest
     private var dataListBreeds: ArrayList<String> = ArrayList()
+    var limit = 10
+    var page = 1
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_home
@@ -42,7 +52,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         showLoading()
         showBottomNavigation()
         initListener()
-        setName()
+        setInfo()
         setUpViewModel()
     }
 
@@ -63,19 +73,19 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 
     private fun callApi() {
         homeViewModel.getCategories(getString(R.string.x_api_key))
-        homeViewModel.getFavourites(getString(R.string.x_api_key))
+        homeViewModel.getFavourites(getString(R.string.x_api_key), limit, page)
         homeViewModel.getBreeds(getString(R.string.x_api_key))
     }
 
 
     private fun setUpViewModel() {
-//        homeViewModel.image.observe(this, {
-//            homeViewModel.saveDetailsCategories(it)
-//        })
-
         homeViewModel.categories.observe(this, {
             homeViewModel.saveDataCategories(it)
             setUpRecyclerViewListCategories(it)
+        })
+
+        homeViewModel.image.observe(this, {
+
         })
 
         homeViewModel.favourites.observe(this, {
@@ -191,8 +201,30 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         addFragment(fullImageFragment, R.id.flContentScreens)
     }
 
-    private fun setName() {
+    private fun setInfo() {
         tvUserName.text = appPreferences.getLoginUserName()
+        if (getIDUserFacebook().isNotEmpty()) {
+            context?.let { Glide.with(it).load(urlAvatar()).into(imgChat) }
+        } else {
+            context?.let { Glide.with(it).load(appPreferences.getLoginAvatar()).into(imgChat) }
+        }
+    }
+
+    private fun getIDUserFacebook(): String {
+        var facebookUserId = ""
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            for (profile in user.providerData) {
+                if (FacebookAuthProvider.PROVIDER_ID == profile.providerId) {
+                    facebookUserId = profile.uid
+                }
+            }
+        }
+        return facebookUserId
+    }
+
+    private fun urlAvatar(): String {
+        return "https://graph.facebook.com/${getIDUserFacebook()}/picture?type=large"
     }
 
     private fun openListChat() {

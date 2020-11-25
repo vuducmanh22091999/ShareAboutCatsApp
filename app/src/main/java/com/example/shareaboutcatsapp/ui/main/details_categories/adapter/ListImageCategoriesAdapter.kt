@@ -9,11 +9,16 @@ import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.image.ImageModelItem
 import kotlinx.android.synthetic.main.item_image.view.*
 
-class ListImageCategoriesAdapter(private val listImage: List<ImageModelItem>) :
+class ListImageCategoriesAdapter(
+    private val listImage: List<ImageModelItem>, private val onClick: (Int) -> Unit) :
     RecyclerView.Adapter<ListImageCategoriesAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun dataBindViewHolder(imageModelItem: ImageModelItem) {
             Glide.with(itemView.context).load(imageModelItem.url).into(itemView.itemImage)
+
+            itemView.itemImage.setOnClickListener {
+                onClick(adapterPosition)
+            }
         }
     }
 
