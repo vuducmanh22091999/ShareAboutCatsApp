@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -29,6 +30,9 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.tvUserName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment(), View.OnClickListener {
@@ -57,7 +61,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initListener() {
-        imgChat.setOnClickListener(this)
         imgSearchBreeds.setOnClickListener(this)
     }
 
@@ -79,53 +82,61 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 
 
     private fun setUpViewModel() {
-        homeViewModel.categories.observe(this, {
-            homeViewModel.saveDataCategories(it)
-            setUpRecyclerViewListCategories(it)
-        })
+        CoroutineScope(Dispatchers.Main).launch {
+            homeViewModel.categories.observe(this@HomeFragment, {
+                homeViewModel.saveDataCategories(it)
+                setUpRecyclerViewListCategories(it)
+            })
+        }
 
-        homeViewModel.image.observe(this, {
 
-        })
+//        homeViewModel.image.observe(this, {
+//
+//        })
+        CoroutineScope(Dispatchers.Main).launch {
+            homeViewModel.favourites.observe(this@HomeFragment, {
+                homeViewModel.saveDataFavourites(it)
+                setUpRecyclerViewListFavourites(it)
+                hideLoading()
+            })
+        }
 
-        homeViewModel.favourites.observe(this, {
-            homeViewModel.saveDataFavourites(it)
-            setUpRecyclerViewListFavourites(it)
-            hideLoading()
-        })
-
-        homeViewModel.breeds.observe(this, {
-            dataListBreeds.clear()
-            it.forEach { breedsModelItem ->
-                dataListBreeds.add(breedsModelItem.name)
-                homeViewModel.saveDataBreeds(it)
-            }
-            val arrayAdapter = ArrayAdapter<String>(
-                context!!,
-                android.R.layout.simple_spinner_dropdown_item,
-                dataListBreeds
-            )
-            autoSearchBreeds.setAdapter(arrayAdapter)
-        })
+        CoroutineScope(Dispatchers.Main).launch {
+            homeViewModel.breeds.observe(this@HomeFragment, {
+                dataListBreeds.clear()
+                it.forEach { breedsModelItem ->
+                    dataListBreeds.add(breedsModelItem.name)
+                    homeViewModel.saveDataBreeds(it)
+                }
+                val arrayAdapter = ArrayAdapter<String>(
+                    context!!,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    dataListBreeds
+                )
+                autoSearchBreeds.setAdapter(arrayAdapter)
+            })
+        }
     }
 
     private fun detailsBreedsIndex(index: Int) {
         homeViewModel.getBreeds(getString(R.string.x_api_key))
-        homeViewModel.breeds.observe(this, {
-            dataListBreeds.clear()
-            it.forEach { breedsModelItem ->
-                dataListBreeds.add(breedsModelItem.name)
-            }
+        CoroutineScope(Dispatchers.Main).launch {
+            homeViewModel.breeds.observe(this@HomeFragment, {
+                dataListBreeds.clear()
+                it.forEach { breedsModelItem ->
+                    dataListBreeds.add(breedsModelItem.name)
+                }
 //            autoSearchBreeds.setOnItemClickListener { parent, view, position, id ->
 //                index = position
 //            }
-            val arrayAdapter = ArrayAdapter<String>(
-                context!!,
-                android.R.layout.simple_spinner_dropdown_item,
-                dataListBreeds
-            )
-            autoSearchBreeds.setAdapter(arrayAdapter)
-        })
+                val arrayAdapter = ArrayAdapter<String>(
+                    context!!,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    dataListBreeds
+                )
+                autoSearchBreeds.setAdapter(arrayAdapter)
+            })
+        }
 
         val detailsBreedsFragment = DetailsBreedsFragment()
         val bundle = Bundle()
@@ -158,9 +169,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
             }
+            hideKeyboard()
             bundle.putSerializable("detailsBreeds", breedsModelItem)
             detailsBreedsFragment.arguments = bundle
-            replaceFragment(detailsBreedsFragment, R.id.flContentScreens)
+            addFragment(detailsBreedsFragment, R.id.flContentScreens)
         }
     }
 
@@ -196,7 +208,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         val fullImageFragment = FullImageFragment()
         val bundle = Bundle()
         val favouritesModelItem = homeViewModel.favourites.value?.get(index)
-        bundle.putSerializable("fullSizeImage", favouritesModelItem)
+//        bundle.putSerializable("fullSizeImage", favouritesModelItem)
+        bundle.putString("from", favouritesModelItem?.image?.url)
         fullImageFragment.arguments = bundle
         addFragment(fullImageFragment, R.id.flContentScreens)
     }
@@ -247,7 +260,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.imgChat -> openListChat()
 //            R.id.imgSearchBreeds -> index?.let { openDetailsBreedsIndex(it) }
             R.id.imgSearchBreeds -> openDetailsBreeds()
         }

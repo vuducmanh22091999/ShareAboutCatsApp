@@ -14,7 +14,9 @@ class ListImageCategoriesAdapter(
     RecyclerView.Adapter<ListImageCategoriesAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun dataBindViewHolder(imageModelItem: ImageModelItem) {
-            Glide.with(itemView.context).load(imageModelItem.url).into(itemView.itemImage)
+
+
+            Glide.with(itemView.context).load(imageModelItem.url).placeholder(R.drawable.ic_account).into(itemView.itemImage)
 
             itemView.itemImage.setOnClickListener {
                 onClick(adapterPosition)

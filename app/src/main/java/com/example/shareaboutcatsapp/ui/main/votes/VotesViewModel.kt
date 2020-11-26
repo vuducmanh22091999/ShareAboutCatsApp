@@ -9,6 +9,7 @@ import com.example.shareaboutcatsapp.data.model.votes.CreateVotes
 import com.example.shareaboutcatsapp.data.model.votes.VotesModel
 import com.example.shareaboutcatsapp.data.model.votes.VotesModelItem
 import com.example.shareaboutcatsapp.data.repository.VotesRepo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class VotesViewModel(private val votesRepo: VotesRepo, private val myRoomDB: MyRoomDB) :

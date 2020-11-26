@@ -20,15 +20,18 @@ import com.example.shareaboutcatsapp.ui.main.votes.details.DetailsVotesFragment
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.dialog_delete.*
 import kotlinx.android.synthetic.main.fragment_votes.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class VotesFragment : BaseFragment(), View.OnClickListener {
+class VotesFragment : BaseFragment() {
     private val votesViewModel: VotesViewModel by viewModel()
     private lateinit var listVotesAdapter: ListVotesAdapter
     private var dataListVotes: ArrayList<String> = ArrayList()
     lateinit var dialog: Dialog
     var votesModel = VotesModel()
-    var limit = 10
+    var limit = 20
     var page = 1
 
     override fun getLayoutID(): Int {
@@ -38,13 +41,8 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
     override fun doViewCreated() {
         checkWifi()
         showBottomNavigation()
-        initListener()
         setUpViewModel()
         searchVotes()
-    }
-
-    private fun initListener() {
-        linearCreateMyVotes.setOnClickListener(this)
     }
 
     private fun checkWifi() {
@@ -60,12 +58,15 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setUpViewModel() {
-        votesViewModel.votes.observe(this, {
-            votesViewModel.saveDataVotes(it)
-            setUpRecyclerViewListVotes(it)
-        })
+        CoroutineScope(Dispatchers.Main).launch {
+            votesViewModel.votes.observe(this@VotesFragment, {
+                votesViewModel.saveDataVotes(it)
+                setUpRecyclerViewListVotes(it)
+            })
+        }
 
-//        votesViewModel.votes.observe(this, {
+
+//        votesViewModel.votes.observe(this@VotesFragment, {
 //            dataListVotes.clear()
 //            it.forEach { votesModelItem ->
 //                dataListVotes.add((votesModelItem.id.toString()))
@@ -182,13 +183,6 @@ class VotesFragment : BaseFragment(), View.OnClickListener {
             }
         } else {
             imgClearText.visibility = View.INVISIBLE
-        }
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.linearCreateMyVotes -> openCreateVotesScreen()
-//            R.id.imgSearchVotes -> searchVotes(autoSearchVotes.text.toString().toInt())
         }
     }
 }

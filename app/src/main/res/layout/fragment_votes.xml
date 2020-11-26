@@ -34,97 +34,124 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvMyVotes" />
 
-    <!--    <AutoCompleteTextView -->
-    <!--        android:id="@+id/autoSearchVotes"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="16dp"-->
-    <!--        android:layout_marginTop="32dp"-->
-    <!--        android:layout_marginEnd="16dp"-->
-    <!--        android:background="@drawable/border_auto_search"-->
-    <!--        android:hint="@string/search_your_votes"-->
-    <!--        android:padding="16dp"-->
-    <!--        android:completionThreshold="1"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/tvMyVotes" />-->
-
     <ImageView
         android:id="@+id/imgClearText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:padding="8dp"
-        android:visibility="invisible"
         android:src="@drawable/ic_cancel"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/autoSearchVotes"
         app:layout_constraintEnd_toEndOf="@id/autoSearchVotes"
-        app:layout_constraintTop_toTopOf="@id/autoSearchVotes"/>
+        app:layout_constraintTop_toTopOf="@id/autoSearchVotes" />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/imgSearchVotes"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="8dp"-->
-<!--        android:padding="8dp"-->
-<!--        android:src="@drawable/ic_search"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/autoSearchVotes"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/autoSearchVotes"-->
-<!--        app:layout_constraintTop_toTopOf="@id/autoSearchVotes" />-->
-
-    <!--    <com.cooltechworks.views.shimmer.ShimmerRecyclerView-->
-    <!--        android:id="@+id/rcvListMyVotes"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginStart="16dp"-->
-    <!--        android:layout_marginTop="32dp"-->
-    <!--        android:layout_marginEnd="16dp"-->
-    <!--        android:layout_marginBottom="16dp"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/linearCreateMyVotes"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/autoSearchVotes"/>-->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvListMyVotes"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/linearCreateMyVotes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/autoSearchVotes" />
-
-    <LinearLayout
-        android:id="@+id/linearCreateMyVotes"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/border_button_log_out"
-        android:gravity="center"
-        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autoSearchVotes">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/create_my_votes"
-            android:textColor="@android:color/white"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:src="@drawable/ic_create" />
 
-    </LinearLayout>
+            <!--    <AutoCompleteTextView -->
+            <!--        android:id="@+id/autoSearchVotes"-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:layout_marginStart="16dp"-->
+            <!--        android:layout_marginTop="32dp"-->
+            <!--        android:layout_marginEnd="16dp"-->
+            <!--        android:background="@drawable/border_auto_search"-->
+            <!--        android:hint="@string/search_your_votes"-->
+            <!--        android:padding="16dp"-->
+            <!--        android:completionThreshold="1"-->
+            <!--        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--        app:layout_constraintStart_toStartOf="parent"-->
+            <!--        app:layout_constraintTop_toBottomOf="@id/tvMyVotes" />-->
+
+            <!--    <ImageView-->
+            <!--        android:id="@+id/imgSearchVotes"-->
+            <!--        android:layout_width="wrap_content"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:layout_marginEnd="8dp"-->
+            <!--        android:padding="8dp"-->
+            <!--        android:src="@drawable/ic_search"-->
+            <!--        app:layout_constraintBottom_toBottomOf="@id/autoSearchVotes"-->
+            <!--        app:layout_constraintEnd_toEndOf="@id/autoSearchVotes"-->
+            <!--        app:layout_constraintTop_toTopOf="@id/autoSearchVotes" />-->
+
+            <!--    <com.cooltechworks.views.shimmer.ShimmerRecyclerView-->
+            <!--        android:id="@+id/rcvListMyVotes"-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="0dp"-->
+            <!--        android:layout_marginStart="16dp"-->
+            <!--        android:layout_marginTop="32dp"-->
+            <!--        android:layout_marginEnd="16dp"-->
+            <!--        android:layout_marginBottom="16dp"-->
+            <!--        app:layout_constraintBottom_toTopOf="@id/linearCreateMyVotes"-->
+            <!--        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--        app:layout_constraintStart_toStartOf="parent"-->
+            <!--        app:layout_constraintTop_toBottomOf="@id/autoSearchVotes"/>-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvListMyVotes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBarVotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rcvListMyVotes" />
+
+            <!--    <LinearLayout-->
+            <!--        android:id="@+id/linearCreateMyVotes"-->
+            <!--        android:layout_width="wrap_content"-->
+            <!--        android:layout_height="0dp"-->
+            <!--        android:layout_marginBottom="32dp"-->
+            <!--        android:background="@drawable/border_button_log_out"-->
+            <!--        android:gravity="center"-->
+            <!--        android:orientation="horizontal"-->
+            <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--        app:layout_constraintStart_toStartOf="parent">-->
+
+            <!--        <TextView-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:padding="16dp"-->
+            <!--            android:text="@string/create_my_votes"-->
+            <!--            android:textColor="@android:color/white"-->
+            <!--            android:textSize="30sp"-->
+            <!--            android:textStyle="bold" />-->
+
+            <!--        <ImageView-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:padding="16dp"-->
+            <!--            android:src="@drawable/ic_create" />-->
+
+            <!--    </LinearLayout>-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,7 @@ import com.example.shareaboutcatsapp.data.model.votes.VotesModelItem
 import com.example.shareaboutcatsapp.data.repository.BreedsRepo
 import com.example.shareaboutcatsapp.data.repository.CategoriesRepo
 import com.example.shareaboutcatsapp.data.repository.FavouritesRepo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
@@ -67,7 +68,7 @@ class HomeViewModel(
         viewModelScope.launch {
             val response = categoriesRepo.getAllImage(xApiKey, categoryID, limit, page)
             if (response.isSuccessful && response.body() != null) {
-                image.value?.addAll(response.body()!!)
+                image.value = response.body()
             }
         }
     }

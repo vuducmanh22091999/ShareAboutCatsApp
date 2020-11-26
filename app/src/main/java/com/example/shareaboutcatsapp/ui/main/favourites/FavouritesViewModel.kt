@@ -9,6 +9,7 @@ import com.example.shareaboutcatsapp.data.local.room.db.favourites.RoomFavourite
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
 import com.example.shareaboutcatsapp.data.repository.FavouritesRepo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FavouritesViewModel(

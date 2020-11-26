@@ -8,10 +8,10 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single { CategoriesRepo(get()) }
-    single { FavouritesRepo(get()) }
-    single { BreedsRepo(get()) }
-    single { VotesRepo(get()) }
+    factory { CategoriesRepo(get()) }
+    factory { FavouritesRepo(get()) }
+    factory { BreedsRepo(get()) }
+    factory { VotesRepo(get()) }
     single { provideAppDatabase(androidApplication() as MyApplication) }
 
 }

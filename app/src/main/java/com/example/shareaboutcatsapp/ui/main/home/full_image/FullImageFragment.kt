@@ -17,8 +17,7 @@ class FullImageFragment : BaseFragment(), View.OnClickListener {
     override fun doViewCreated() {
         initListener()
         hideBottomNavigation()
-//        showImage()
-        showFullImage()
+        showImage()
     }
 
     private fun initListener() {
@@ -27,16 +26,24 @@ class FullImageFragment : BaseFragment(), View.OnClickListener {
 
     private fun showImage() {
         val bundle = arguments
-        val favouritesModelItem = bundle?.getSerializable("fullSizeImage") as FavouritesModelItem
-        val imageFavourites = favouritesModelItem.image.url
-        context?.let { Glide.with(it).load(imageFavourites).into(imgFullSize) }
+        val from = bundle?.getString("from")
+//        if (from == "home") {
+//            val favouritesModelItem = bundle?.getSerializable("fullSizeImage") as FavouritesModelItem
+//            val imageFavourites = favouritesModelItem.image.url
+//            context?.let { Glide.with(it).load(imageFavourites).into(imgFullSize) }
+//        } else {
+//            val imageModelItem = bundle?.getSerializable("fullImage") as ImageModelItem
+//            val imageCategories = imageModelItem.url
+//            context?.let { Glide.with(it).load(imageCategories).into(imgFullSize) }
+//        }
+        context?.let { Glide.with(it).load(from).into(imgFullSize) }
+
+
     }
 
     private fun showFullImage() {
         val bundle = arguments
-        val imageModelItem = bundle?.getSerializable("fullImage") as ImageModelItem
-        val imageCategories = imageModelItem.url
-        context?.let { Glide.with(it).load(imageCategories).into(imgFullSize) }
+
     }
 
     private fun hideBottomNavigation() {

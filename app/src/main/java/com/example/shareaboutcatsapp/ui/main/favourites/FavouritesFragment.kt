@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shareaboutcatsapp.R
@@ -18,12 +19,13 @@ import com.example.shareaboutcatsapp.ui.main.favourites.adapter.ListFavouritesAd
 import com.example.shareaboutcatsapp.ui.main.favourites.details.DetailsFavouritesFragment
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_delete.*
+import kotlinx.android.synthetic.main.fragment_details_categories.*
 import kotlinx.android.synthetic.main.fragment_favourites.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class FavouritesFragment : BaseFragment(), View.OnClickListener {
+class FavouritesFragment : BaseFragment() {
     private val favouritesViewModel: FavouritesViewModel by viewModel()
     private lateinit var listFavouritesAdapter: ListFavouritesAdapter
     private var dataListFavourites: ArrayList<String> = ArrayList()
@@ -40,14 +42,26 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
     override fun doViewCreated() {
         checkWifi()
         showBottomNavigation()
-        initListener()
         setUpViewModel()
         searchFavourites()
+    }
+
+    // nhớ kiểm tra có wifi mới cho loadmore không thì gọi data local
+    private fun loadMore() {
+        nestedScrollViewFavourites.setOnScrollChangeListener { nestedScrollView: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (scrollY == nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight) {
+                page++
+                progressBarFavourites.visibility = View.VISIBLE
+                callApi()
+            }
+
+        }
     }
 
     private fun checkWifi() {
         if ((activity as MainActivity).checkWifi() == true) {
             callApi()
+            loadMore()
         } else {
             favouritesViewModel.getDataFavourites()
         }
@@ -79,7 +93,11 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setUpRecyclerView(favouritesModel: FavouritesModel) {
-        this.favouritesModel = favouritesModel
+        if (page == 1) {
+            this.favouritesModel = favouritesModel
+        } else {
+            this.favouritesModel.addAll(favouritesModel)
+        }
         listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, { index, favouritesID ->
             if (autoSearchFavourites.text.toString().isNotEmpty()) {
                 hideKeyboard()
@@ -134,9 +152,6 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
         dialog.show()
     }
 
-    private fun initListener() {
-//        imgSearchFavourites.setOnClickListener(this)
-    }
 
     private fun showBottomNavigation() {
         if (activity is MainActivity) {
@@ -184,12 +199,6 @@ class FavouritesFragment : BaseFragment(), View.OnClickListener {
             }
         } else {
             imgClearTextSearchFavourites.visibility = View.INVISIBLE
-        }
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-//            R.id.imgSearchFavourites -> searchFavourites(autoSearchFavourites.text.toString())
         }
     }
 }
