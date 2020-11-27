@@ -15,7 +15,7 @@ class ListFavouritesAdapter(
 ) : RecyclerView.Adapter<ListFavouritesAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindDataViewHolder(favouritesModelItem: FavouritesModelItem) {
-            Glide.with(itemView.context).load(favouritesModelItem.image.url)
+            Glide.with(itemView.context).load(favouritesModelItem.image.url).placeholder(R.drawable.img_placeholder)
                 .into(itemView.itemImageFavourites)
             itemView.itemSubIDFavourites.text = favouritesModelItem.sub_id
 

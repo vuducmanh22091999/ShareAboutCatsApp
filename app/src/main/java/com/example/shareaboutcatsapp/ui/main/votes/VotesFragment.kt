@@ -1,12 +1,15 @@
 package com.example.shareaboutcatsapp.ui.main.votes
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shareaboutcatsapp.R
@@ -17,6 +20,7 @@ import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.votes.adapter.ListVotesAdapter
 import com.example.shareaboutcatsapp.ui.main.votes.create_votes.CreateVotesFragment
 import com.example.shareaboutcatsapp.ui.main.votes.details.DetailsVotesFragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.dialog_delete.*
 import kotlinx.android.synthetic.main.fragment_votes.*
@@ -45,9 +49,20 @@ class VotesFragment : BaseFragment() {
         searchVotes()
     }
 
+    private fun loadMore() {
+        nestedScrollViewVotes.setOnScrollChangeListener{ nestedScrollView: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (scrollY == nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight) {
+                page++
+                progressBarVotes.visibility = View.VISIBLE
+                callApi()
+            }
+        }
+    }
+
     private fun checkWifi() {
         if ((activity as MainActivity).checkWifi() == true) {
             callApi()
+            loadMore()
         } else {
             votesViewModel.getDataVotes()
         }
@@ -91,7 +106,12 @@ class VotesFragment : BaseFragment() {
     }
 
     private fun setUpRecyclerViewListVotes(votesModel: VotesModel) {
-        this.votesModel = votesModel
+        if (page == 1) {
+            this.votesModel = votesModel
+        } else {
+            this.votesModel.addAll(votesModel)
+        }
+
         listVotesAdapter = ListVotesAdapter(this.votesModel, { index, idVotes ->
             if (autoSearchVotes.text.toString().isNotEmpty()) {
                 hideKeyboard()
@@ -112,17 +132,27 @@ class VotesFragment : BaseFragment() {
     private fun openDialogDelete(voteID: Int) {
         dialog = Dialog(context!!)
         dialog.setContentView(R.layout.dialog_delete)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         dialog.linearYes.setOnClickListener {
             deleteVotes(voteID)
             dialog.dismiss()
-            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+            showSnackbar()
         }
 
         dialog.linearNo.setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private fun showSnackbar() {
+        val snackbar =
+            activity?.let { Snackbar.make(it.findViewById(android.R.id.content), "Failed", Snackbar.LENGTH_SHORT) }
+        snackbar?.setAction("Details", View.OnClickListener {
+            addFragment(DetailsSnackBarFragment(), R.id.flContentScreens)
+        })
+        snackbar?.show()
     }
 
     private fun deleteVotes(votesID: Int) {

@@ -45,5 +45,7 @@ data class RoomBreeds(
     val vetstreetUrlBreeds: String? = null,
     val vocalisationBreeds: Int? = null,
     @Embedded val weightBreeds: Weight,
-    val wikipediaUrlBreeds: String? = null
+    val wikipediaUrlBreeds: String? = null,
+    val idImage: String? = null,
+    val url: String? = null
 )

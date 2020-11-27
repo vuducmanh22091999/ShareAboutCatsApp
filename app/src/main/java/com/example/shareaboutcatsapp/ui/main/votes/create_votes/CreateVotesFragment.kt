@@ -24,7 +24,7 @@ class CreateVotesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initListener() {
-        imgBackMyVotes.setOnClickListener(this)
+//        imgBackMyVotes.setOnClickListener(this)
     }
 
     private fun createVotes() {
@@ -45,7 +45,7 @@ class CreateVotesFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when(v.id) {
-            R.id.imgBackMyVotes -> backToMyVotes()
+//            R.id.imgBackMyVotes -> backToMyVotes()
         }
     }
 }

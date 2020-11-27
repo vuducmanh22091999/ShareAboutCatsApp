@@ -8,7 +8,6 @@ import com.example.shareaboutcatsapp.data.local.room.db.breeds.RoomBreeds
 import com.example.shareaboutcatsapp.data.local.room.db.categories.RoomCategories
 import com.example.shareaboutcatsapp.data.local.room.db.favourites.RoomFavourites
 import com.example.shareaboutcatsapp.data.local.room.db.image.RoomImage
-import com.example.shareaboutcatsapp.data.local.room.db.votes.RoomVotes
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModel
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModelItem
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
@@ -17,14 +16,10 @@ import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
 import com.example.shareaboutcatsapp.data.model.image.ImageModel
 import com.example.shareaboutcatsapp.data.model.image.ImageModelItem
-import com.example.shareaboutcatsapp.data.model.votes.VotesModel
-import com.example.shareaboutcatsapp.data.model.votes.VotesModelItem
 import com.example.shareaboutcatsapp.data.repository.BreedsRepo
 import com.example.shareaboutcatsapp.data.repository.CategoriesRepo
 import com.example.shareaboutcatsapp.data.repository.FavouritesRepo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 class HomeViewModel(
     private val categoriesRepo: CategoriesRepo,
@@ -81,6 +76,15 @@ class HomeViewModel(
             }
         }
     }
+
+//    fun getImageBreedsByBreedsID(xApiKey: String, breedsID: String, limit: Int, page: Int) {
+//        viewModelScope.launch {
+//            val response = breedsRepo.getImageBreedsByBreedsID(xApiKey, breedsID, limit, page)
+//            if (response.isSuccessful && response.body() != null) {
+//                breeds.value = response.body()
+//            }
+//        }
+//    }
 
     fun saveDataCategories(listCategories: CategoriesModel) {
         viewModelScope.launch {
@@ -221,6 +225,8 @@ class HomeViewModel(
                         it.vocalisation,
                         it.weight,
                         it.wikipedia_url
+//                        it.imageID,
+//                        it.url
                     )
                 )
             }
@@ -273,6 +279,8 @@ class HomeViewModel(
                         it.vocalisationBreeds ?: 0,
                         it.weightBreeds,
                         it.wikipediaUrlBreeds ?: ""
+//                        it.idImage ?: "",
+//                        it.url ?: ""
                     )
                 )
             }

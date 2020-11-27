@@ -36,7 +36,7 @@ class FullImageFragment : BaseFragment(), View.OnClickListener {
 //            val imageCategories = imageModelItem.url
 //            context?.let { Glide.with(it).load(imageCategories).into(imgFullSize) }
 //        }
-        context?.let { Glide.with(it).load(from).into(imgFullSize) }
+        context?.let { Glide.with(it).load(from).placeholder(R.drawable.img_placeholder).into(imgFullSize) }
 
 
     }

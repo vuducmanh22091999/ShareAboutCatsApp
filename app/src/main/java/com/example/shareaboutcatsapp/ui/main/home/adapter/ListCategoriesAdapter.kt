@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModelItem
 import com.example.shareaboutcatsapp.data.model.image.ImageModelItem
@@ -17,6 +18,8 @@ class ListCategoriesAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindDataViewHolder(categoriesModelItem: CategoriesModelItem) {
             itemView.itemCategories.text = categoriesModelItem.name
+            Glide.with(itemView.context).load(R.drawable.gif_splash)
+                .placeholder(R.drawable.img_placeholder).into(itemView.itemImageCategories)
 
             itemView.setOnClickListener {
                 onClick(adapterPosition)

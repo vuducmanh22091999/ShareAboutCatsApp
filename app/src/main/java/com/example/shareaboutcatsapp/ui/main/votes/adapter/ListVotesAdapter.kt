@@ -21,15 +21,11 @@ class ListVotesAdapter(
         @SuppressLint("SetTextI18n")
         fun bindDataViewHolder(votesModelItem: VotesModelItem) {
             itemView.itemMyVotesID.text = votesModelItem.id.toString()
-//            val date = Date(votesModelItem.created_at.toLong())
-//            val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("en"))
-//            itemView.itemMyVotesCreatedAt.text = format.format(date)
-            val string = votesModelItem.created_at
-            val string1 = votesModelItem.created_at
-            val test = string.substring(0,10)
-            val test1 = string1.substring(11,19)
-            itemView.itemMyVotesCreatedAt.text = "$test $test1"
-//            itemView.itemMyVotesCreatedAt.text = votesModelItem.created_at
+            val date = votesModelItem.created_at
+            val time = votesModelItem.created_at
+            val formatDate = date.substring(0,10)
+            val formatTime = time.substring(11,19)
+            itemView.itemMyVotesCreatedAt.text = "$formatDate $formatTime"
             itemView.itemImageDeleteMyVotes.setImageResource(R.drawable.ic_delete)
 
             itemView.setOnClickListener {

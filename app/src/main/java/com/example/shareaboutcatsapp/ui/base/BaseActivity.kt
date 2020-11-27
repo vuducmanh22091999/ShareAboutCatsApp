@@ -2,6 +2,7 @@ package com.example.shareaboutcatsapp.ui.base
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +49,7 @@ abstract class BaseActivity : AppCompatActivity() {
         builder.setCancelable(true)
 
         dialog = builder.create()
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
         dialog?.show()
     }
 
@@ -62,14 +64,6 @@ abstract class BaseActivity : AppCompatActivity() {
             this.currentFocus!!.windowToken,
             InputMethodManager.HIDE_NOT_ALWAYS
         )
-    }
-
-    fun showProgressBar() {
-        progress_bar.visibility = View.VISIBLE
-    }
-
-    fun hideProgressBar() {
-        progress_bar.visibility = View.INVISIBLE
     }
 
     fun initMyRoomDB(): MyRoomDB {

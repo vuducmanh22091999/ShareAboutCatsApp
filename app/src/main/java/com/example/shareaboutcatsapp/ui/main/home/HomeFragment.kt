@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.shareaboutcatsapp.R
-import com.example.shareaboutcatsapp.data.local.room.db.categories.RoomCategories
 import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModelItem
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
+import com.example.shareaboutcatsapp.data.model.categories.CategoriesModelItem
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
+import com.example.shareaboutcatsapp.data.model.image.ImageModel
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.breeds.DetailsBreedsFragment
@@ -30,6 +31,7 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.tvUserName
+import kotlinx.android.synthetic.main.fragment_votes.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,6 +44,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     private lateinit var listFavouritesAdapter: ListFavouritesAdapter
     private lateinit var listTest: ListTest
     private var dataListBreeds: ArrayList<String> = ArrayList()
+    var favouritesModel = FavouritesModel()
     var limit = 10
     var page = 1
 
@@ -64,9 +67,20 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         imgSearchBreeds.setOnClickListener(this)
     }
 
+    private fun loadMore() {
+        nestedScrollViewHome.setOnScrollChangeListener { nestedScrollView: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (scrollY == nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight) {
+                page++
+                progressHome.visibility = View.VISIBLE
+                callApi()
+            }
+        }
+    }
+
     private fun checkWifi() {
         if ((activity as MainActivity).checkWifi() == true) {
             callApi()
+            loadMore()
         } else {
             homeViewModel.getDataCategories()
             homeViewModel.getDataFavourites()
@@ -89,10 +103,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             })
         }
 
-
-//        homeViewModel.image.observe(this, {
-//
-//        })
         CoroutineScope(Dispatchers.Main).launch {
             homeViewModel.favourites.observe(this@HomeFragment, {
                 homeViewModel.saveDataFavourites(it)
@@ -176,6 +186,23 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    private fun initRecyclerView(imageModel: ImageModel) {
+        listTest = ListTest(imageModel) { indexInfo ->
+            context?.let {
+                val bundle = Bundle()
+                val detailCategoriesFragment = DetailsCategoriesFragment()
+                bundle.putInt("categoryID", imageModel[indexInfo].categoriesModelItem.forEach {
+                    it.id
+                }.toString().toInt())
+                bundle.putString("categoryName", imageModel[indexInfo].categoriesModelItem.forEach {
+                    it.name
+                }.toString())
+                detailCategoriesFragment.arguments = bundle
+                addFragment(detailCategoriesFragment, R.id.flContentScreens)
+            }
+        }
+    }
+
     private fun setUpRecyclerViewListCategories(categoriesModel: CategoriesModel) {
         listCategoriesAdapter = ListCategoriesAdapter(categoriesModel) { indexInfo ->
             context?.let {
@@ -195,12 +222,18 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setUpRecyclerViewListFavourites(favouritesModel: FavouritesModel) {
+        if (page == 1) {
+            this.favouritesModel = favouritesModel
+        } else {
+            this.favouritesModel.addAll(favouritesModel)
+        }
         listFavouritesAdapter = ListFavouritesAdapter(favouritesModel) {
             fullSizeImage(it)
         }
         val gridLayoutManager = GridLayoutManager(context, 2)
         rcvListFavourites.setHasFixedSize(true)
         rcvListFavourites.layoutManager = gridLayoutManager
+        listFavouritesAdapter.notifyDataSetChanged()
         rcvListFavourites.adapter = listFavouritesAdapter
     }
 
@@ -217,9 +250,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     private fun setInfo() {
         tvUserName.text = appPreferences.getLoginUserName()
         if (getIDUserFacebook().isNotEmpty()) {
-            context?.let { Glide.with(it).load(urlAvatar()).into(imgChat) }
+            context?.let {
+                Glide.with(it).load(urlAvatar()).placeholder(R.drawable.ic_account).into(imgChat)
+            }
         } else {
-            context?.let { Glide.with(it).load(appPreferences.getLoginAvatar()).into(imgChat) }
+            context?.let {
+                Glide.with(it).load(appPreferences.getLoginAvatar())
+                    .placeholder(R.drawable.ic_account).into(imgChat)
+            }
         }
     }
 

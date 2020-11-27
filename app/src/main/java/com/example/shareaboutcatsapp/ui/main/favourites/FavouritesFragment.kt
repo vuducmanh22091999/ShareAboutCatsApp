@@ -54,7 +54,6 @@ class FavouritesFragment : BaseFragment() {
                 progressBarFavourites.visibility = View.VISIBLE
                 callApi()
             }
-
         }
     }
 

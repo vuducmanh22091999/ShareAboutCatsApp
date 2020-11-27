@@ -29,7 +29,7 @@ class DetailsFavouritesFragment : BaseFragment(), View.OnClickListener {
         val subID = favouritesModelItem.sub_id
         val userID = favouritesModelItem.user_id
 
-        Glide.with(context!!).load(imageFavourites).into(imgFavourites)
+        Glide.with(context!!).load(imageFavourites).placeholder(R.drawable.img_placeholder).into(imgFavourites)
         tvIDFavourites.text = idFavourites
         tvImageIDFavourites.text = imageID
         tvSubIDFavourites.text = subID

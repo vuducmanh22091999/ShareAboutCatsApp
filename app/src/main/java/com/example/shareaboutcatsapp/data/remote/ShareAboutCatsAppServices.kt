@@ -64,4 +64,12 @@ interface ShareAboutCatsAppServices {
         @Query("limit") limit: Int,
         @Query("page") page: Int
     ): Response<ImageModel>
+
+//    @GET("images/search")
+//    suspend fun getImageByBreedsID(
+//        @Header("x-api-key") xApiKey: String,
+//        @Query("breed_id") breedsID: String,
+//        @Query("limit") limit: Int,
+//        @Query("page") page: Int
+//    ): Response<BreedsModel>
 }

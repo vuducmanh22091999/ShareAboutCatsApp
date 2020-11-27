@@ -16,7 +16,7 @@ class ListImageCategoriesAdapter(
         fun dataBindViewHolder(imageModelItem: ImageModelItem) {
 
 
-            Glide.with(itemView.context).load(imageModelItem.url).placeholder(R.drawable.ic_account).into(itemView.itemImage)
+            Glide.with(itemView.context).load(imageModelItem.url).placeholder(R.drawable.img_placeholder).into(itemView.itemImage)
 
             itemView.itemImage.setOnClickListener {
                 onClick(adapterPosition)

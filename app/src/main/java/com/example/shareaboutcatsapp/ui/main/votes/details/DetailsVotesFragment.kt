@@ -1,5 +1,6 @@
 package com.example.shareaboutcatsapp.ui.main.votes.details
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.Toast
 import com.example.shareaboutcatsapp.R
@@ -23,6 +24,7 @@ class DetailsVotesFragment : BaseFragment(), View.OnClickListener {
         imgBackVotes.setOnClickListener(this)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getDataDetailsVotes() {
         val bundle = arguments
         val votesModelItem = bundle?.getSerializable("detailsVotes") as VotesModelItem
@@ -32,13 +34,17 @@ class DetailsVotesFragment : BaseFragment(), View.OnClickListener {
         val value = votesModelItem.value.toString()
         val countryCode = votesModelItem.country_code
         val createdAt = votesModelItem.created_at
+        val date = createdAt
+        val time = createdAt
+        val formatDate = date.substring(0,10)
+        val formatTime = time.substring(11,19)
 
         tvIDVotes.text = id
         tvImageIDVotes.text = imageID
         tvSubIDVotes.text = subID
         tvValueVotes.text = value
         tvCountryCodeVotes.text = countryCode
-        tvCreateAtVotes.text = createdAt
+        tvCreateAtVotes.text = "$formatDate $formatTime"
     }
 
     private fun backToVotes() {

@@ -42,4 +42,6 @@ data class BreedsModelItem(
     @SerializedName("vocalisation") val vocalisation: Int,
     @SerializedName("weight") val weight: Weight,
     @SerializedName("wikipedia_url") val wikipedia_url: String
+//    @SerializedName("id") val imageID: String,
+//    @SerializedName("url") val url: String
 ) : Serializable
