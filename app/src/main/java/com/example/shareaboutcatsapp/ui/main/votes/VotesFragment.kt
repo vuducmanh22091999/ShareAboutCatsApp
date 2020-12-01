@@ -22,6 +22,7 @@ import com.example.shareaboutcatsapp.ui.main.votes.create_votes.CreateVotesFragm
 import com.example.shareaboutcatsapp.ui.main.votes.details.DetailsVotesFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_delete.*
 import kotlinx.android.synthetic.main.fragment_votes.*
 import kotlinx.coroutines.CoroutineScope
@@ -50,8 +51,8 @@ class VotesFragment : BaseFragment() {
     }
 
     private fun loadMore() {
-        nestedScrollViewVotes.setOnScrollChangeListener{ nestedScrollView: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            if (scrollY == nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight) {
+        nestedScrollViewVotes.setOnScrollChangeListener { nestedScrollView: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (scrollY == nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight && autoSearchVotes.text.toString().isEmpty()) {
                 page++
                 progressBarVotes.visibility = View.VISIBLE
                 callApi()
@@ -77,9 +78,9 @@ class VotesFragment : BaseFragment() {
             votesViewModel.votes.observe(this@VotesFragment, {
                 votesViewModel.saveDataVotes(it)
                 setUpRecyclerViewListVotes(it)
+                progressBarVotes.visibility = View.GONE
             })
         }
-
 
 //        votesViewModel.votes.observe(this@VotesFragment, {
 //            dataListVotes.clear()
@@ -99,18 +100,24 @@ class VotesFragment : BaseFragment() {
     private fun detailsVotes(id: Int) {
         val detailsVotesFragment = DetailsVotesFragment()
         val bundle = Bundle()
-        val votesModelItem = votesViewModel.votes.value?.find { it.id == id }
-        bundle.putSerializable("detailsVotes", votesModelItem)
-        detailsVotesFragment.arguments = bundle
-        addFragment(detailsVotesFragment, R.id.flContentScreens)
+//        val votesModelItem = votesViewModel.votes.value?.find { it.id == id }
+        val votesModelItem = votesModel.find { it.id == id }
+
+//        bundle.putSerializable("detailsVotes", votesModelItem)
+        votesModelItem?.let {
+            bundle.putSerializable("detailsVotes", votesModelItem)
+            detailsVotesFragment.arguments = bundle
+            addFragment(detailsVotesFragment, R.id.flContentScreens)
+        }
+
     }
 
     private fun setUpRecyclerViewListVotes(votesModel: VotesModel) {
-        if (page == 1) {
-            this.votesModel = votesModel
-        } else {
+//        if (page == 1) {
+//            this.votesModel = votesModel
+//        } else {
             this.votesModel.addAll(votesModel)
-        }
+//        }
 
         listVotesAdapter = ListVotesAdapter(this.votesModel, { index, idVotes ->
             if (autoSearchVotes.text.toString().isNotEmpty()) {
@@ -134,13 +141,18 @@ class VotesFragment : BaseFragment() {
         dialog.setContentView(R.layout.dialog_delete)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        dialog.linearYes.setOnClickListener {
-            deleteVotes(voteID)
-            dialog.dismiss()
-            showSnackbar()
+        dialog.tvDelete.setOnClickListener {
+            if ((activity as MainActivity).checkWifi() == true) {
+                deleteVotes(voteID)
+                dialog.dismiss()
+                showSnackbar()
+            } else {
+                Toasty.error(context!!, "Wifi is not connected", Toasty.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
         }
 
-        dialog.linearNo.setOnClickListener {
+        dialog.tvCancel.setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()
@@ -148,7 +160,13 @@ class VotesFragment : BaseFragment() {
 
     private fun showSnackbar() {
         val snackbar =
-            activity?.let { Snackbar.make(it.findViewById(android.R.id.content), "Failed", Snackbar.LENGTH_SHORT) }
+            activity?.let {
+                Snackbar.make(
+                    it.findViewById(android.R.id.content),
+                    "Failed",
+                    Snackbar.LENGTH_SHORT
+                )
+            }
         snackbar?.setAction("Details", View.OnClickListener {
             addFragment(DetailsSnackBarFragment(), R.id.flContentScreens)
         })
@@ -195,7 +213,7 @@ class VotesFragment : BaseFragment() {
     private fun filterVotes(keyWord: Int) {
         val searchVotes: ArrayList<VotesModelItem> = ArrayList()
         for (votesModelItem in votesModel) {
-            if (votesModelItem.id.toString().contains(keyWord.toString())) {
+            if (votesModelItem.id.toString().toLowerCase().contains(keyWord.toString().toLowerCase())) {
                 searchVotes.add(votesModelItem)
             }
         }

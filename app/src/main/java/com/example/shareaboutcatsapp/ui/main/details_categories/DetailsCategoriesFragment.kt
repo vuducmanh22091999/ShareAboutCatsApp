@@ -3,6 +3,7 @@ package com.example.shareaboutcatsapp.ui.main.details_categories
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,7 +57,7 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
 
     private fun initRecyclerView() {
         listImageCategoriesAdapter = ListImageCategoriesAdapter(this.imageModel) {
-            fullImage(it)
+            index, id -> fullImage(id)
         }
 
         val gridLayoutManager = GridLayoutManager(context, 2)
@@ -78,6 +79,7 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
         nestedScrollView.setOnScrollChangeListener { nestedScrollView: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             if (scrollY == nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight) {
                 page++
+                limit += limit
                 progressBarDetailsCategories.visibility = View.VISIBLE
                 callApi()
             }
@@ -141,10 +143,10 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
         listImageCategoriesAdapter.notifyDataSetChanged()
     }
 
-    private fun fullImage(index: Int) {
+    private fun fullImage(id: String) {
         val fullImageFragment = FullImageFragment()
         val bundle = Bundle()
-        val imageModelItem = homeViewModel.image.value?.get(index)
+        val imageModelItem = homeViewModel.image.value?.find { it.id == id }
 //        bundle.putSerializable("fullImage", imageModelItem)
         bundle.putString("from", imageModelItem?.url)
         fullImageFragment.arguments = bundle

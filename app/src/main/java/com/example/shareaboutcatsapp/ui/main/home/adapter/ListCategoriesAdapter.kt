@@ -19,7 +19,8 @@ class ListCategoriesAdapter(
         fun bindDataViewHolder(categoriesModelItem: CategoriesModelItem) {
             itemView.itemCategories.text = categoriesModelItem.name
             Glide.with(itemView.context).load(R.drawable.gif_splash)
-                .placeholder(R.drawable.img_placeholder).into(itemView.itemImageCategories)
+                .placeholder(R.drawable.img_placeholder).override(100, 100)
+                .into(itemView.itemImageCategories)
 
             itemView.setOnClickListener {
                 onClick(adapterPosition)

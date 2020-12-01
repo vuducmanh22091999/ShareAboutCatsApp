@@ -21,19 +21,23 @@ class DetailsFavouritesFragment : BaseFragment(), View.OnClickListener {
 
     private fun getDataDetailsFavourites() {
         val bundle = arguments
-        val favouritesModelItem =
-            bundle?.getSerializable("detailsFavourites") as FavouritesModelItem
-        val imageFavourites = favouritesModelItem.image.url
-        val idFavourites = favouritesModelItem.id.toString()
-        val imageID = favouritesModelItem.image_id
-        val subID = favouritesModelItem.sub_id
-        val userID = favouritesModelItem.user_id
+        bundle?.getSerializable("detailsFavourites")?.let {
+            val favouritesModelItem = it as FavouritesModelItem
 
-        Glide.with(context!!).load(imageFavourites).placeholder(R.drawable.img_placeholder).into(imgFavourites)
-        tvIDFavourites.text = idFavourites
-        tvImageIDFavourites.text = imageID
-        tvSubIDFavourites.text = subID
-        tvUserIDFavourites.text = userID
+            val imageFavourites = favouritesModelItem.image.url
+            val idFavourites = favouritesModelItem.id.toString()
+            val imageID = favouritesModelItem.image_id
+            val subID = favouritesModelItem.sub_id
+            val userID = favouritesModelItem.user_id
+
+            Glide.with(context!!).load(imageFavourites).placeholder(R.drawable.img_placeholder)
+                .into(imgFavourites)
+            tvIDFavourites.text = idFavourites
+            tvImageIDFavourites.text = imageID
+            tvSubIDFavourites.text = subID
+            tvUserIDFavourites.text = userID
+        }
+
     }
 
     private fun initListener() {

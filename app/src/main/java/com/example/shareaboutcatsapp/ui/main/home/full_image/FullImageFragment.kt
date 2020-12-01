@@ -7,6 +7,7 @@ import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
 import com.example.shareaboutcatsapp.data.model.image.ImageModelItem
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
+import com.example.shareaboutcatsapp.ui.main.home.HomeFragment
 import kotlinx.android.synthetic.main.fragment_full_image.*
 
 class FullImageFragment : BaseFragment(), View.OnClickListener {
@@ -37,13 +38,6 @@ class FullImageFragment : BaseFragment(), View.OnClickListener {
 //            context?.let { Glide.with(it).load(imageCategories).into(imgFullSize) }
 //        }
         context?.let { Glide.with(it).load(from).placeholder(R.drawable.img_placeholder).into(imgFullSize) }
-
-
-    }
-
-    private fun showFullImage() {
-        val bundle = arguments
-
     }
 
     private fun hideBottomNavigation() {

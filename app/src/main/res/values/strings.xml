@@ -54,11 +54,13 @@
     <string name="facebook_app_id">1007574479709466</string>
     <string name="fb_login_protocol_scheme">fb1007574479709466</string>
     <string name="x_api_key">DEMO-API-KEY</string>
-    <string name="question_delete">Do you want delete this?</string>
-    <string name="yes">YES</string>
-    <string name="no">NO</string>
+    <string name="question_delete">Delete Item?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
     <string name="breeds_not_found">BREEDS NOT FOUND</string>
     <string name="image_not_load">THE IMAGES CAN\'T BE LOADED </string>
     <string name="a">-</string>
     <string name="loading">Loading…</string>
+    <string name="api_do_not_support">API DO NOT SUPPORT</string>
+    <string name="content_delete">This item will be permanently deleted from this list.</string>
 </resources>

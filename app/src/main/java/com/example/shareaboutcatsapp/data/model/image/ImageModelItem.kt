@@ -6,5 +6,6 @@ import java.io.Serializable
 
 data class ImageModelItem(
     @SerializedName("categories") val categoriesModelItem: ArrayList<CategoriesModelItem>,
-    @SerializedName("url") val url: String
+    @SerializedName("url") val url: String,
+    @SerializedName("id") val id: String
 ) : Serializable

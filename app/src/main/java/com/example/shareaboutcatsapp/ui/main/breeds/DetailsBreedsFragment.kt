@@ -2,24 +2,21 @@ package com.example.shareaboutcatsapp.ui.main.breeds
 
 import android.annotation.SuppressLint
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shareaboutcatsapp.R
-import com.example.shareaboutcatsapp.data.model.breeds.BreedsModel
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModelItem
+import com.example.shareaboutcatsapp.data.model.breeds.ImageBreedsModelTest
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
-import com.example.shareaboutcatsapp.ui.main.details_categories.adapter.ListImageCategoriesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_details_breeds.*
 import kotlinx.android.synthetic.main.fragment_details_breeds.nestedScrollView
-import kotlinx.android.synthetic.main.fragment_details_categories.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     private lateinit var listImageBreedsAdapter: ListImageBreedsAdapter
     private val homeViewModel: HomeViewModel by viewModel()
-    private val breedsModel = BreedsModel()
+    private var imageBreedsModelTest = ImageBreedsModelTest()
     var page = 1
     var limit = 10
     var breedsID: String = ""
@@ -32,7 +29,28 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
         hideBottomNavigation()
         initRecyclerView()
         initListener()
-        getData()
+        setUpViewModel()
+        checkWifi()
+    }
+
+    private fun checkWifi() {
+        if ((activity as MainActivity).checkWifi() == true) {
+            callApi()
+            getData()
+        } else {
+            getData()
+        }
+    }
+
+    private fun setUpViewModel() {
+        homeViewModel.imageBreeds.observe(this, {
+            handleData(it)
+        })
+    }
+
+    private fun handleData(imageBreedsModelTest: ImageBreedsModelTest) {
+        this.imageBreedsModelTest.addAll(imageBreedsModelTest)
+        listImageBreedsAdapter.notifyDataSetChanged()
     }
 
     @SuppressLint("SetTextI18n")
@@ -64,7 +82,7 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initRecyclerView() {
-        listImageBreedsAdapter = ListImageBreedsAdapter(this.breedsModel)
+        listImageBreedsAdapter = ListImageBreedsAdapter(this.imageBreedsModelTest)
 
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -75,10 +93,10 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun callApi() {
-//        homeViewModel.getImageBreedsByBreedsID(
-//            getString(R.string.x_api_key),
-//            breedsID, limit, page
-//        )
+        homeViewModel.getImageBreedsByBreedsID(
+            getString(R.string.x_api_key),
+            breedsID, limit, page
+        )
     }
 
     private fun initListener() {
@@ -87,6 +105,9 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
 
     private fun backToHome() {
         parentFragmentManager.popBackStack()
+        if (activity is MainActivity) {
+            (activity as MainActivity).showBottomNavigation()
+        }
     }
 
     private fun hideBottomNavigation() {

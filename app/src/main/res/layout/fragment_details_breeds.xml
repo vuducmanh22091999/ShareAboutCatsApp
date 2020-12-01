@@ -19,8 +19,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvListImageBreeds"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgBackHome" />
@@ -29,12 +30,14 @@
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/border_details_breeds"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rcvListImageBreeds">
+        app:layout_constraintTop_toTopOf="@id/rcvListImageBreeds">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -291,7 +294,7 @@
                     android:linksClickable="true"
                     android:text="@string/wikipedia_link_show"
                     android:textColor="@android:color/black"
-                    android:textColorLink="@android:color/holo_blue_light"
+                    android:textColorLink="#306EFF"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -318,6 +321,7 @@
         android:text="@string/breeds_not_found"
         android:textColor="@android:color/holo_red_light"
         android:textSize="40sp"
+        android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

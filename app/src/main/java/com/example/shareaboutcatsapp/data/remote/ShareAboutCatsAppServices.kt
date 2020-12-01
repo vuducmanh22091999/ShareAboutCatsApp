@@ -1,6 +1,7 @@
 package com.example.shareaboutcatsapp.data.remote
 
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModel
+import com.example.shareaboutcatsapp.data.model.breeds.ImageBreedsModelTest
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.model.image.ImageModel
@@ -65,11 +66,11 @@ interface ShareAboutCatsAppServices {
         @Query("page") page: Int
     ): Response<ImageModel>
 
-//    @GET("images/search")
-//    suspend fun getImageByBreedsID(
-//        @Header("x-api-key") xApiKey: String,
-//        @Query("breed_id") breedsID: String,
-//        @Query("limit") limit: Int,
-//        @Query("page") page: Int
-//    ): Response<BreedsModel>
+    @GET("images/search")
+    suspend fun getImageByBreedsID(
+        @Header("x-api-key") xApiKey: String,
+        @Query("breed_id") breedsID: String,
+        @Query("limit") limit: Int,
+        @Query("page") page: Int
+    ): Response<ImageBreedsModelTest>
 }

@@ -50,11 +50,11 @@ class MainActivity : BaseActivity() {
                         .commit()
                     currentFragment = homeFragment
                 }
-                R.id.navigation_votes -> {
-                    fragmentManager.beginTransaction().show(votesFragment).hide(currentFragment)
-                        .commit()
-                    currentFragment = votesFragment
-                }
+//                R.id.navigation_votes -> {
+//                    fragmentManager.beginTransaction().show(votesFragment).hide(currentFragment)
+//                        .commit()
+//                    currentFragment = votesFragment
+//                }
                 R.id.navigation_favourites -> {
                     fragmentManager.beginTransaction().show(favouritesFragment)
                         .hide(currentFragment).commit()
@@ -77,8 +77,8 @@ class MainActivity : BaseActivity() {
 
         fragmentManager.beginTransaction().add(R.id.flContentScreens, homeFragment).commit()
         fragmentManager.beginTransaction().show(homeFragment).commit()
-        fragmentManager.beginTransaction().add(R.id.flContentScreens, votesFragment).commit()
-        fragmentManager.beginTransaction().hide(votesFragment).commit()
+//        fragmentManager.beginTransaction().add(R.id.flContentScreens, votesFragment).commit()
+//        fragmentManager.beginTransaction().hide(votesFragment).commit()
         fragmentManager.beginTransaction().add(R.id.flContentScreens, favouritesFragment).commit()
         fragmentManager.beginTransaction().hide(favouritesFragment).commit()
         fragmentManager.beginTransaction().add(R.id.flContentScreens, accountFragment).commit()

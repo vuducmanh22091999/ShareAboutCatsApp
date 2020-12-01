@@ -1,6 +1,8 @@
 package com.example.shareaboutcatsapp.ui.main.favourites
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -92,11 +94,12 @@ class FavouritesFragment : BaseFragment() {
     }
 
     private fun setUpRecyclerView(favouritesModel: FavouritesModel) {
-        if (page == 1) {
-            this.favouritesModel = favouritesModel
-        } else {
-            this.favouritesModel.addAll(favouritesModel)
-        }
+//        if (page == 1) {
+//            this.favouritesModel = favouritesModel
+//        } else {
+//            this.favouritesModel.addAll(favouritesModel)
+//        }
+        this.favouritesModel.addAll(favouritesModel)
         listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, { index, favouritesID ->
             if (autoSearchFavourites.text.toString().isNotEmpty()) {
                 hideKeyboard()
@@ -106,8 +109,12 @@ class FavouritesFragment : BaseFragment() {
             }
         },
             { index, favouritesID ->
-                indexDel = index
-                openDialogDelete(favouritesID)
+                if ((activity as MainActivity).checkWifi() == true) {
+                    indexDel = index
+                    openDialogDelete(favouritesID)
+                } else {
+                    Toasty.error(context!!, "Wifi is not connected", Toasty.LENGTH_SHORT).show()
+                }
             })
         val gridLayoutManager = GridLayoutManager(context, 2)
         rcvListMyFavourites.setHasFixedSize(true)
@@ -119,7 +126,8 @@ class FavouritesFragment : BaseFragment() {
     private fun detailsFavourites(id: Int) {
         val detailsFavouritesFragment = DetailsFavouritesFragment()
         val bundle = Bundle()
-        val favouritesModelItem = favouritesViewModel.favourites.value?.find { it.id == id }
+//        val favouritesModelItem = favouritesViewModel.favourites.value?.find { it.id == id }
+        val favouritesModelItem = favouritesModel.find { it.id == id }
         bundle.putSerializable("detailsFavourites", favouritesModelItem)
         detailsFavouritesFragment.arguments = bundle
         addFragment(detailsFavouritesFragment, R.id.flContentScreens)
@@ -137,15 +145,16 @@ class FavouritesFragment : BaseFragment() {
     private fun openDialogDelete(favouritesID: Int) {
         dialog = Dialog(context!!)
         dialog.setContentView(R.layout.dialog_delete)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
 
-        dialog.linearYes.setOnClickListener {
+        dialog.tvDelete.setOnClickListener {
             deleteFavourites(favouritesID)
             dialog.dismiss()
             context?.let { Toasty.success(it, "Success", Toast.LENGTH_SHORT).show() }
         }
 
-        dialog.linearNo.setOnClickListener {
+        dialog.tvCancel.setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()

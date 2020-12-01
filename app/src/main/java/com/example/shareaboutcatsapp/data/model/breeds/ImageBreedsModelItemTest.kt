@@ -4,7 +4,7 @@ import androidx.room.Embedded
 import com.google.gson.annotations.SerializedName
 
 data class ImageBreedsModelItemTest(
-    @Embedded val breedsTest: BreedsTest,
+    @Embedded val breedsTest: List<BreedsTest>,
     @SerializedName("id") val idImage: String,
     @SerializedName("url") val url: String
 )

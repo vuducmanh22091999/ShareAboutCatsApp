@@ -16,14 +16,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="do not support"
-        android:textSize="30sp"
-        android:textColor="@android:color/black"
+        android:src="@drawable/gif_oops"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/api_do_not_support"
+        android:textSize="30sp"
+        android:textColor="@android:color/holo_red_light"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/imgError"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

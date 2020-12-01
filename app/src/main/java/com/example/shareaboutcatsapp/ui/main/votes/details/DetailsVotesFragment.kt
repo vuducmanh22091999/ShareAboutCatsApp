@@ -27,24 +27,24 @@ class DetailsVotesFragment : BaseFragment(), View.OnClickListener {
     @SuppressLint("SetTextI18n")
     private fun getDataDetailsVotes() {
         val bundle = arguments
-        val votesModelItem = bundle?.getSerializable("detailsVotes") as VotesModelItem
-        val id = votesModelItem.id.toString()
-        val imageID = votesModelItem.image_id
-        val subID = votesModelItem.sub_id
-        val value = votesModelItem.value.toString()
-        val countryCode = votesModelItem.country_code
-        val createdAt = votesModelItem.created_at
-        val date = createdAt
-        val time = createdAt
-        val formatDate = date.substring(0,10)
-        val formatTime = time.substring(11,19)
+        bundle?.getSerializable("detailsVotes")?.let {
+            val votesModelItem = it as VotesModelItem
+            val id = votesModelItem.id.toString()
+            val imageID = votesModelItem.image_id
+            val value = votesModelItem.value.toString()
+            val createdAt = votesModelItem.created_at
+            val date = createdAt
+            val time = createdAt
+            val formatDate = date.substring(0,10)
+            val formatTime = time.substring(11,19)
 
-        tvIDVotes.text = id
-        tvImageIDVotes.text = imageID
-        tvSubIDVotes.text = subID
-        tvValueVotes.text = value
-        tvCountryCodeVotes.text = countryCode
-        tvCreateAtVotes.text = "$formatDate $formatTime"
+            tvIDVotes.text = id
+            tvImageIDVotes.text = imageID
+            tvSubIDVotes.text = "null"
+            tvValueVotes.text = value
+            tvCountryCodeVotes.text = "null"
+            tvCreateAtVotes.text = "$formatDate $formatTime"
+        }
     }
 
     private fun backToVotes() {

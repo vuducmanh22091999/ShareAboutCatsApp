@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.shareaboutcatsapp.data.local.room.db.breeds.RoomBreeds
+import com.example.shareaboutcatsapp.data.local.room.db.breeds.RoomImageBreedsTest
 import com.example.shareaboutcatsapp.data.local.room.db.categories.RoomCategories
 import com.example.shareaboutcatsapp.data.local.room.db.favourites.RoomFavourites
 import com.example.shareaboutcatsapp.data.local.room.db.image.RoomImage
@@ -56,4 +57,10 @@ interface DAOBreeds {
 
     @Query("Select * From imageCategories")
     fun getImageCategories(): MutableList<RoomImage>
+
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    fun insertListImageBreeds(listRoomImageBreeds: List<RoomImageBreedsTest>)
+//
+//    @Query("Select * From roomImageTest")
+//    fun getImageBreeds(): MutableList<RoomImageBreedsTest>
 }

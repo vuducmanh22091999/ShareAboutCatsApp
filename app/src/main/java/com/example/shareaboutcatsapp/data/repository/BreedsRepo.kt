@@ -8,6 +8,6 @@ class BreedsRepo(private val shareAboutCatsAppServices: ShareAboutCatsAppService
     suspend fun getBreedsByName(xApiKey: String, q: String) =
         shareAboutCatsAppServices.getBreedsByName(xApiKey, q)
 
-//    suspend fun getImageBreedsByBreedsID(xApiKey: String, breedsID: String, limit: Int, page: Int) =
-//        shareAboutCatsAppServices.getImageByBreedsID(xApiKey, breedsID, limit, page)
+    suspend fun getImageBreedsByBreedsID(xApiKey: String, breedsID: String, limit: Int, page: Int) =
+        shareAboutCatsAppServices.getImageByBreedsID(xApiKey, breedsID, limit, page)
 }

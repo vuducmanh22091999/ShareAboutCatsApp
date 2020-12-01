@@ -85,6 +85,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             homeViewModel.getDataCategories()
             homeViewModel.getDataFavourites()
             homeViewModel.getDataBreeds()
+//            homeViewModel.getImageBreeds()
         }
     }
 
@@ -110,6 +111,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 hideLoading()
             })
         }
+
+//        CoroutineScope(Dispatchers.Main).launch {
+//            homeViewModel.imageBreeds.observe(this@HomeFragment, {
+//                homeViewModel.saveImageBreeds(it)
+//            })
+//        }
 
         CoroutineScope(Dispatchers.Main).launch {
             homeViewModel.breeds.observe(this@HomeFragment, {

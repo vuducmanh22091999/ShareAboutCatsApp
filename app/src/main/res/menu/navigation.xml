@@ -5,10 +5,10 @@
 android:icon="@drawable/ic_home"
         android:title="@string/home" />
 
-    <item
-        android:id="@+id/navigation_votes"
-        android:icon="@drawable/ic_votes"
-        android:title="@string/votes"/>
+<!--    <item-->
+<!--        android:id="@+id/navigation_votes"-->
+<!--        android:icon="@drawable/ic_votes"-->
+<!--        android:title="@string/votes"/>-->
 
     <item
         android:id="@+id/navigation_favourites"
