@@ -50,9 +50,14 @@ class AccountFragment : BaseFragment(), View.OnClickListener {
         tvUserName.text = appPreferences.getLoginUserName()
         tvPhone.text = appPreferences.getLoginPhoneNumber()
         if (getIDUserFacebook().isNotEmpty()) {
-            context?.let { Glide.with(it).load(urlAvatar()).placeholder(R.drawable.ic_account).into(imgAvatar) }
+            context?.let {
+                Glide.with(it).load(urlAvatar()).placeholder(R.drawable.ic_account).into(imgAvatar)
+            }
         } else {
-            context?.let { Glide.with(it).load(appPreferences.getLoginAvatar()).placeholder(R.drawable.ic_account).into(imgAvatar) }
+            context?.let {
+                Glide.with(it).load(appPreferences.getLoginAvatar())
+                    .placeholder(R.drawable.ic_account).into(imgAvatar)
+            }
         }
 
     }

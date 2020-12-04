@@ -2,17 +2,18 @@ package com.example.shareaboutcatsapp.ui.main.home
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AbsListView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModelItem
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
-import com.example.shareaboutcatsapp.data.model.categories.CategoriesModelItem
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.model.image.ImageModel
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
@@ -37,6 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 class HomeFragment : BaseFragment(), View.OnClickListener {
     private lateinit var appPreferences: AppPreferences
     private val homeViewModel: HomeViewModel by viewModel()
@@ -47,6 +49,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     var favouritesModel = FavouritesModel()
     var limit = 10
     var page = 1
+    var isLoading = true
+    var currentItems = 0
+    var totalItems = 0
+    var scrollOutItems = 0
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_home
@@ -75,7 +81,24 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 callApi()
             }
         }
+
+//        rcvListFavourites.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                if (dy > 0) {
+//                    if (isLoading) {
+//                        if ((currentItems + scrollOutItems) >= totalItems) {
+//                            isLoading = false
+//                            page++
+//                            progressHome.visibility = View.VISIBLE
+//                            callApi()
+//                        }
+//                    }
+//                }
+//            }
+//        })
     }
+
 
     private fun checkWifi() {
         if ((activity as MainActivity).checkWifi() == true) {
@@ -229,27 +252,30 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setUpRecyclerViewListFavourites(favouritesModel: FavouritesModel) {
-        if (page == 1) {
-            this.favouritesModel = favouritesModel
-        } else {
-            this.favouritesModel.addAll(favouritesModel)
-        }
-        listFavouritesAdapter = ListFavouritesAdapter(favouritesModel) {
-            fullSizeImage(it)
+        this.favouritesModel.addAll(favouritesModel)
+        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel) { index, idFavourites ->
+            fullSizeImage(idFavourites)
         }
         val gridLayoutManager = GridLayoutManager(context, 2)
+        currentItems = gridLayoutManager.childCount
+        totalItems = gridLayoutManager.itemCount
+        scrollOutItems = gridLayoutManager.findFirstVisibleItemPosition()
         rcvListFavourites.setHasFixedSize(true)
         rcvListFavourites.layoutManager = gridLayoutManager
         listFavouritesAdapter.notifyDataSetChanged()
         rcvListFavourites.adapter = listFavouritesAdapter
+
     }
 
-    private fun fullSizeImage(index: Int) {
+    private fun fullSizeImage(idFavourites: Int) {
         val fullImageFragment = FullImageFragment()
         val bundle = Bundle()
-        val favouritesModelItem = homeViewModel.favourites.value?.get(index)
+        val favouritesModelItem = favouritesModel.find { favouritesModelItem ->
+            favouritesModelItem.id == idFavourites
+        }
 //        bundle.putSerializable("fullSizeImage", favouritesModelItem)
         bundle.putString("from", favouritesModelItem?.image?.url)
+        bundle.putString("from1", "home")
         fullImageFragment.arguments = bundle
         addFragment(fullImageFragment, R.id.flContentScreens)
     }

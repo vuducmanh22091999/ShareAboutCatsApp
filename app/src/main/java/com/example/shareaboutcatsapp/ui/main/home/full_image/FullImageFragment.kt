@@ -37,7 +37,9 @@ class FullImageFragment : BaseFragment(), View.OnClickListener {
 //            val imageCategories = imageModelItem.url
 //            context?.let { Glide.with(it).load(imageCategories).into(imgFullSize) }
 //        }
-        context?.let { Glide.with(it).load(from).placeholder(R.drawable.img_placeholder).into(imgFullSize) }
+        context?.let {
+            Glide.with(it).load(from).placeholder(R.drawable.img_placeholder).into(imgFullSize)
+        }
     }
 
     private fun hideBottomNavigation() {
@@ -46,13 +48,23 @@ class FullImageFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    private fun handleBottomNavigation() {
+        val bundle = arguments
+        val from = bundle?.getString("from1")
+        if (from == "home") {
+            if (activity is MainActivity) {
+                (activity as MainActivity).showBottomNavigation()
+            }
+        } else {
+            hideBottomNavigation()
+        }
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.imgBackHomeFromFullImage -> {
                 parentFragmentManager.popBackStack()
-                if (activity is MainActivity) {
-                    (activity as MainActivity).showBottomNavigation()
-                }
+                handleBottomNavigation()
             }
 
         }

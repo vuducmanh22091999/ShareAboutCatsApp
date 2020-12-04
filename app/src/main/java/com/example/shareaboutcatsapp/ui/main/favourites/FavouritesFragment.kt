@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
@@ -36,6 +37,10 @@ class FavouritesFragment : BaseFragment() {
     var indexDel = 0
     var limit = 10
     var page = 1
+    var isLoading = true
+    var currentItems = 0
+    var totalItems = 0
+    var scrollOutItems = 0
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_favourites
@@ -43,6 +48,7 @@ class FavouritesFragment : BaseFragment() {
 
     override fun doViewCreated() {
         checkWifi()
+        init()
         showBottomNavigation()
         setUpViewModel()
         searchFavourites()
@@ -51,12 +57,30 @@ class FavouritesFragment : BaseFragment() {
     // nhớ kiểm tra có wifi mới cho loadmore không thì gọi data local
     private fun loadMore() {
         nestedScrollViewFavourites.setOnScrollChangeListener { nestedScrollView: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            if (scrollY == nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight) {
+            if (scrollY == nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight && autoSearchFavourites.text.toString()
+                    .isEmpty()
+            ) {
                 page++
                 progressBarFavourites.visibility = View.VISIBLE
                 callApi()
             }
         }
+
+//        rcvListMyFavourites.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                if (dy > 0) {
+//                    if (isLoading) {
+//                        if ((currentItems + scrollOutItems) >= totalItems) {
+//                            isLoading = false
+//                            page++
+//                            progressBarFavourites.visibility = View.VISIBLE
+//                            callApi()
+//                        }
+//                    }
+//                }
+//            }
+//        })
     }
 
     private fun checkWifi() {
@@ -75,7 +99,8 @@ class FavouritesFragment : BaseFragment() {
     private fun setUpViewModel() {
         favouritesViewModel.favourites.observe(this, {
             favouritesViewModel.saveDataFavourites(it)
-            setUpRecyclerView(it)
+            handleData(it)
+            progressBarFavourites.visibility = View.GONE
         })
 
 //        favouritesViewModel.favourites.observe(this, {
@@ -91,6 +116,37 @@ class FavouritesFragment : BaseFragment() {
 //            )
 //            autoSearchFavourites.setAdapter(arrayAdapter)
 //        })
+    }
+
+    private fun handleData(favouritesModel: FavouritesModel) {
+        this.favouritesModel.addAll(favouritesModel)
+        listFavouritesAdapter.notifyDataSetChanged()
+    }
+
+    private fun init() {
+        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, { index, favouritesID ->
+            if (autoSearchFavourites.text.toString().isNotEmpty()) {
+                hideKeyboard()
+                detailsFavourites(favouritesID)
+            } else {
+                detailsFavourites(favouritesID)
+            }
+        },
+            { index, favouritesID ->
+                if ((activity as MainActivity).checkWifi() == true) {
+                    indexDel = index
+                    openDialogDelete(favouritesID)
+                } else {
+                    Toasty.error(context!!, "Wifi is not connected", Toasty.LENGTH_SHORT).show()
+                }
+            })
+        val gridLayoutManager = GridLayoutManager(context, 2)
+        currentItems = gridLayoutManager.childCount
+        totalItems = gridLayoutManager.itemCount
+        scrollOutItems = gridLayoutManager.findFirstVisibleItemPosition()
+        rcvListMyFavourites.setHasFixedSize(true)
+        rcvListMyFavourites.layoutManager = gridLayoutManager
+        rcvListMyFavourites.adapter = listFavouritesAdapter
     }
 
     private fun setUpRecyclerView(favouritesModel: FavouritesModel) {
@@ -127,7 +183,9 @@ class FavouritesFragment : BaseFragment() {
         val detailsFavouritesFragment = DetailsFavouritesFragment()
         val bundle = Bundle()
 //        val favouritesModelItem = favouritesViewModel.favourites.value?.find { it.id == id }
-        val favouritesModelItem = favouritesModel.find { it.id == id }
+        val favouritesModelItem = favouritesModel.find { favouritesModelItem ->
+            favouritesModelItem.id == id
+        }
         bundle.putSerializable("detailsFavourites", favouritesModelItem)
         detailsFavouritesFragment.arguments = bundle
         addFragment(detailsFavouritesFragment, R.id.flContentScreens)
@@ -138,7 +196,8 @@ class FavouritesFragment : BaseFragment() {
         this.favouritesModel.removeAt(indexDel)
         listFavouritesAdapter.notifyItemRemoved(indexDel)
         favouritesViewModel.favourites.observe(this, {
-            setUpRecyclerView(it)
+//            setUpRecyclerView(it)
+            init()
         })
     }
 
@@ -181,18 +240,33 @@ class FavouritesFragment : BaseFragment() {
                 if (s.toString().isNotEmpty()) {
                     filterFavourites(s.toString())
                     clearText()
+                } else {
+                    imgClearTextSearchFavourites.visibility = View.INVISIBLE
+                    imgNotFound.visibility = View.INVISIBLE
+                    tvFavouritesNotFound.visibility = View.INVISIBLE
+                    init()
                 }
             }
-
         })
     }
 
     private fun filterFavourites(keyWord: String) {
         val searchFavourites: ArrayList<FavouritesModelItem> = ArrayList()
         for (favouritesModelItem in favouritesModel) {
-            if (favouritesModelItem.sub_id.toLowerCase().contains(keyWord.toLowerCase())) {
+            if (favouritesModelItem.sub_id.toLowerCase(Locale.ROOT).contains(
+                    keyWord.toLowerCase(
+                        Locale.ROOT
+                    )
+                )
+            ) {
                 searchFavourites.add(favouritesModelItem)
+                imgNotFound.visibility = View.INVISIBLE
+                tvFavouritesNotFound.visibility = View.INVISIBLE
             }
+        }
+        if (searchFavourites.size == 0) {
+            imgNotFound.visibility = View.VISIBLE
+            tvFavouritesNotFound.visibility = View.VISIBLE
         }
         listFavouritesAdapter.filterFavourites(searchFavourites)
     }
@@ -202,11 +276,13 @@ class FavouritesFragment : BaseFragment() {
             imgClearTextSearchFavourites.visibility = View.VISIBLE
             imgClearTextSearchFavourites.setOnClickListener {
                 autoSearchFavourites.setText("")
-                setUpViewModel()
+                hideKeyboard()
+//                init()
+                imgNotFound.visibility = View.INVISIBLE
+                tvFavouritesNotFound.visibility = View.INVISIBLE
+                rcvListMyFavourites.adapter = listFavouritesAdapter
                 imgClearTextSearchFavourites.visibility = View.INVISIBLE
             }
-        } else {
-            imgClearTextSearchFavourites.visibility = View.INVISIBLE
         }
     }
 }

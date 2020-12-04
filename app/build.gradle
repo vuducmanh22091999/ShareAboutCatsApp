@@ -121,4 +121,7 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:2.1.2"
 
     testImplementation "androidx.paging:paging-common-ktx:2.1.2"
+
+    //FlexboxLayoutManager
+    implementation 'com.google.android:flexbox:2.0.1'
 }

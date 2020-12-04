@@ -39,6 +39,7 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
             getData()
         } else {
             getData()
+            tvCantLoadImage.visibility = View.VISIBLE
         }
     }
 
@@ -77,6 +78,7 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
                 nestedScrollView.visibility = View.INVISIBLE
                 tvError.visibility = View.VISIBLE
                 imgNotFound.visibility = View.VISIBLE
+                rcvListImageBreeds.visibility = View.INVISIBLE
             }
         }
     }

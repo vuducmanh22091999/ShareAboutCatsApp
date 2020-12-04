@@ -13,7 +13,7 @@
     <string name="my_favourites">My Favourites</string>
     <string name="my_account">My Account</string>
     <string name="hello">Hello,</string>
-    <string name="type_for_breeds">Type for breeds…</string>
+    <string name="search_for_breeds">Search for breeds…</string>
     <string name="list_categories">List Categories</string>
     <string name="list_favourites">List Favourites</string>
     <string name="search_your_votes">Search your votes by ID…</string>
@@ -63,4 +63,5 @@
     <string name="loading">Loading…</string>
     <string name="api_do_not_support">API DO NOT SUPPORT</string>
     <string name="content_delete">This item will be permanently deleted from this list.</string>
+    <string name="favourites_not_found">FAVOURITES NOT FOUND</string>
 </resources>

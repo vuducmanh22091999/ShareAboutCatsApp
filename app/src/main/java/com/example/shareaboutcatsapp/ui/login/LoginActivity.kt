@@ -13,14 +13,18 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_details_categories.*
+
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
     private val RC_SIGN_IN = 1
@@ -38,6 +42,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         appPreferences = AppPreferences(this@LoginActivity)
 
         initListener()
+    }
+
+    private fun checkWifi(): Boolean? {
+        return appPreferences.getConnect()
     }
 
     private fun initListener() {
@@ -103,6 +111,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
+            .requestScopes(Scope(Scopes.PLUS_LOGIN))
             .build()
 
         val googleSignClient = GoogleSignIn.getClient(this@LoginActivity, gso)
@@ -141,12 +150,21 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.linearLoginWithFacebook -> {
-                loginWithFacebook()
-                hideLoading()
+                if (checkWifi() == true) {
+                    loginWithFacebook()
+                    hideLoading()
+                } else {
+                    Toasty.error(this, "Turn on wifi to Log in", Toasty.LENGTH_SHORT).show()
+                }
+
             }
             R.id.linearLoginWithGoogle -> {
-                loginWithGoogle()
-                hideLoading()
+                if (checkWifi() == true) {
+                    loginWithGoogle()
+                    hideLoading()
+                } else {
+                    Toasty.error(this, "Turn on wifi to Log in", Toasty.LENGTH_SHORT).show()
+                }
             }
         }
     }

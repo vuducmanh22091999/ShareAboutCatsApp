@@ -16,6 +16,10 @@ import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.details_categories.adapter.ListImageCategoriesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.HomeViewModel
 import com.example.shareaboutcatsapp.ui.main.home.full_image.FullImageFragment
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import kotlinx.android.synthetic.main.fragment_details_categories.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,22 +60,26 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initRecyclerView() {
-        listImageCategoriesAdapter = ListImageCategoriesAdapter(this.imageModel) {
-            index, id -> fullImage(id)
+        listImageCategoriesAdapter = ListImageCategoriesAdapter(this.imageModel) { index, id ->
+            fullImage(id)
         }
 
-        val gridLayoutManager = GridLayoutManager(context, 2)
-        rcvListCategoriesImage.setHasFixedSize(true)
-        rcvListCategoriesImage.layoutManager = gridLayoutManager
-        listImageCategoriesAdapter.notifyDataSetChanged()
-        rcvListCategoriesImage.adapter = listImageCategoriesAdapter
-
-
-//        val staggeredGridLayoutManager =
-//            StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)
-//        rcvListCategoriesImage.layoutManager = staggeredGridLayoutManager
+//        val layoutManager = FlexboxLayoutManager(context)
+//        layoutManager.flexDirection = FlexDirection.COLUMN
+//        layoutManager.justifyContent = JustifyContent.FLEX_END
+//        layoutManager.flexWrap=FlexWrap.WRAP
+//        val gridLayoutManager = GridLayoutManager(context, 2)
+//        rcvListCategoriesImage.setHasFixedSize(true)
+//        rcvListCategoriesImage.layoutManager = gridLayoutManager
+//        listImageCategoriesAdapter.StaggeredGridLayoutAdapter(this)
 //        listImageCategoriesAdapter.notifyDataSetChanged()
 //        rcvListCategoriesImage.adapter = listImageCategoriesAdapter
+
+        val staggeredGridLayoutManager =
+            StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        rcvListCategoriesImage.layoutManager = staggeredGridLayoutManager
+        listImageCategoriesAdapter.notifyDataSetChanged()
+        rcvListCategoriesImage.adapter = listImageCategoriesAdapter
     }
 
     private fun initListener() {
@@ -146,9 +154,13 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
     private fun fullImage(id: String) {
         val fullImageFragment = FullImageFragment()
         val bundle = Bundle()
-        val imageModelItem = homeViewModel.image.value?.find { it.id == id }
+//        val imageModelItem = homeViewModel.image.value?.find { it.id == id }
+        val imageModelItem = imageModel.find { imageModelItem ->
+            imageModelItem.id == id
+        }
 //        bundle.putSerializable("fullImage", imageModelItem)
         bundle.putString("from", imageModelItem?.url)
+        bundle.putString("from1", "detailsCategories")
         fullImageFragment.arguments = bundle
         addFragment(fullImageFragment, R.id.flContentScreens)
     }

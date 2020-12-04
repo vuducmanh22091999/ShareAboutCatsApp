@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_favourites.view.*
 
 class ListFavouritesAdapter(
     private val listFavourites: List<FavouritesModelItem>,
-    val onClick: (Int) -> Unit
+    val onClick: (Int, Int) -> Unit
 ) : RecyclerView.Adapter<ListFavouritesAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindDataViewHolder(favouritesModelItem: FavouritesModelItem) {
@@ -20,7 +20,7 @@ class ListFavouritesAdapter(
             itemView.itemSubIDFavourites.text = favouritesModelItem.sub_id
 
             itemView.setOnClickListener{
-                onClick(adapterPosition)
+                onClick(adapterPosition, favouritesModelItem.id)
             }
         }
     }

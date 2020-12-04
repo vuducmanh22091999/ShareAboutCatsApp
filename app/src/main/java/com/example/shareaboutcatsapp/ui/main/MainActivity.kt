@@ -76,7 +76,7 @@ class MainActivity : BaseActivity() {
 
 
         fragmentManager.beginTransaction().add(R.id.flContentScreens, homeFragment).commit()
-        fragmentManager.beginTransaction().show(homeFragment).commit()
+//        fragmentManager.beginTransaction().show(homeFragment).commit()
 //        fragmentManager.beginTransaction().add(R.id.flContentScreens, votesFragment).commit()
 //        fragmentManager.beginTransaction().hide(votesFragment).commit()
         fragmentManager.beginTransaction().add(R.id.flContentScreens, favouritesFragment).commit()
