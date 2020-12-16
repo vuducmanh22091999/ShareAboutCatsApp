@@ -32,6 +32,7 @@ class MainActivity : BaseActivity() {
 
     override fun doViewCreated() {
         appPreferences = AppPreferences(this)
+        overridePendingTransition(R.anim.slide_blink, R.anim.slide_blink)
         showBottomNavigation()
         setUpFragment()
         handleNavigationBottom()
@@ -46,7 +47,9 @@ class MainActivity : BaseActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_home -> {
-                    fragmentManager.beginTransaction().show(homeFragment).hide(currentFragment)
+                    fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .show(homeFragment).hide(currentFragment)
                         .commit()
                     currentFragment = homeFragment
                 }
@@ -56,12 +59,16 @@ class MainActivity : BaseActivity() {
 //                    currentFragment = votesFragment
 //                }
                 R.id.navigation_favourites -> {
-                    fragmentManager.beginTransaction().show(favouritesFragment)
+                    fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .show(favouritesFragment)
                         .hide(currentFragment).commit()
                     currentFragment = favouritesFragment
                 }
                 R.id.navigation_account -> {
-                    fragmentManager.beginTransaction().show(accountFragment).hide(currentFragment)
+                    fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .show(accountFragment).hide(currentFragment)
                         .commit()
                     currentFragment = accountFragment
                 }

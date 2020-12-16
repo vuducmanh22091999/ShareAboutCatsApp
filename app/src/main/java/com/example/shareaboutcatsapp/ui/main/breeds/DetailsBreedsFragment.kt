@@ -26,6 +26,7 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun doViewCreated() {
+//        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         hideBottomNavigation()
         initRecyclerView()
         initListener()

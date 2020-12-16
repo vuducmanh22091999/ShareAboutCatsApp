@@ -162,7 +162,14 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
         bundle.putString("from", imageModelItem?.url)
         bundle.putString("from1", "detailsCategories")
         fullImageFragment.arguments = bundle
-        addFragment(fullImageFragment, R.id.flContentScreens)
+        addFragment(
+            fullImageFragment,
+            R.id.flContentScreens,
+            R.anim.slide_blink,
+            R.anim.slide_blink,
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        )
     }
 
     override fun onClick(v: View) {

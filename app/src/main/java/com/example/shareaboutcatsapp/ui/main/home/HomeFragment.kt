@@ -212,7 +212,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             hideKeyboard()
             bundle.putSerializable("detailsBreeds", breedsModelItem)
             detailsBreedsFragment.arguments = bundle
-            addFragment(detailsBreedsFragment, R.id.flContentScreens)
+            addFragment(
+                detailsBreedsFragment,
+                R.id.flContentScreens,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left
+            )
         }
     }
 
@@ -228,7 +233,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                     it.name
                 }.toString())
                 detailCategoriesFragment.arguments = bundle
-                addFragment(detailCategoriesFragment, R.id.flContentScreens)
+                addFragment(
+                    detailCategoriesFragment,
+                    R.id.flContentScreens,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
             }
         }
     }
@@ -241,7 +253,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 bundle.putInt("categoryID", categoriesModel[indexInfo].id)
                 bundle.putString("categoryName", categoriesModel[indexInfo].name)
                 detailCategoriesFragment.arguments = bundle
-                addFragment(detailCategoriesFragment, R.id.flContentScreens)
+                addFragment(
+                    detailCategoriesFragment,
+                    R.id.flContentScreens,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left
+                )
             }
         }
         val linearLayoutManager =
@@ -277,7 +294,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         bundle.putString("from", favouritesModelItem?.image?.url)
         bundle.putString("from1", "home")
         fullImageFragment.arguments = bundle
-        addFragment(fullImageFragment, R.id.flContentScreens)
+        addFragment(
+            fullImageFragment,
+            R.id.flContentScreens,
+            R.anim.slide_in_right,
+            R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left
+        )
     }
 
     private fun setInfo() {

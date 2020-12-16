@@ -188,7 +188,7 @@ class FavouritesFragment : BaseFragment() {
         }
         bundle.putSerializable("detailsFavourites", favouritesModelItem)
         detailsFavouritesFragment.arguments = bundle
-        addFragment(detailsFavouritesFragment, R.id.flContentScreens)
+        addFragment(detailsFavouritesFragment, R.id.flContentScreens, R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun deleteFavourites(favouritesID: Int) {

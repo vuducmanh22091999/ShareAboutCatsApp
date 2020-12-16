@@ -28,8 +28,9 @@ abstract class BaseActivity : AppCompatActivity() {
         doViewCreated()
     }
 
-    fun addFragment(fragment: Fragment, id: Int) {
+    fun addFragment(fragment: Fragment, id: Int, start: Int, end: Int, popStart: Int, popEnd: Int) {
         supportFragmentManager.beginTransaction()
+            .setCustomAnimations(start, end, popStart, popEnd)
             .add(id, fragment, fragment::class.java.simpleName)
             .addToBackStack(null)
             .commit()

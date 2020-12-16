@@ -107,7 +107,7 @@ class VotesFragment : BaseFragment() {
         votesModelItem?.let {
             bundle.putSerializable("detailsVotes", votesModelItem)
             detailsVotesFragment.arguments = bundle
-            addFragment(detailsVotesFragment, R.id.flContentScreens)
+            addFragment(detailsVotesFragment, R.id.flContentScreens, R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_blink, R.anim.slide_blink)
         }
 
     }
@@ -168,7 +168,7 @@ class VotesFragment : BaseFragment() {
                 )
             }
         snackbar?.setAction("Details", View.OnClickListener {
-            addFragment(DetailsSnackBarFragment(), R.id.flContentScreens)
+            addFragment(DetailsSnackBarFragment(), R.id.flContentScreens, R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_blink, R.anim.slide_blink)
         })
         snackbar?.show()
     }
