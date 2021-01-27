@@ -72,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textAlignment="center"
                 android:text="@string/image_not_load"
                 android:textColor="@android:color/holo_red_light"
                 android:textSize="30sp"

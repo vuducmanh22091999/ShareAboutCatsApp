@@ -1,6 +1,8 @@
 package com.example.shareaboutcatsapp.ui.main.account
 
 import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -16,7 +18,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_account.*
-import kotlinx.android.synthetic.main.fragment_details_categories.*
 
 class AccountFragment : BaseFragment(), View.OnClickListener {
     private lateinit var appPreferences: AppPreferences
@@ -34,7 +35,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun checkWifi() {
-        if ((activity as MainActivity).checkWifi() == true) {
+        if ((activity as MainActivity).checkWifi()) {
             backLoginScreen()
         } else {
             context?.let { Toasty.error(it, "Turn on Wifi to log out", Toast.LENGTH_SHORT).show() }
@@ -96,5 +97,20 @@ class AccountFragment : BaseFragment(), View.OnClickListener {
         when (v.id) {
             R.id.tvLogout -> checkWifi()
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("AAA", "onDetachAccount")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("AAA", "onDestroyAccount")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("AAA", "onDestroyViewAccount")
     }
 }

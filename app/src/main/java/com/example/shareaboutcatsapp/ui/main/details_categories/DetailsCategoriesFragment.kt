@@ -2,10 +2,10 @@ package com.example.shareaboutcatsapp.ui.main.details_categories
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.widget.NestedScrollView
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.shareaboutcatsapp.R
@@ -16,11 +16,10 @@ import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.details_categories.adapter.ListImageCategoriesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.HomeViewModel
 import com.example.shareaboutcatsapp.ui.main.home.full_image.FullImageFragment
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import kotlinx.android.synthetic.main.fragment_details_categories.*
+import kotlinx.android.synthetic.main.item_categories.*
+import kotlinx.android.synthetic.main.item_image.*
+import kotlinx.android.synthetic.main.item_image.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,13 +31,10 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
     private val homeViewModel: HomeViewModel by viewModel()
     private var imageModel = ImageModel()
     var list: ArrayList<ImageModelItem> = ArrayList()
-    var categoryID: Int = 0
+    private var categoryID: Int = 0
     var page = 1
     var limit = 10
-
-    override fun getLayoutID(): Int {
-        return R.layout.fragment_details_categories
-    }
+    override fun getLayoutID(): Int = R.layout.fragment_details_categories
 
     override fun doViewCreated() {
         hideBottomNavigation()
@@ -51,7 +47,7 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun checkWifi() {
-        if ((activity as MainActivity).checkWifi() == true) {
+        if ((activity as MainActivity).checkWifi()) {
             callApi()
         } else {
             tvNotFound.visibility = View.VISIBLE
@@ -60,7 +56,7 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initRecyclerView() {
-        listImageCategoriesAdapter = ListImageCategoriesAdapter(this.imageModel) { index, id ->
+        listImageCategoriesAdapter = ListImageCategoriesAdapter(this.imageModel) { _, id ->
             fullImage(id)
         }
 
@@ -84,7 +80,7 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
 
     private fun initListener() {
         imgBackHomeFromDetailsCategories.setOnClickListener(this)
-        nestedScrollView.setOnScrollChangeListener { nestedScrollView: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+        nestedScrollView.setOnScrollChangeListener { nestedScrollView: NestedScrollView, _: Int, scrollY: Int, _: Int, _: Int ->
             if (scrollY == nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight) {
                 page++
                 limit += limit
@@ -95,7 +91,8 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun backToHome() {
-        parentFragmentManager.popBackStack()
+//        parentFragmentManager.popBackStack()
+        findNavController().popBackStack()
         if (activity is MainActivity) {
             (activity as MainActivity).showBottomNavigation()
         }
@@ -133,10 +130,15 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun setInfo() {
-        val bundle = arguments
-        if (bundle != null) {
-            tvIDCategories.text = bundle.getInt("categoryID").toString() + "."
-            tvNameCategories.text = bundle.getString("categoryName")
+//        val bundle = arguments
+//        if (bundle != null) {
+//            tvIDCategories.text = bundle.getInt("categoryID").toString() + "."
+//            tvNameCategories.text = bundle.getString("categoryName")
+//        }
+        arguments?.let {
+            val args = DetailsCategoriesFragmentArgs.fromBundle(it)
+            tvIDCategories.text = args.categoryID.toString() + "."
+            tvNameCategories.text = args.categoryName
         }
     }
 
@@ -159,22 +161,50 @@ class DetailsCategoriesFragment : BaseFragment(), View.OnClickListener {
             imageModelItem.id == id
         }
 //        bundle.putSerializable("fullImage", imageModelItem)
-        bundle.putString("from", imageModelItem?.url)
-        bundle.putString("from1", "detailsCategories")
-        fullImageFragment.arguments = bundle
-        addFragment(
-            fullImageFragment,
-            R.id.flContentScreens,
-            R.anim.slide_blink,
-            R.anim.slide_blink,
-            R.anim.slide_in_right,
-            R.anim.slide_out_left
-        )
+
+        val action = imageModelItem?.let {
+            DetailsCategoriesFragmentDirections.actionDetailsCategoriesFragmentToFullImageFragment(
+                imageModelItem.url,
+                "detailsCategories"
+            )
+        }
+
+        if (action != null) {
+            findNavController().navigate(action)
+        }
+
+
+//        bundle.putString("from", imageModelItem?.url)
+//        bundle.putString("from1", "detailsCategories")
+//        fullImageFragment.arguments = bundle
+//        addFragment(
+//            fullImageFragment,
+//            R.id.flContentScreens,
+//            R.anim.slide_blink,
+//            R.anim.slide_blink,
+//            R.anim.slide_in_right,
+//            R.anim.slide_out_left
+//        )
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.imgBackHomeFromDetailsCategories -> backToHome()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("###", "onDestroyDetailsCategoriesFragment")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("###", "onDestroyViewDetailsCategoriesFragment")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("###", "onDetachDetailsCategoriesFragment")
     }
 }

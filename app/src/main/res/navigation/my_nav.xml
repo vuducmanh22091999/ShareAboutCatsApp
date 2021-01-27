@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/my_nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.shareaboutcatsapp.ui.main.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_detailsBreedsFragment"
+            app:destination="@id/detailsBreedsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailsCategoriesFragment"
+            app:destination="@id/detailsCategoriesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailsFavouritesFragment"
+            app:destination="@id/detailsFavouritesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_fullImageFragment"
+            app:destination="@id/fullImageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_fullImageFragment2"
+            app:destination="@id/fullImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouritesFragment"
+        android:name="com.example.shareaboutcatsapp.ui.main.favourites.FavouritesFragment"
+        android:label="FavouritesFragment" >
+        <action
+            android:id="@+id/action_favouritesFragment_to_detailsFavouritesFragment"
+            app:destination="@id/detailsFavouritesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.shareaboutcatsapp.ui.main.account.AccountFragment"
+        android:label="AccountFragment" />
+    <fragment
+        android:id="@+id/detailsBreedsFragment"
+        android:name="com.example.shareaboutcatsapp.ui.main.breeds.DetailsBreedsFragment"
+        android:label="DetailsBreedsFragment" >
+        <argument
+            android:name="detailsBreeds"
+            app:argType="com.example.shareaboutcatsapp.data.model.breeds.BreedsModelItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsCategoriesFragment"
+        android:name="com.example.shareaboutcatsapp.ui.main.details_categories.DetailsCategoriesFragment"
+        android:label="DetailsCategoriesFragment" >
+        <action
+            android:id="@+id/action_detailsCategoriesFragment_to_fullImageFragment"
+            app:destination="@id/fullImageFragment" />
+        <argument
+            android:name="categoryID"
+            app:argType="integer" />
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFavouritesFragment"
+        android:name="com.example.shareaboutcatsapp.ui.main.favourites.details.DetailsFavouritesFragment"
+        android:label="DetailsFavouritesFragment" >
+        <argument
+            android:name="detailsFavourites"
+            app:argType="com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullImageFragment"
+        android:name="com.example.shareaboutcatsapp.ui.main.home.full_image.FullImageFragment"
+        android:label="FullImageFragment" >
+        <argument
+            android:name="from"
+            app:argType="string" />
+        <argument
+            android:name="from1"
+            app:argType="string" />
+    </fragment>
+</navigation>

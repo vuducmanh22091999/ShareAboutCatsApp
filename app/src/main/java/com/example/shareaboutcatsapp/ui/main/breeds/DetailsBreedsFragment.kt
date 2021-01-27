@@ -19,14 +19,13 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     private var imageBreedsModelTest = ImageBreedsModelTest()
     var page = 1
     var limit = 10
-    var breedsID: String = ""
+    private var breedsID: String = ""
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_details_breeds
     }
 
     override fun doViewCreated() {
-//        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         hideBottomNavigation()
         initRecyclerView()
         initListener()
@@ -35,9 +34,9 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun checkWifi() {
-        if ((activity as MainActivity).checkWifi() == true) {
-            callApi()
+        if ((activity as MainActivity).checkWifi()) {
             getData()
+            callApi()
         } else {
             getData()
             tvCantLoadImage.visibility = View.VISIBLE
@@ -49,7 +48,6 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
             handleData(it)
         })
     }
-
     private fun handleData(imageBreedsModelTest: ImageBreedsModelTest) {
         this.imageBreedsModelTest.addAll(imageBreedsModelTest)
         listImageBreedsAdapter.notifyDataSetChanged()
@@ -59,28 +57,45 @@ class DetailsBreedsFragment : BaseFragment(), View.OnClickListener {
     private fun getData() {
         val bundle = arguments
         if (bundle != null) {
-            if (bundle.getSerializable("detailsBreeds") != null) {
-                val breedsModelItem: BreedsModelItem? =
-                    bundle.getSerializable("detailsBreeds") as BreedsModelItem
-                breedsModelItem?.let {
-                    tvIDBreeds.text = breedsModelItem.id
-                    tvNameBreeds.text = breedsModelItem.name + ","
-                    tvOriginBreeds.text = breedsModelItem.origin
-                    tvDescriptionBreeds.text = breedsModelItem.description
-                    tvLifeSpanBreeds.text = breedsModelItem.life_span
-                    tvAdaptabilityBreeds.text = breedsModelItem.adaptability.toString()
-                    tvAffectionLevelBreeds.text = breedsModelItem.affection_level.toString()
-                    tvTemperamentBreeds.text = breedsModelItem.temperament
-                    tvChildFriendlyBreeds.text = breedsModelItem.child_friendly.toString()
-                    tvIntelligenceBreeds.text = breedsModelItem.intelligence.toString()
-                    tvWikipediaLinkBreeds.text = breedsModelItem.wikipedia_url
-                }
-            } else {
-                nestedScrollView.visibility = View.INVISIBLE
-                tvError.visibility = View.VISIBLE
-                imgNotFound.visibility = View.VISIBLE
-                rcvListImageBreeds.visibility = View.INVISIBLE
+//            if (bundle.getSerializable("detailsBreeds") != null) {
+//                val breedsModelItem: BreedsModelItem =
+//                    bundle.getSerializable("detailsBreeds") as BreedsModelItem
+//                breedsModelItem.let {
+//                    breedsID = breedsModelItem.id
+//                    tvIDBreeds.text = breedsModelItem.id
+//                    tvNameBreeds.text = breedsModelItem.name + ","
+//                    tvOriginBreeds.text = breedsModelItem.origin
+//                    tvDescriptionBreeds.text = breedsModelItem.description
+//                    tvLifeSpanBreeds.text = breedsModelItem.life_span
+//                    tvAdaptabilityBreeds.text = breedsModelItem.adaptability.toString()
+//                    tvAffectionLevelBreeds.text = breedsModelItem.affection_level.toString()
+//                    tvTemperamentBreeds.text = breedsModelItem.temperament
+//                    tvChildFriendlyBreeds.text = breedsModelItem.child_friendly.toString()
+//                    tvIntelligenceBreeds.text = breedsModelItem.intelligence.toString()
+//                    tvWikipediaLinkBreeds.text = breedsModelItem.wikipedia_url
+//                }
+//            }
+            arguments?.let {
+                val args = DetailsBreedsFragmentArgs.fromBundle(it)
+                breedsID = args.detailsBreeds.id
+                tvIDBreeds.text = args.detailsBreeds.id
+                tvNameBreeds.text = args.detailsBreeds.name + ","
+                tvOriginBreeds.text = args.detailsBreeds.origin
+                tvDescriptionBreeds.text = args.detailsBreeds.description
+                tvLifeSpanBreeds.text = args.detailsBreeds.life_span
+                tvAdaptabilityBreeds.text = args.detailsBreeds.adaptability.toString()
+                tvAffectionLevelBreeds.text = args.detailsBreeds.affection_level.toString()
+                tvTemperamentBreeds.text = args.detailsBreeds.temperament
+                tvChildFriendlyBreeds.text = args.detailsBreeds.child_friendly.toString()
+                tvIntelligenceBreeds.text = args.detailsBreeds.intelligence.toString()
+                tvWikipediaLinkBreeds.text = args.detailsBreeds.wikipedia_url
             }
+//            else {
+//                nestedScrollView.visibility = View.INVISIBLE
+//                tvError.visibility = View.VISIBLE
+//                imgNotFound.visibility = View.VISIBLE
+//                rcvListImageBreeds.visibility = View.INVISIBLE
+//            }
         }
     }
 

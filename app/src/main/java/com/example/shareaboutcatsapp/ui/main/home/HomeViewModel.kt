@@ -5,20 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shareaboutcatsapp.data.local.room.db.MyRoomDB
 import com.example.shareaboutcatsapp.data.local.room.db.breeds.RoomBreeds
-import com.example.shareaboutcatsapp.data.local.room.db.breeds.RoomImageBreedsTest
 import com.example.shareaboutcatsapp.data.local.room.db.categories.RoomCategories
 import com.example.shareaboutcatsapp.data.local.room.db.favourites.RoomFavourites
-import com.example.shareaboutcatsapp.data.local.room.db.image.RoomImage
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModel
 import com.example.shareaboutcatsapp.data.model.breeds.BreedsModelItem
-import com.example.shareaboutcatsapp.data.model.breeds.ImageBreedsModelItemTest
 import com.example.shareaboutcatsapp.data.model.breeds.ImageBreedsModelTest
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModel
 import com.example.shareaboutcatsapp.data.model.categories.CategoriesModelItem
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
 import com.example.shareaboutcatsapp.data.model.image.ImageModel
-import com.example.shareaboutcatsapp.data.model.image.ImageModelItem
 import com.example.shareaboutcatsapp.data.repository.BreedsRepo
 import com.example.shareaboutcatsapp.data.repository.CategoriesRepo
 import com.example.shareaboutcatsapp.data.repository.FavouritesRepo
@@ -35,7 +31,6 @@ class HomeViewModel(
     var breeds: MutableLiveData<BreedsModel> = MutableLiveData()
     var image: MutableLiveData<ImageModel> = MutableLiveData()
     var imageBreeds: MutableLiveData<ImageBreedsModelTest> = MutableLiveData()
-
     fun getCategories(xApiKey: String) {
         viewModelScope.launch {
             val response = categoriesRepo.getAllCategories(xApiKey)
@@ -72,14 +67,14 @@ class HomeViewModel(
         }
     }
 
-    fun getBreedsByName(xApiKey: String, q: String) {
-        viewModelScope.launch {
-            val response = breedsRepo.getBreedsByName(xApiKey, q)
-            if (response.isSuccessful && response.body() != null) {
-                breeds.value = response.body()
-            }
-        }
-    }
+//    fun getBreedsByName(xApiKey: String, q: String) {
+//        viewModelScope.launch {
+//            val response = breedsRepo.getBreedsByName(xApiKey, q)
+//            if (response.isSuccessful && response.body() != null) {
+//                breeds.value = response.body()
+//            }
+//        }
+//    }
 
     fun getImageBreedsByBreedsID(xApiKey: String, breedsID: String, limit: Int, page: Int) {
         viewModelScope.launch {

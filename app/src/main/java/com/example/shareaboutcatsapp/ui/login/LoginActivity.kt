@@ -25,7 +25,6 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_details_categories.*
 
-
 class LoginActivity : BaseActivity(), View.OnClickListener {
     private val RC_SIGN_IN = 1
     private lateinit var auth: FirebaseAuth

@@ -1,23 +1,21 @@
 package com.example.shareaboutcatsapp.ui.base
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.local.room.db.MyRoomDB
-import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
-import kotlinx.android.synthetic.main.fragment_home.*
 
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var myRoomDB: MyRoomDB
-    var dialog: AlertDialog? = null
+    private var dialog: AlertDialog? = null
 
     abstract fun getLayoutID(): Int
     abstract fun doViewCreated()
@@ -43,6 +41,7 @@ abstract class BaseActivity : AppCompatActivity() {
             .commit()
     }
 
+    @SuppressLint("InflateParams")
     fun showLoading() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         val layoutInflater: LayoutInflater = this.layoutInflater

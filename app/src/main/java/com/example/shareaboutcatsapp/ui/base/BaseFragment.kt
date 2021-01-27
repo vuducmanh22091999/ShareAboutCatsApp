@@ -53,10 +53,4 @@ abstract class BaseFragment : Fragment() {
             (activity as MainActivity).hideKeyboard()
         }
     }
-
-    fun initMyRoomDB() {
-        if (activity is BaseActivity) {
-            (activity as BaseActivity).initMyRoomDB()
-        }
-    }
 }

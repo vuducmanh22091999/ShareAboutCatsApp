@@ -1,13 +1,11 @@
 package com.example.shareaboutcatsapp.ui.main.home.full_image
 
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.shareaboutcatsapp.R
-import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
-import com.example.shareaboutcatsapp.data.model.image.ImageModelItem
 import com.example.shareaboutcatsapp.ui.base.BaseFragment
 import com.example.shareaboutcatsapp.ui.main.MainActivity
-import com.example.shareaboutcatsapp.ui.main.home.HomeFragment
 import kotlinx.android.synthetic.main.fragment_full_image.*
 
 class FullImageFragment : BaseFragment(), View.OnClickListener {
@@ -37,8 +35,16 @@ class FullImageFragment : BaseFragment(), View.OnClickListener {
 //            val imageCategories = imageModelItem.url
 //            context?.let { Glide.with(it).load(imageCategories).into(imgFullSize) }
 //        }
-        context?.let {
-            Glide.with(it).load(from).placeholder(R.drawable.img_placeholder).into(imgFullSize)
+//        context?.let {
+//            Glide.with(it).load(from).placeholder(R.drawable.img_placeholder).into(imgFullSize)
+//        }
+
+        arguments?.let {
+            val args = FullImageFragmentArgs.fromBundle(it)
+            context?.let { context ->
+                Glide.with(context).load(args.from).placeholder(R.drawable.img_placeholder)
+                    .into(imgFullSize)
+            }
         }
     }
 
@@ -49,21 +55,34 @@ class FullImageFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun handleBottomNavigation() {
-        val bundle = arguments
-        val from = bundle?.getString("from1")
-        if (from == "home") {
-            if (activity is MainActivity) {
-                (activity as MainActivity).showBottomNavigation()
+//        val bundle = arguments
+//        val from = bundle?.getString("from1")
+//        if (from == "home") {
+//            if (activity is MainActivity) {
+//                (activity as MainActivity).showBottomNavigation()
+//            }
+//        } else {
+//            hideBottomNavigation()
+//        }
+
+        arguments?.let {
+            val args = FullImageFragmentArgs.fromBundle(it)
+            if (args.from1 == "home") {
+                if (activity is MainActivity) {
+                    (activity as MainActivity).showBottomNavigation()
+                }
             }
-        } else {
-            hideBottomNavigation()
+            else {
+                hideBottomNavigation()
+            }
         }
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.imgBackHomeFromFullImage -> {
-                parentFragmentManager.popBackStack()
+//                parentFragmentManager.popBackStack()
+                findNavController().popBackStack()
                 handleBottomNavigation()
             }
 

@@ -1,14 +1,15 @@
 package com.example.shareaboutcatsapp.ui.main.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.AbsListView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.local.share_preferences.AppPreferences
@@ -21,6 +22,7 @@ import com.example.shareaboutcatsapp.ui.main.MainActivity
 import com.example.shareaboutcatsapp.ui.main.breeds.DetailsBreedsFragment
 import com.example.shareaboutcatsapp.ui.main.chat.ListChatFragment
 import com.example.shareaboutcatsapp.ui.main.details_categories.DetailsCategoriesFragment
+import com.example.shareaboutcatsapp.ui.main.details_categories.DetailsCategoriesFragmentDirections
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListCategoriesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListFavouritesAdapter
 import com.example.shareaboutcatsapp.ui.main.home.adapter.ListTest
@@ -33,11 +35,12 @@ import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.tvUserName
 import kotlinx.android.synthetic.main.fragment_votes.*
+import kotlinx.android.synthetic.main.item_categories.*
+import kotlinx.android.synthetic.main.item_categories.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class HomeFragment : BaseFragment(), View.OnClickListener {
     private lateinit var appPreferences: AppPreferences
@@ -74,7 +77,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun loadMore() {
-        nestedScrollViewHome.setOnScrollChangeListener { nestedScrollView: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+        nestedScrollViewHome.setOnScrollChangeListener { nestedScrollView: NestedScrollView, _: Int, scrollY: Int, _: Int, _: Int ->
             if (scrollY == nestedScrollView.getChildAt(0).measuredHeight - nestedScrollView.measuredHeight) {
                 page++
                 progressHome.visibility = View.VISIBLE
@@ -99,16 +102,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 //        })
     }
 
-
     private fun checkWifi() {
-        if ((activity as MainActivity).checkWifi() == true) {
+        if ((activity as MainActivity).checkWifi()) {
             callApi()
             loadMore()
         } else {
             homeViewModel.getDataCategories()
             homeViewModel.getDataFavourites()
             homeViewModel.getDataBreeds()
-//            homeViewModel.getImageBreeds()
         }
     }
 
@@ -149,7 +150,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                     homeViewModel.saveDataBreeds(it)
                 }
                 val arrayAdapter = ArrayAdapter<String>(
-                    context!!,
+                    requireContext(),
                     android.R.layout.simple_spinner_dropdown_item,
                     dataListBreeds
                 )
@@ -170,7 +171,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 //                index = position
 //            }
                 val arrayAdapter = ArrayAdapter<String>(
-                    context!!,
+                    requireContext(),
                     android.R.layout.simple_spinner_dropdown_item,
                     dataListBreeds
                 )
@@ -210,14 +211,24 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 }
             }
             hideKeyboard()
-            bundle.putSerializable("detailsBreeds", breedsModelItem)
-            detailsBreedsFragment.arguments = bundle
-            addFragment(
-                detailsBreedsFragment,
-                R.id.flContentScreens,
-                R.anim.slide_in_right,
-                R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left
-            )
+
+            val action = breedsModelItem?.let { breedsModelItem ->
+                HomeFragmentDirections.actionHomeFragmentToDetailsBreedsFragment(breedsModelItem)
+            }
+
+            if (action != null) {
+                imgSearchBreeds.findNavController().navigateUp()
+                imgSearchBreeds.findNavController().navigate(action)
+            }
+
+//            bundle.putSerializable("detailsBreeds", breedsModelItem)
+//            detailsBreedsFragment.arguments = bundle
+//            addFragment(
+//                detailsBreedsFragment,
+//                R.id.flContentScreens,
+//                R.anim.slide_in_right,
+//                R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left
+//            )
         }
     }
 
@@ -250,15 +261,25 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             context?.let {
                 val bundle = Bundle()
                 val detailCategoriesFragment = DetailsCategoriesFragment()
-                bundle.putInt("categoryID", categoriesModel[indexInfo].id)
-                bundle.putString("categoryName", categoriesModel[indexInfo].name)
-                detailCategoriesFragment.arguments = bundle
-                addFragment(
-                    detailCategoriesFragment,
-                    R.id.flContentScreens,
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left
-                )
+                val action = categoriesModel?.let {
+                    HomeFragmentDirections.actionHomeFragmentToDetailsCategoriesFragment(
+                        categoriesModel[indexInfo].id,
+                        categoriesModel[indexInfo].name
+                    )
+                }
+
+                findNavController().navigateUp()
+                findNavController().navigate(action)
+
+//                bundle.putInt("categoryID", categoriesModel[indexInfo].id)
+//                bundle.putString("categoryName", categoriesModel[indexInfo].name)
+//                detailCategoriesFragment.arguments = bundle
+//                addFragment(
+//                    detailCategoriesFragment,
+//                    R.id.flContentScreens,
+//                    R.anim.slide_in_right,
+//                    R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left
+//                )
             }
         }
         val linearLayoutManager =
@@ -270,7 +291,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 
     private fun setUpRecyclerViewListFavourites(favouritesModel: FavouritesModel) {
         this.favouritesModel.addAll(favouritesModel)
-        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel) { index, idFavourites ->
+        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel) { _, idFavourites ->
             fullSizeImage(idFavourites)
         }
         val gridLayoutManager = GridLayoutManager(context, 2)
@@ -291,15 +312,27 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             favouritesModelItem.id == idFavourites
         }
 //        bundle.putSerializable("fullSizeImage", favouritesModelItem)
-        bundle.putString("from", favouritesModelItem?.image?.url)
-        bundle.putString("from1", "home")
-        fullImageFragment.arguments = bundle
-        addFragment(
-            fullImageFragment,
-            R.id.flContentScreens,
-            R.anim.slide_in_right,
-            R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left
-        )
+
+        val action = favouritesModelItem?.let {
+            HomeFragmentDirections.actionHomeFragmentToFullImageFragment(
+                favouritesModelItem.image.url, "home"
+            )
+        }
+
+        if (action != null) {
+            findNavController().navigateUp()
+            findNavController().navigate(action)
+        }
+
+//        bundle.putString("from", favouritesModelItem?.image?.url)
+//        bundle.putString("from1", "home")
+//        fullImageFragment.arguments = bundle
+//        addFragment(
+//            fullImageFragment,
+//            R.id.flContentScreens,
+//            R.anim.slide_in_right,
+//            R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left
+//        )
     }
 
     private fun setInfo() {
@@ -356,5 +389,20 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 //            R.id.imgSearchBreeds -> index?.let { openDetailsBreedsIndex(it) }
             R.id.imgSearchBreeds -> openDetailsBreeds()
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("AAA", "onDetachHome")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("AAA", "onDestroyHome")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("AAA", "onDestroyViewHome")
     }
 }

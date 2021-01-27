@@ -4,15 +4,16 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.shareaboutcatsapp.R
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModel
 import com.example.shareaboutcatsapp.data.model.favourites.FavouritesModelItem
@@ -22,7 +23,6 @@ import com.example.shareaboutcatsapp.ui.main.favourites.adapter.ListFavouritesAd
 import com.example.shareaboutcatsapp.ui.main.favourites.details.DetailsFavouritesFragment
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_delete.*
-import kotlinx.android.synthetic.main.fragment_details_categories.*
 import kotlinx.android.synthetic.main.fragment_favourites.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -31,7 +31,6 @@ import kotlin.collections.ArrayList
 class FavouritesFragment : BaseFragment() {
     private val favouritesViewModel: FavouritesViewModel by viewModel()
     private lateinit var listFavouritesAdapter: ListFavouritesAdapter
-    private var dataListFavourites: ArrayList<String> = ArrayList()
     lateinit var dialog: Dialog
     var favouritesModel = FavouritesModel()
     var indexDel = 0
@@ -41,6 +40,8 @@ class FavouritesFragment : BaseFragment() {
     var currentItems = 0
     var totalItems = 0
     var scrollOutItems = 0
+
+    private lateinit var timer: Timer
 
     override fun getLayoutID(): Int {
         return R.layout.fragment_favourites
@@ -84,7 +85,7 @@ class FavouritesFragment : BaseFragment() {
     }
 
     private fun checkWifi() {
-        if ((activity as MainActivity).checkWifi() == true) {
+        if ((activity as MainActivity).checkWifi()) {
             callApi()
             loadMore()
         } else {
@@ -124,20 +125,20 @@ class FavouritesFragment : BaseFragment() {
     }
 
     private fun init() {
-        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, { index, favouritesID ->
+        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, { _, favouritesID ->
             if (autoSearchFavourites.text.toString().isNotEmpty()) {
-                hideKeyboard()
                 detailsFavourites(favouritesID)
+//                hideKeyboard()
             } else {
                 detailsFavourites(favouritesID)
             }
         },
             { index, favouritesID ->
-                if ((activity as MainActivity).checkWifi() == true) {
+                if ((activity as MainActivity).checkWifi()) {
                     indexDel = index
                     openDialogDelete(favouritesID)
                 } else {
-                    Toasty.error(context!!, "Wifi is not connected", Toasty.LENGTH_SHORT).show()
+                    Toasty.error(requireContext(), "Wifi is not connected", Toasty.LENGTH_SHORT).show()
                 }
             })
         val gridLayoutManager = GridLayoutManager(context, 2)
@@ -147,6 +148,14 @@ class FavouritesFragment : BaseFragment() {
         rcvListMyFavourites.setHasFixedSize(true)
         rcvListMyFavourites.layoutManager = gridLayoutManager
         rcvListMyFavourites.adapter = listFavouritesAdapter
+
+        // fix lại file xml của item
+//        val linearLayoutManager = context?.let { ZoomRecyclerLayout(it) }
+//        linearLayoutManager?.orientation = LinearLayoutManager.VERTICAL
+//        linearLayoutManager?.reverseLayout = true
+//        linearLayoutManager?.stackFromEnd = true
+//        rcvListMyFavourites.layoutManager = linearLayoutManager
+//        rcvListMyFavourites.adapter = listFavouritesAdapter
     }
 
     private fun setUpRecyclerView(favouritesModel: FavouritesModel) {
@@ -156,7 +165,7 @@ class FavouritesFragment : BaseFragment() {
 //            this.favouritesModel.addAll(favouritesModel)
 //        }
         this.favouritesModel.addAll(favouritesModel)
-        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, { index, favouritesID ->
+        listFavouritesAdapter = ListFavouritesAdapter(this.favouritesModel, { _, favouritesID ->
             if (autoSearchFavourites.text.toString().isNotEmpty()) {
                 hideKeyboard()
                 detailsFavourites(favouritesID)
@@ -165,11 +174,11 @@ class FavouritesFragment : BaseFragment() {
             }
         },
             { index, favouritesID ->
-                if ((activity as MainActivity).checkWifi() == true) {
+                if ((activity as MainActivity).checkWifi()) {
                     indexDel = index
                     openDialogDelete(favouritesID)
                 } else {
-                    Toasty.error(context!!, "Wifi is not connected", Toasty.LENGTH_SHORT).show()
+                    Toasty.error(requireContext(), "Wifi is not connected", Toasty.LENGTH_SHORT).show()
                 }
             })
         val gridLayoutManager = GridLayoutManager(context, 2)
@@ -186,9 +195,26 @@ class FavouritesFragment : BaseFragment() {
         val favouritesModelItem = favouritesModel.find { favouritesModelItem ->
             favouritesModelItem.id == id
         }
-        bundle.putSerializable("detailsFavourites", favouritesModelItem)
-        detailsFavouritesFragment.arguments = bundle
-        addFragment(detailsFavouritesFragment, R.id.flContentScreens, R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left)
+
+        val action = favouritesModelItem?.let {
+            FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFavouritesFragment(it)
+        }
+
+        if (action != null) {
+//            findNavController().navigateUp()
+            findNavController().navigate(action)
+        }
+
+//        bundle.putSerializable("detailsFavourites", favouritesModelItem)
+//        detailsFavouritesFragment.arguments = bundle
+//        addFragment(
+//            detailsFavouritesFragment,
+//            R.id.flContentScreens,
+//            R.anim.slide_in_right,
+//            R.anim.slide_out_left,
+//            R.anim.slide_in_right,
+//            R.anim.slide_out_left
+//        )
     }
 
     private fun deleteFavourites(favouritesID: Int) {
@@ -202,10 +228,9 @@ class FavouritesFragment : BaseFragment() {
     }
 
     private fun openDialogDelete(favouritesID: Int) {
-        dialog = Dialog(context!!)
+        dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.dialog_delete)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
 
         dialog.tvDelete.setOnClickListener {
             deleteFavourites(favouritesID)
@@ -228,19 +253,29 @@ class FavouritesFragment : BaseFragment() {
 
     private fun searchFavourites() {
         autoSearchFavourites.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                if (s.toString().isNotEmpty()) {
-                    filterFavourites(s.toString())
-                    clearText()
-                } else {
+                timer = Timer()
+                timer.schedule(object : TimerTask() {
+                    override fun run() {
+                        Handler(Looper.getMainLooper()).post {
+                            if (s.toString().isNotEmpty()) {
+                                filterFavourites(s.toString())
+                                clearText()
+                            }
+//                            else {
+//                                imgClearTextSearchFavourites.visibility = View.INVISIBLE
+//                                imgNotFound.visibility = View.INVISIBLE
+//                                tvFavouritesNotFound.visibility = View.INVISIBLE
+//                                init()
+//                            }
+                        }
+                    }
+                }, 1500)
+                if (s.toString().isEmpty()) {
                     imgClearTextSearchFavourites.visibility = View.INVISIBLE
                     imgNotFound.visibility = View.INVISIBLE
                     tvFavouritesNotFound.visibility = View.INVISIBLE
@@ -276,7 +311,7 @@ class FavouritesFragment : BaseFragment() {
             imgClearTextSearchFavourites.visibility = View.VISIBLE
             imgClearTextSearchFavourites.setOnClickListener {
                 autoSearchFavourites.setText("")
-                hideKeyboard()
+//                hideKeyboard()
 //                init()
                 imgNotFound.visibility = View.INVISIBLE
                 tvFavouritesNotFound.visibility = View.INVISIBLE
@@ -284,5 +319,20 @@ class FavouritesFragment : BaseFragment() {
                 imgClearTextSearchFavourites.visibility = View.INVISIBLE
             }
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("AAA", "onDetachFavourites")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("AAA", "onDestroyFavourites")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("AAA", "onDestroyViewFavourites")
     }
 }

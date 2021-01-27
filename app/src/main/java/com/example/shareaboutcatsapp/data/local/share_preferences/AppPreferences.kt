@@ -51,7 +51,7 @@ class AppPreferences(context: Context) {
         sharedPreferences.edit().putBoolean(CONNECT_WIFI, isCheck).apply()
     }
 
-    fun getConnect(): Boolean? {
+    fun getConnect(): Boolean {
         return sharedPreferences.getBoolean(CONNECT_WIFI, false)
     }
 
